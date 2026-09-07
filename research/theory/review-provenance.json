@@ -1,0 +1,66 @@
+{
+  "format": "C600-puzzle-theory-review-v1",
+  "date": "2026-09-07",
+  "application_version": "0.2.4",
+  "reviewed_application_revision": "dc476dd5e67be30f79352977e63a91fcf84790fa",
+  "upstream": {
+    "project": "Rethlas",
+    "url": "https://github.com/frenzymath/Rethlas",
+    "revision": "887cc46427636bbdd235160a112f9a30ae81d040"
+  },
+  "generation": {
+    "model": "gpt-6-astra",
+    "reasoning_effort": "high",
+    "separate_invocation": true
+  },
+  "verification": {
+    "model": "gpt-6-astra",
+    "reasoning_effort": "high",
+    "separate_invocation": true,
+    "verdict": "correct",
+    "critical_errors": 0,
+    "gaps": 0,
+    "formal_proof_assistant": false
+  },
+  "completed_candidate_reviews": 1,
+  "mathematical_repair_rounds": 0,
+  "scope": "Fifteen lemmas and a combined theorem; retained-cut and controller conclusions conditional on hypotheses R, F, I, C and E. Not a full legal-group order, cut reconstruction, application validation or new graphics benchmark.",
+  "io_adaptation": "Read-only agents receive reviewed public input inline. The external coordinator persists returned proof and exact verifier JSON using upstream Rethlas memory functions, verification schema, validator and output writer. No child filesystem permission was relaxed.",
+  "reference_search": "Coordinator used the upstream theorem-search function; agents checked public mathematical sources through web fallback. The reference corpus is public and sanitized.",
+  "initial_file_runner_attempts": "Produced no proof because input file access was blocked; excluded from completed-review count. Raw machine logs remain private.",
+  "typeset_editorial_changes": [
+    "Removed generation-time status and redundant title",
+    "Capitalized statement/proof headings",
+    "Numbered display equations and normalized references",
+    "Replaced imperative original task wording in the final statement with an equivalent declarative statement",
+    "Attributed integer comparisons to the accompanying executable audit"
+  ],
+  "engineering_discussion": "Separately authored source analysis and proposed optimization experiments; not included in the mathematical verifier verdict.",
+  "artifacts": {
+    "RETHLAS_BLUEPRINT.md": {
+      "sha256": "954b5241183fb7fc5554639f0e9359e6f8e0cb0cc2a1c3f64ac8d2b6216298e4",
+      "bytes": 56892
+    },
+    "rethlas-verification.json": {
+      "sha256": "3869c42a48d28e6ccc533fff29f4ba9ce4dd885586c6f0ad03d2191cd90a4e24",
+      "bytes": 2406
+    },
+    "review-problem.md": {
+      "sha256": "abe47efbe0e3a4b3d6812a1f405b624c5c4bb795926651f05181222659a130ae",
+      "bytes": 6305
+    }
+  },
+  "reference_files": {
+    "Full_600cell_Technical_Report.tex": "cf8fd76fce9c36af38ae74488b6703fa740404d08d26c5b6a3b2deb462b0e788",
+    "audit/verify_regular_geometry.py": "8d424f45dd3475e4fd80ee2f9f0965b822703ca69e8f98b35bf5d7099088e7db",
+    "audit/regular-geometry-results.json": "fa5b2cc80d19b6a057ec036e29561aa253631643322e7ee14bafb1519b0336d8",
+    "audit/results.json": "ff440bc7268303fc467ed3765338bbc5e61cd55897d807092f5d00013a8ba45b",
+    "audit/extended-results.json": "7f4d9f17af2d5fa74159abda99321d030e7b5fcd1aec6d223647a45926f83471"
+  },
+  "public_wiki_references": [
+    "https://hypercubing.xyz/theory/grip-theory/formal/",
+    "https://hypercubing.xyz/theory/invariants/",
+    "https://hypercubing.xyz/theory/gods-number/",
+    "https://hypercubing.xyz/theory/cut-depths/"
+  ]
+}

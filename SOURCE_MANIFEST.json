@@ -40,8 +40,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 1317,
-      "sha256": "f020f0ce5bc0e2a6f01b9589b84c922040080228f83740500cc55c2420d385fe",
+      "bytes": 1507,
+      "sha256": "5762b4f08fa2ce38c629e1977273463957f895e9ce9971503e4d28343436664b",
       "provenance": "reviewed-doc-or-license"
     },
     {
@@ -561,6 +561,18 @@
       "sha256": "85d2d9a6b337442aae10b7c26056f518ce0d0a738e2f098d47d8a52678d0ec5a"
     },
     {
+      "path": "research/Full_600cell_Puzzle_Theory.pdf",
+      "provenance": "reviewed-puzzle-theory-research",
+      "bytes": 444303,
+      "sha256": "2634ce0aa5155a5418a33745ef283c18e867939ade0f346253a9fc705b957f0d"
+    },
+    {
+      "path": "research/Full_600cell_Puzzle_Theory.tex",
+      "provenance": "reviewed-puzzle-theory-research",
+      "bytes": 94439,
+      "sha256": "b209326b272cb67e798a762c4a1ed1c0df058b49c6a1f9bcc1b6fd36ac415129"
+    },
+    {
       "path": "research/Full_600cell_Technical_Report.pdf",
       "provenance": "reviewed-research-material",
       "bytes": 421106,
@@ -573,28 +585,40 @@
       "sha256": "cf8fd76fce9c36af38ae74488b6703fa740404d08d26c5b6a3b2deb462b0e788"
     },
     {
+      "path": "research/PUZZLE_THEORY.md",
+      "provenance": "reviewed-puzzle-theory-research",
+      "bytes": 5624,
+      "sha256": "a426a4435889abb57d7ef92857a217371f75682f1354e46a9af47e3b47135713"
+    },
+    {
       "path": "research/README.md",
       "provenance": "reviewed-research-material",
-      "bytes": 5510,
-      "sha256": "2328628ec7f65e8779cbd19370e0ac6007f15aa404a05e93bd20e467a8b02550"
+      "bytes": 5814,
+      "sha256": "3fe03c52d823b16a4c67505b6874b9af898606c4d201efe2830e122d8fe7ebfd"
     },
     {
       "path": "research/SHA256SUMS.txt",
       "provenance": "reviewed-research-material",
-      "bytes": 325,
-      "sha256": "69b0788b75b52cbc2950e3333337d8c5f3c15b442daaf157fdfe4aa1495c3a3c"
+      "bytes": 422,
+      "sha256": "3aa036624ba3dd25a522b15053de46b08d481114f7b95e8dee952121a09b15a2"
     },
     {
       "path": "research/audit/README.md",
       "provenance": "reviewed-research-material",
-      "bytes": 6764,
-      "sha256": "4dc74d9bb90cfcfd03264a3daa4c2906d9f960414f8da6346cf2b3e6acbfb184"
+      "bytes": 7454,
+      "sha256": "475e9f2d1428e58d339942daff79eee88a191cd93da012d341a5e33a8c648c82"
     },
     {
       "path": "research/audit/extended-results.json",
       "provenance": "reviewed-research-material",
       "bytes": 19188,
       "sha256": "7f4d9f17af2d5fa74159abda99321d030e7b5fcd1aec6d223647a45926f83471"
+    },
+    {
+      "path": "research/audit/regular-geometry-results.json",
+      "provenance": "reviewed-puzzle-theory-research",
+      "bytes": 1491,
+      "sha256": "fa5b2cc80d19b6a057ec036e29561aa253631643322e7ee14bafb1519b0336d8"
     },
     {
       "path": "research/audit/requirements.txt",
@@ -621,10 +645,40 @@
       "sha256": "73084819dc37186277f52695d946828e761df50e5882b5b15e262888b4569aa7"
     },
     {
+      "path": "research/audit/verify_regular_geometry.py",
+      "provenance": "reviewed-puzzle-theory-research",
+      "bytes": 7726,
+      "sha256": "8d424f45dd3475e4fd80ee2f9f0965b822703ca69e8f98b35bf5d7099088e7db"
+    },
+    {
       "path": "research/reference/Full_600cell_35_Orbit_Algorithms.pdf",
       "provenance": "unchanged-user-supplied-algorithm-reference",
       "bytes": 672733,
       "sha256": "5b8761a38527451217b1eb6351b5cb8b4e81491ae8c248b392f1cc5f38d6d530"
+    },
+    {
+      "path": "research/theory/RETHLAS_BLUEPRINT.md",
+      "provenance": "reviewed-puzzle-theory-research",
+      "bytes": 56892,
+      "sha256": "954b5241183fb7fc5554639f0e9359e6f8e0cb0cc2a1c3f64ac8d2b6216298e4"
+    },
+    {
+      "path": "research/theory/rethlas-verification.json",
+      "provenance": "reviewed-puzzle-theory-research",
+      "bytes": 2406,
+      "sha256": "3869c42a48d28e6ccc533fff29f4ba9ce4dd885586c6f0ad03d2191cd90a4e24"
+    },
+    {
+      "path": "research/theory/review-problem.md",
+      "provenance": "reviewed-puzzle-theory-research",
+      "bytes": 6305,
+      "sha256": "abe47efbe0e3a4b3d6812a1f405b624c5c4bb795926651f05181222659a130ae"
+    },
+    {
+      "path": "research/theory/review-provenance.json",
+      "provenance": "reviewed-puzzle-theory-research",
+      "bytes": 3479,
+      "sha256": "2a20c58df6b7450332effdabcf7cc71f2966ff3f6f5a9ee67fb1bdcce788459d"
     },
     {
       "path": "server.py",

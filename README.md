@@ -12,6 +12,8 @@ See [Usage](USAGE.md) and [Building](docs/DEVELOPMENT.md). Acknowledgements to i
 
 [Research materials](research/README.md) include an expanded LaTeX report on the puzzle's mathematics and software architecture, the full 35-orbit algorithms paper, reproducible synthetic replays and arithmetic audits, and Full Detail Rotation hardware requirements.
 
+[Puzzle theory](research/PUZZLE_THEORY.md) develops the geometry, topology and group actions in an English LaTeX supplement, with Rethlas proof review and concrete optimization directions.
+
 ## License
 
 C600 Studio is a derivative work of Magic Puzzle Ultimate, © 2010 Andrey Astrelin. This project is distributed under the same terms as the original project.

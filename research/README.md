@@ -4,6 +4,7 @@
 
 | Material | Introduction |
 | --- | --- |
+| [Puzzle theory](PUZZLE_THEORY.md) | New English LaTeX supplement: exact geometry, three-sphere topology, H4 and legal group actions, 15 Rethlas-reviewed lemmas, the 35-orbit census, and sound solver/rendering optimization. Includes proof, verdict, provenance, and a standalone exact geometry checker. |
 | [Technical report (PDF)](Full_600cell_Technical_Report.pdf) | Develops piece/frame group actions, orientation invariants, alternating-group reachability, state-count bounds, word metrics, scramble distributions, guarded setup graphs, and nonabelian corrections. It also explains transactional history, bridge equivalence, filtering and picking, log validation, process recovery, and rendering costs. |
 | [Original 35-orbit algorithms paper (PDF)](reference/Full_600cell_35_Orbit_Algorithms.pdf) | The unchanged 51-page reference: one card per moving orbit, explicit seed constructions, setup/frame procedures, orientation handling, and workload analysis. Statements about untested native integration describe that historical edition. |
 | [Curated reference and replay supplement (ZIP)](Full_600cell_Curated_Reference_and_Replay.zip) | Includes the original algorithm paper and LaTeX source, complete forward/inverse seed words, model/frame data, selected generated reports, and three deterministic synthetic solution histories. Its README explains replay commands and omitted historical records. |
@@ -31,6 +32,6 @@ Repeat compilation if LaTeX requests another pass for long-table widths or cross
 
 ## Scope and integrity
 
-[SHA256SUMS.txt](SHA256SUMS.txt) identifies the three downloadable PDF/ZIP artifacts. The repository's [source manifest](../SOURCE_MANIFEST.json) covers the complete public source inventory; the ZIP contains its own member-level provenance and checksums.
+[SHA256SUMS.txt](SHA256SUMS.txt) identifies the four downloadable PDF/ZIP artifacts. The repository's [source manifest](../SOURCE_MANIFEST.json) covers the complete public source inventory; the ZIP contains its own member-level provenance and checksums.
 
 The original conversation export, personal sessions, screenshots, raw diagnostics, third-party solve logs and derived personal-history traces are excluded. The reference paper discusses five histories; only its three synthetic seed 600/601/602 histories are included. Multi-gigabyte expanded native logs are excluded. This research update adds no application release and does not change the **0.2.4** executables.

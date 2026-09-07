@@ -1,0 +1,67 @@
+{
+  "passed": true,
+  "scope": "Exact regular base polytope and its mod-2 simplicial homology; not a cut-sticker census or a full puzzle-group order computation.",
+  "coordinate_field": "Z[phi], phi^2=phi+1; vertices have circumradius 2",
+  "f_vector": [
+    120,
+    720,
+    1200,
+    600
+  ],
+  "euler_characteristic": 0,
+  "exact_supporting_tetrahedra": 600,
+  "tetrahedra_per_edge": 5,
+  "tetrahedra_per_vertex": 20,
+  "vertex_link_f_vector": [
+    12,
+    30,
+    20
+  ],
+  "boundary_ranks_mod2": [
+    119,
+    601,
+    599
+  ],
+  "betti_numbers_mod2": [
+    1,
+    0,
+    0,
+    1
+  ],
+  "vertex_graph_distance_histogram": [
+    1,
+    12,
+    32,
+    42,
+    32,
+    1
+  ],
+  "vertex_graph_diameter": 5,
+  "dual_graph_distance_histogram": [
+    1,
+    4,
+    12,
+    24,
+    36,
+    52,
+    68,
+    76,
+    78,
+    72,
+    64,
+    56,
+    40,
+    12,
+    4,
+    1
+  ],
+  "dual_graph_diameter": 15,
+  "unit_quaternion_group_order": 120,
+  "orientation_preserving_symmetry_order": 7200,
+  "full_symmetry_order": 14400,
+  "notes": [
+    "Integral homology and simple connectedness follow from the convex-body radial homeomorphism; mod-2 Betti numbers alone do not prove either.",
+    "Quaternion multiplication closure and distinct basis-image maps are checked exactly; geometric symmetries are not the local twist group.",
+    "No claim of a new performance result or a change to immutable application assets."
+  ]
+}

@@ -1,0 +1,2122 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+\documentclass[
+  10pt,
+  a4paper,
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=25mm]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{2}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{longtable,booktabs,array}
+\usepackage{caption}
+\captionsetup[table]{skip=6pt}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{amsmath,amssymb,booktabs,longtable,array,microtype}
+\usepackage{fancyhdr}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small C600 Studio -- Puzzle Theory}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\emergencystretch}{3em}
+\linespread{1.06}
+\renewcommand{\arraystretch}{1.16}
+\setcounter{tocdepth}{2}
+\AtBeginDocument{\hypersetup{pdfauthor={C600 Studio Research Supplement},
+  pdftitle={Puzzle Theory of the Full 600-Cell},
+  pdfsubject={Geometry, topology, group actions, and sound optimization},
+  pdfkeywords={600-cell, MPUlt, H4, grip theory, Rethlas, finite permutation groups}}}
+\newcommand{\Ico}{I^{*}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Stab}{\operatorname{Stab}}
+\newcommand{\conv}{\operatorname{conv}}
+\newcommand{\Isom}{\operatorname{Isom}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+% fallback for those not using the hyperref driver hyperxmp:
+\makeatletter
+\@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
+\makeatother
+\hypersetup{
+  pdftitle={Puzzle Theory of the Full 600-Cell},
+  pdfauthor={C600 Studio Research Supplement},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Puzzle Theory of the Full 600-Cell}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{Geometry, Topology, Group Actions, and Sound Optimization}
+\author{C600 Studio Research Supplement}
+\date{7 September 2026}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{2}
+\tableofcontents
+}\clearpage
+\section{Purpose and evidence}\label{purpose-and-evidence}
+
+The full-cut 600-cell makes a useful meeting point between
+regular-polytope geometry, finite group actions, constructive
+algorithms, and graphics engineering. Its exterior has only 600
+tetrahedral cells, but the retained subdivision has 259,800 sticker
+slots on 177,120 surface pieces. Consequently, understanding the base
+polytope is necessary but insufficient for understanding the puzzle. A
+drawing of the 600-cell, a labelled puzzle configuration, and a camera
+pose are three different mathematical objects.
+
+This supplement develops that distinction systematically. The geometry
+determines incidence, local symmetry and the topology of the supporting
+space. The cuts determine which regions move together. Legal
+permutations determine reachability and invariants. Ordered local frames
+make orientation explicit, while complete permutation witnesses connect
+mathematical controllers to recoverable software operations. The final
+engineering section explains which optimizations preserve those
+contracts and which need further measurement or proof.
+
+The principal software contribution remains a modification of
+\textbf{Magic Puzzle Ultimate by Andrey Astrelin}, who receives primary
+credit for the original simulator and renderer. Nan Ma's solving
+methodologies and ivan216's projects are background to the broader
+development history, as documented in the companion technical report.
+They are not attributed the new derivations or the Rethlas review in
+this supplement.
+
+\subsection{Three levels of evidence}\label{three-levels-of-evidence}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Level
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+What is established
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Boundary
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Exact base geometry & Coordinate arithmetic, incidence, quaternion
+closure, explicit symmetries, mod-2 boundary ranks and graph distances &
+Does not reconstruct the full cut subdivision \\
+Retained puzzle certificates & Orbit census, legal generator maps, local
+frame groups, parity constraints and selected controller certificates &
+Conditional inputs to the theorems; not an exact legal-group order
+computation \\
+Engineering analysis & Consequences for state updates, search,
+rendering, picking and qualification experiments & Proposals are not
+claimed as implemented speedups or new GPU benchmarks \\
+\end{longtable}
+}
+
+The geometry checker uses integer pairs in \(\mathbb Z[\phi]\), with
+\(\phi^2=\phi+1\). It does not infer incidence from floating-point
+proximity. A separate topological argument identifies the boundary with
+\(S^3\); matching homology ranks alone would not prove that
+identification. The mathematical blueprint that follows was generated
+and independently reviewed using Rethlas with a documented Windows I/O
+adaptation. Its review is an informal AI proof check, not a Lean proof
+or peer review. The retained artifacts record the actual verdict and
+scope.
+
+\subsection{How the HSC wiki is used}\label{how-the-hsc-wiki-is-used}
+
+The Hypercubing wiki associated with the Hyperspeedcube community
+supplies useful definitions and examples. Its \textbf{Formal
+Introduction to Grip Theory} distinguishes solved grips, current active
+grips and attitude; this helps connect geometric cap membership to piece
+motion. Its \textbf{Piece Invariants} explains how parity and abelian
+orientation information constrain reachable states. Its \textbf{God's
+Number} emphasizes a specified move metric when deriving counting
+bounds, and \textbf{Cut Depths} provides normalized cut-distance
+conventions.
+
+Those pages do not supply this full-cut 600-cell's 35-orbit census. In
+particular, the wiki's \(A_4\) monoflip example belongs to a hypercube
+setting; the full 600-cell's twenty-sticker moving orbit has the
+retained local orientation group \(A_5\). The relevant wiki pages are
+linked in the reading guide. Their definitions guide the exposition; the
+specialized arguments and finite checks are provided here.
+
+The term \emph{complete description} below means a connected account of
+the specified model and the limits of present knowledge. It does not
+assert a presentation or exact order for its entire legal twist group, a
+classification of all cut-depth regimes, or an optimal solver.
+
+\subsection{Objects that must remain
+distinct}\label{objects-that-must-remain-distinct}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Object
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Size or type
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Role
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(P\) & Convex four-dimensional polytope & Geometric body supporting the
+construction \\
+\(\partial P\) & Topological three-sphere & Exterior space subdivided
+into tetrahedra and sticker regions \\
+\(I^*\) & 120 unit quaternions & Coordinate group underlying the regular
+vertices \\
+\(K^+\) & 7,200 elements & Orientation-preserving rigid symmetries of
+the whole polytope \\
+\(K=W(H_4)\) & 14,400 elements & Full rigid symmetry group, including
+reflections \\
+\(SO(4)\) & Continuous group, dimension six & Intended 4D camera
+rotations \\
+Cap rotation group & \(A_4\), order 12 & Rotations permitted within one
+tetrahedral cap \\
+\(H_o\) & Retained local frame group & Orientations of one piece in
+moving orbit \(o\) \\
+\(G\) & Finite; exact order not established here & Group generated by
+the legal twists on labelled sticker slots \\
+\end{longtable}
+}
+
+Topological dimension is equally important. A tetrahedral cell of the
+600-cell is three-dimensional, and a sticker region in that cell has
+three-dimensional relative interior. Its displayed mesh uses triangles
+to draw two-dimensional boundary faces. The application's rank is a
+cap-membership statistic and may exceed four; it is not an ambient
+dimension. A legal permutation of separated sticker regions is also not
+automatically a continuous self-map of the originally glued boundary. In
+particular, the trivial fundamental group of \(S^3\) says nothing about
+the number of legal scrambles or the noncommutativity of twists.
+
+\newpage
+
+\section{Mathematical development}\label{mathematical-development}
+
+The following blueprint separates unconditional statements about the
+regular base polytope from implications that explicitly assume the
+retained puzzle certificates. Products of moves use the stated
+chronological convention. A geometric symmetry is not silently counted
+as a free puzzle move.
+
+\subsection{Definitions and mathematical
+sources}\label{definitions-and-mathematical-sources}
+
+Put \begin{equation}
+\phi=\frac{1+\sqrt5}{2},\qquad \tau=\phi^{-1}=\phi-1.
+\end{equation} Thus \begin{equation}
+\phi^2=\phi+1,\qquad \tau^2=2-\phi.
+\end{equation}
+
+Identify \(\mathbb R^4\) with the quaternion algebra \(\mathbb H\) using
+the ordered orthonormal basis \(1,i,j,k\). Quaternion conjugation is
+denoted by \(x\mapsto\bar x\), and \begin{equation}
+\operatorname{Sp}(1)=\{x\in\mathbb H:|x|=1\}.
+\end{equation} The binary icosahedral group \(I^*\) is the inverse image
+of the rotation group of a regular icosahedron under \begin{equation}
+\operatorname{Sp}(1)\longrightarrow SO(3),\qquad
+p\longmapsto\bigl(u\mapsto pup^{-1}\bigr),
+\end{equation} where \(\mathbb R^3\) is identified with the imaginary
+quaternions.
+
+For a finite set \(X\), write \(S_X\) and \(A_X\) for its symmetric and
+alternating groups. Write \(C_m\) for the cyclic group of order \(m\),
+and \begin{equation}
+D_5=\langle R,F\mid R^5=F^2=1,\ FRF=R^{-1}\rangle
+\end{equation} for the dihedral group of order \(10\).
+
+A flag of a four-dimensional polytope is an incident chain consisting of
+a vertex, edge, two-face, and facet. A polytope is regular when its
+geometric symmetry group is transitive on flags.
+
+Two external geometric results will be used, with the following complete
+statements and conventions.
+
+\textbf{Quaternion coordinate result.} In a suitable orthonormal
+quaternion coordinate system, the inverse image of the icosahedron's
+rotation group consists precisely of \begin{equation}
+(\pm1,0,0,0),\qquad
+\frac12(\pm1,\pm1,\pm1,\pm1),\qquad
+\frac12(\pm\phi,\pm1,\pm\tau,0),
+\end{equation} together with their even coordinate permutations, with
+independent signs.
+
+Source identifiers:
+\texttt{paper\_id\ =\ Baez,\ From\ the\ Icosahedron\ to\ E8};
+\texttt{arXiv\_id\ =\ 1712.06436v2};
+\texttt{theorem\_id\ =\ unnumbered\ coordinate\ assertion\ in\ “The\ Icosians”}.
+Here the finite group is the binary lift, not the infinite ring of
+integral combinations called the icosians.
+\href{https://arxiv.org/html/1712.06436v2}{Baez, ``The Icosians''}.
+
+\textbf{Binary-group polytope result.} The binary icosahedral subgroup
+of unit quaternions is one orbit of the reflection group of type
+\(H_4\), and its elements are the vertices of a regular 600-cell.
+
+Source identifiers:
+\texttt{paper\_id\ =\ Choi-\/-Lee,\ Binary\ Icosahedral\ Group\ and\ 600-Cell,\ Symmetry\ 10\ (2018),\ 326};
+\texttt{theorem\_id\ =\ Theorem\ 2};
+\texttt{arXiv\_id\ =\ not\ supplied}. The paper's binary-group notation
+indicates a double covering, not coordinate dilation. Its proof
+establishes reflection invariance in Lemma 2, then identifies the orbit
+of \(1\) using its \(H_3\) stabilizer and the \(120\)-element orbit
+count. Its quaternion norm is the ordinary Euclidean norm used here.
+\href{https://pdfs.semanticscholar.org/0fef/c9c8c31093da12262c8f6740da46c0dfb46e.pdf}{Choi--Lee,
+Theorem 2 and its proof}.
+
+These results concern the uncut polytope. They provide no sticker census
+or puzzle reachability theorem.
+
+\subsection{Lemma 1: Coordinate
+identification}\label{lemma-1-coordinate-identification}
+
+\subsubsection{Statement}\label{statement}
+
+The set \(V\) in the problem has \(120\) distinct elements, every
+element has norm \(2\), and \(V/2\) is a binary icosahedral subgroup of
+\(\operatorname{Sp}(1)\). Its convex hull is a regular 600-cell.
+
+\subsubsection{Proof}\label{proof}
+
+The three coordinate families are disjoint because their patterns of
+zero coordinates and absolute values differ. Their cardinalities are
+\begin{equation}
+8,\qquad 16,\qquad 12\cdot8=96.
+\end{equation} In the third family all four absolute values are
+distinct, so the twelve even permutations give twelve distinct
+arrangements for each sign choice.
+
+The squared norms are respectively \begin{equation}
+4,\qquad 4,\qquad 1+\phi^2+\tau^2=4.
+\end{equation}
+
+The permutation taking \begin{equation}
+(\phi,1,\tau,0)\quad\text{to}\quad(0,1,\phi,\tau)
+\end{equation} has index sequence \((4,2,1,3)\) and is even. Thus the
+displayed coordinate set agrees exactly with twice the quaternion
+coordinate set stated above, including its permutation convention.
+
+The coordinate result identifies \(V/2\) with \(I^*\). This
+identification uses the inverse image of an icosahedral rotation group,
+hence supplies multiplication closure and inverses, not merely a set of
+\(120\) points on a sphere. One direct route to its coordinates is to
+lift the identity and the rotations about edge, face, and vertex axes
+using \begin{equation}
+\cos(\theta/2)+u\sin(\theta/2)
+\end{equation} and its negative, where \(u\) is the unit imaginary axis.
+The rotations comprise the identity, fifteen half-turns, twenty
+third-turns, and twenty-four fifth-turn rotations.
+
+The binary-group polytope result now applies in the same unit-quaternion
+metric. Multiplication by \(2\) preserves regularity and the face
+lattice. Therefore \(P=\operatorname{conv}(V)\) is a regular 600-cell.
+\(\square\)
+
+\subsection{Lemma 2: Radial topology of the
+boundary}\label{lemma-2-radial-topology-of-the-boundary}
+
+\subsubsection{Statement}\label{statement-1}
+
+The boundary \(\partial P\) is homeomorphic to \(S^3\). Consequently,
+\begin{equation}
+H_j(\partial P;\mathbb Z)\cong
+\begin{cases}
+\mathbb Z,&j=0,3,\\
+0,&j\ne0,3,
+\end{cases}
+\qquad
+\pi_1(\partial P)=1.
+\end{equation}
+
+\subsubsection{Proof}\label{proof-1}
+
+The polytope contains \begin{equation}
+\operatorname{conv}\{\pm2e_1,\ldots,\pm2e_4\},
+\end{equation} which contains the Euclidean unit ball. Indeed,
+\(\|x\|_2\le1\) implies \(\|x\|_1\le2\). Thus \(0\) lies in the interior
+of \(P\). The polytope is compact and contained in the ball of radius
+\(2\).
+
+For every \(u\in S^3\), convexity and compactness give \begin{equation}
+P\cap\{tu:t\ge0\}=\{tu:0\le t\le r(u)\}
+\end{equation} for a unique \(r(u)>0\). Every point \(tu\) with
+\(0\le t<r(u)\) is interior: it is a convex combination, with positive
+weight on the first term, of an interior point \(0\) and the point
+\(r(u)u\in P\). Hence \(r(u)u\) is the unique boundary point on this
+ray.
+
+The map \begin{equation}
+\partial P\longrightarrow S^3,\qquad x\longmapsto\frac{x}{\|x\|}
+\end{equation} is therefore a continuous bijection. Its domain is
+compact and its codomain Hausdorff, so it is a homeomorphism.
+
+The sphere \(S^3\) has a CW decomposition with one zero-cell and one
+three-cell, giving the stated integral homology. For simple
+connectedness, cover \(S^3\) by the complements of two distinct
+antipodal points. Each complement is homeomorphic to \(\mathbb R^3\),
+and their intersection is path connected. The van Kampen theorem gives
+trivial fundamental group.
+
+This proves the topology directly. Neither mod-\(2\) Betti numbers nor
+equality of integral homology groups alone would establish the
+homeomorphism or fundamental group. \(\square\)
+
+\subsection{Lemma 3: Faces, links, metric data, and
+duality}\label{lemma-3-faces-links-metric-data-and-duality}
+
+\subsubsection{Statement}\label{statement-2}
+
+The polytope \(P\) has circumradius \(2\), edge length \(2/\phi\), and
+\begin{equation}
+(f_0,f_1,f_2,f_3)=(120,720,1200,600).
+\end{equation} Its facets are regular tetrahedra, five facets meet at
+each edge, twenty meet at each vertex, and its vertex links are
+icosahedral. Its Schläfli symbol is \(\{3,3,5\}\), and its polar dual is
+a regular 120-cell of type \(\{5,3,3\}\).
+
+\subsubsection{Proof}\label{proof-2}
+
+Every point of \(V\) is an exposed vertex: the functional
+\(x\mapsto v\cdot x\) has its unique maximum at \(v\) among points of
+\(V\), since all have norm \(2\). Thus \(P\) has exactly \(120\)
+vertices and circumradius \(2\).
+
+Let \(v=(2,0,0,0)\). The largest first coordinate of another vertex is
+\(\phi\), attained at twelve vertices. Consequently the largest inner
+product with \(v\) among distinct vertices is \(2\phi\), and the minimum
+squared distance is \begin{equation}
+8-4\phi=4\tau^2.
+\end{equation} The group \(I^*\) acts transitively on \(V\) by left
+multiplication, so this is also the global minimum distance.
+
+A closest pair of equal-norm vertices is an edge. To see this, let their
+common squared norm be \(R^2\) and their inner product be \(m<R^2\). For
+any other vertex \(z\), minimality of their distance gives
+\begin{equation}
+(v+w)\cdot z\le2m<R^2+m=(v+w)\cdot v=(v+w)\cdot w.
+\end{equation} Thus the functional \(v+w\) exposes precisely their
+segment.
+
+Regularity makes all edges congruent. Hence the twelve closest vertices
+are exactly the neighbors of \(v\), and the edge length is
+\(2\tau=2/\phi\).
+
+Their projections onto \(v^\perp\) have coordinates \begin{equation}
+(0,\pm1,\pm\tau)
+\end{equation} and cyclic permutations. These are a scaled, orthogonally
+positioned regular icosahedron. All twelve neighboring vertices have
+first coordinate \(\phi\), so a sufficiently close hyperplane section at
+\(v\) is similar to this projected set. It follows that the vertex
+figure, and hence the vertex link, is icosahedral.
+
+An icosahedron has twelve vertices, thirty edges, and twenty triangular
+faces. These numbers can also be obtained directly from its coordinates:
+each vertex has five nearest neighbors arranged in a pentagon; the
+resulting triangular boundary has \begin{equation}
+E=12\cdot5/2=30,\qquad F=2E/3=20.
+\end{equation} Its triangular faces correspond to facets through \(v\),
+giving twenty tetrahedral facets through each vertex. Tetrahedrality
+also follows from the regular 600-cell identification in Lemma 1.
+
+Double counting yields \begin{equation}
+f_1=\frac{120\cdot12}{2}=720,
+\qquad
+f_3=\frac{120\cdot20}{4}=600.
+\end{equation} Each tetrahedron has four triangular faces, and each
+ridge of a convex four-polytope belongs to two facets. Therefore
+\begin{equation}
+f_2=\frac{600\cdot4}{2}=1200.
+\end{equation} The five triangles incident to a vertex of an icosahedral
+link correspond to the five facets incident to the associated edge of
+\(P\). Thus the Schläfli symbol is \(\{3,3,5\}\).
+
+The Euler characteristic is \begin{equation}
+120-720+1200-600=0,
+\end{equation} in agreement with Lemma 2.
+
+Because \(0\) is interior, the polar \begin{equation}
+P^\circ=\{y:y\cdot x\le1\text{ for every }x\in P\}
+\end{equation} is a bounded four-polytope. Polarity reverses proper face
+incidences and sends a \(j\)-face to a \((3-j)\)-face. Orthogonal
+symmetries commute with polarity, so the dual is regular. Its facets are
+dual to the icosahedral vertex figures and hence are dodecahedra. It has
+\begin{equation}
+(f_0,f_1,f_2,f_3)=(600,1200,720,120)
+\end{equation} and reversed symbol \(\{5,3,3\}\): it is the regular
+120-cell.
+
+This duality is not an identification of the two polytopes or their face
+counts. \(\square\)
+
+\subsection{Lemma 4: The finite geometric symmetry
+group}\label{lemma-4-the-finite-geometric-symmetry-group}
+
+\subsubsection{Statement}\label{statement-3}
+
+For \(p,q\in I^*\), define \begin{equation}
+L_{p,q}(x)=pxq^{-1}.
+\end{equation} Then \begin{equation}
+K^+\cong (I^*\times I^*)/\langle(-1,-1)\rangle,
+\qquad |K^+|=7200,
+\end{equation} and quaternion conjugation extends this to \(K\) of order
+\(14400\).
+
+Moreover, \begin{equation}
+K\cong W(H_4)
+\end{equation} with presentation \begin{equation}
+\left\langle s_0,s_1,s_2,s_3\ \middle|\
+\begin{array}{l}
+s_i^2=1,\\
+(s_0s_1)^3=(s_1s_2)^3=(s_2s_3)^5=1,\\
+(s_is_j)^2=1\quad\text{if }|i-j|>1
+\end{array}
+\right\rangle.
+\end{equation}
+
+\subsubsection{Proof}\label{proof-3}
+
+Quaternion norm multiplicativity makes \(L_{p,q}\) orthogonal. Its
+determinant is positive: the same construction on the connected space
+\(\operatorname{Sp}(1)\times\operatorname{Sp}(1)\) depends continuously
+on \((p,q)\) and includes the identity. Multiplication closure of
+\(I^*\) shows that \(L_{p,q}\) preserves \(V/2\), and therefore \(P\).
+
+If \(L_{p,q}\) is the identity, evaluating at \(1\) gives \(p=q\). This
+quaternion must then commute with every quaternion. Commuting with \(i\)
+and \(j\) forces it to be real, so it is \(1\) or \(-1\). The kernel is
+precisely \begin{equation}
+\{(1,1),(-1,-1)\}.
+\end{equation} Thus these maps give \(120^2/2=7200\) distinct
+positive-determinant symmetries.
+
+Quaternion conjugation \begin{equation}
+J(x)=\bar x
+\end{equation} preserves \(V\), since signs are independent. Its real
+matrix is \begin{equation}
+\operatorname{diag}(1,-1,-1,-1),
+\end{equation} so \(\det J=-1\). The maps \(L_{p,q}\) and \(L_{p,q}J\)
+therefore give \(14400\) distinct symmetries.
+
+An upper bound is still necessary. Fix a vertex \(v\). Its stabilizer
+acts faithfully on the icosahedral vertex figure: the vertex direction
+and the three-dimensional span of that figure together span
+\(\mathbb R^4\). An orthogonal symmetry of an icosahedron is determined
+by the image of one ordered triangular face. There are at most
+\begin{equation}
+20\cdot6=120
+\end{equation} such images. Orbit--stabilizer consequently gives
+\begin{equation}
+|K|\le120\cdot120=14400.
+\end{equation} The exhibited maps attain this upper bound, proving both
+group orders and the description of \(K^+\).
+
+Also, \begin{equation}
+J L_{p,q}J=L_{q,p},
+\end{equation} so conjugation exchanges the two quaternion factors.
+
+For the Coxeter presentation, radially project the barycentric
+subdivision of \(\partial P\) onto \(S^3\). A flag gives a spherical
+tetrahedral chamber. A symmetry fixing a flag fixes the barycenters of
+its four faces; these four vectors are linearly independent, so the
+symmetry is the identity. Regularity therefore gives a simply transitive
+action on chambers.
+
+For each of the four chamber walls, the symmetry taking the chosen
+chamber to its adjacent chamber fixes the other three barycenter rays.
+It is the reflection in their span. Denote these reflections by
+\(s_0,\ldots,s_3\), indexed by face ranks.
+
+Chamber adjacency is connected, so these reflections generate \(K\).
+Consecutive rank changes give rank-two sections of sizes \(3,3,5\),
+producing the displayed relations. Nonconsecutive changes commute and
+give square galleries.
+
+These relations are complete. A word acting trivially determines a
+closed gallery in the chamber complex. The dual cell decomposition is a
+cell decomposition of \(S^3\), which is simply connected by Lemma 2. Its
+two-skeleton therefore has trivial fundamental group. Closed galleries
+are generated by backtracking and boundaries of dual two-cells. Those
+boundaries are precisely the involution, square, and rank-two polygon
+relations above. Hence the displayed presentation presents \(K\), rather
+than merely mapping onto it.
+
+The Coxeter group with this chain presentation is \(W(H_4)\).
+\(\square\)
+
+\subsection{The finite checker and its
+scope}\label{the-finite-checker-and-its-scope}
+
+The supplied checker implements a finite audit in the exact ring
+\begin{equation}
+\mathbb Z[\phi]=\{a+b\phi:a,b\in\mathbb Z\}.
+\end{equation} It represents an element by \((a,b)\) and uses
+\begin{equation}
+(a+b\phi)(c+d\phi)
+=(ac+bd)+(ad+bc+bd)\phi.
+\end{equation} Its sign test compares integers after writing
+\begin{equation}
+2(a+b\phi)=(2a+b)+b\sqrt5,
+\end{equation} with sign cases handled before squaring. Thus its
+incidence tests do not depend on floating-point tolerances.
+
+Its algorithm:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Enumerates the three vertex families and verifies norms.
+\item
+  Joins pairs with inner product \(2\phi\).
+\item
+  Enumerates graph triangles and four-cliques.
+\item
+  For each four-clique, forms the sum \(N\) of its vertices and checks a
+  strict supporting inequality at every other vertex.
+\item
+  Counts incidences and constructs vertex links.
+\item
+  Computes boundary matrices and ranks over \(\mathbb F_2\).
+\item
+  Tests quaternion multiplication closure and counts distinct linear
+  maps by their images on a basis.
+\end{enumerate}
+
+For a tetrahedron with vertices \(v_1,\ldots,v_4\), the Gram matrix has
+diagonal entries \(4\) and off-diagonal entries \(2\phi\). It is
+positive definite. Moreover, \begin{equation}
+N=\sum_i v_i,\qquad
+N\cdot v_i=4+6\phi,\qquad
+\|N\|^2=16+24\phi.
+\end{equation} Thus the supporting tests certify actual tetrahedral
+facets, not merely graph cliques.
+
+There is also a completeness argument beyond finding some supporting
+facets. If every triangular ridge of the listed tetrahedra has both its
+incident facets in the list, the list is closed under facet adjacency.
+The facet adjacency graph of a convex polytope is connected, so a
+nonempty such list contains all facets.
+
+Nevertheless:
+
+\begin{itemize}
+\tightlist
+\item
+  A link's \(f\)-vector alone does not identify it as an icosahedron;
+  Lemma 3 supplies its geometry.
+\item
+  Ranks over \(\mathbb F_2\) do not prove integral homology or simple
+  connectedness; Lemma 2 supplies those conclusions.
+\item
+  Exhibiting \(14400\) maps does not exclude further symmetries; Lemma 4
+  supplies the upper bound.
+\item
+  No part of this checker reconstructs the cut subdivision, verifies all
+  legal sticker maps, or determines the full legal group.
+\end{itemize}
+
+The supplied JSON records a previous reported run. The unconditional
+proofs above do not take its \texttt{passed} field as a substitute for
+these arguments.
+
+\subsection{Lemma 5: Cell-pole
+normalization}\label{lemma-5-cell-pole-normalization}
+
+\subsubsection{Statement}\label{statement-4}
+
+The radius-two model has inradius \begin{equation}
+r_{\mathrm{in}}=\frac{\phi^2}{\sqrt2}.
+\end{equation} A similarity with scale factor \(4/\phi\) and a suitable
+rotation places a chosen facet pole at \begin{equation}
+n_0=(\phi^3,1,1,1),
+\end{equation} with every facet plane written as \begin{equation}
+n_c\cdot x=\|n_c\|^2.
+\end{equation}
+
+\subsubsection{Proof}\label{proof-4}
+
+For a tetrahedral facet, use \(N\) from the preceding calculation. Since
+\begin{equation}
+\|N\|^2=4(4+6\phi),
+\end{equation} the perpendicular foot of the origin on its plane is
+\begin{equation}
+n=\frac{N}{4}.
+\end{equation} Its squared norm is \begin{equation}
+\|n\|^2=\frac{4+6\phi}{4}
+=\frac{\phi^4}{2}.
+\end{equation} Regularity gives the same inradius at every facet.
+
+On the other hand, \begin{equation}
+\|n_0\|^2=\phi^6+3=8\phi^2.
+\end{equation} Therefore \begin{equation}
+\frac{\|n_0\|}{r_{\mathrm{in}}}=\frac4\phi.
+\end{equation} Choose \(Q\in SO(4)\) taking the direction of one
+original pole to that of \(n_0\), and put \begin{equation}
+\widetilde P=\frac4\phi QP.
+\end{equation} Every original pole \(n\) becomes
+\(\widetilde n=(4/\phi)Qn\), and its plane becomes \begin{equation}
+\widetilde n\cdot x=\|\widetilde n\|^2.
+\end{equation} The selected pole is exactly \(n_0\).
+
+All subsequent puzzle geometry uses \(\widetilde P\), identified with
+\(P\) by this fixed similarity. Its geometric symmetry group is the
+conjugate of \(K\) under the similarity. The radius-two and cell-pole
+coordinate scales are not numerically identified. \(\square\)
+
+\subsection{Retained-model definitions and
+hypotheses}\label{retained-model-definitions-and-hypotheses}
+
+Let \(\mathcal C\) be the set of \(600\) facets, and let \(n_c\) denote
+their poles in the normalization of Lemma 5. Put \begin{equation}
+\alpha=\frac{121}{125},
+\qquad
+U_c=\{x\in\widetilde P:n_c\cdot x>\alpha\|n_c\|^2\}.
+\end{equation} Central symmetry pairs each \(n_c\) with \(-n_c\). Thus
+there are \(600\) oriented caps or, equivalently, \(300\) antipodal
+axes. For one axis, the two outer layers satisfy \begin{equation}
+n_c\cdot x>\alpha\|n_c\|^2
+\quad\text{and}\quad
+n_c\cdot x<-\alpha\|n_c\|^2.
+\end{equation} The middle layer lies between them and is fixed during
+that axis's outer-layer turns. It is not asserted to be fixed under
+turns about every other axis.
+
+A full-dimensional cut chamber is specified by choosing a strict side of
+every cut hyperplane and intersecting these choices with
+\(\operatorname{int}\widetilde P\). A nonempty such intersection is
+convex and hence connected. A surface piece is a retained chamber whose
+closure meets the boundary in one or more relatively three-dimensional
+patches. Cut-boundary strata are attached consistently to these pieces;
+they are not additional sticker slots.
+
+For a piece position \(A\), define its complete cap signature
+\begin{equation}
+M(A)=\{c:\text{the chamber interior of }A\text{ lies in }U_c\}.
+\end{equation} Define its hosting set by \begin{equation}
+\operatorname{Host}(A)
+=
+\{h:\overline A\cap h\text{ contains a retained relatively three-dimensional patch}\}.
+\end{equation} A sticker slot is such a patch. In this full-cut
+description it is addressed by \begin{equation}
+(M(A),h),\qquad h\in\operatorname{Host}(A).
+\end{equation}
+
+The following hypotheses specify exactly the retained evidence used
+below.
+
+\textbf{R --- Retained subdivision and legal action.} The retained model
+is the complete surface subdivision just described, with no hidden
+identification of distinct pieces having the same recorded address.
+Legal cap rotations carry whole pieces and their sticker patches to
+whole pieces and patches. It has \(259800\) sticker slots, \(177120\)
+surface pieces, \(600\) one-sticker centers fixed pointwise by every
+legal move, and the following \(35\) moving orbits. The frame groups are
+faithful groups of permutations of the stickers of a piece after
+coherent transport.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lrrrl@{}}
+\toprule\noalign{}
+Orbit & Rank & Stickers per piece & Pieces \(N_o\) & Frame group
+\(H_o\) \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+O00 & 1 & 2 & 1200 & \(C_2\) \\
+O01 & 2 & 1 & 3600 & \(1\) \\
+O02 & 3 & 1 & 2400 & \(1\) \\
+O03 & 3 & 2 & 3600 & \(C_2\) \\
+O04 & 4 & 1 & 7200 & \(1\) \\
+O05 & 4 & 1 & 7200 & \(1\) \\
+O06 & 4 & 5 & 720 & \(D_5\) \\
+O07 & 5 & 1 & 7200 & \(1\) \\
+O08 & 5 & 2 & 3600 & \(C_2\) \\
+O09 & 6 & 2 & 7200 & \(1\) \\
+O10 & 7 & 1 & 7200 & \(1\) \\
+O11 & 7 & 2 & 3600 & \(C_2\) \\
+O12 & 8 & 1 & 7200 & \(1\) \\
+O13 & 8 & 1 & 7200 & \(1\) \\
+O14 & 8 & 2 & 7200 & \(1\) \\
+O15 & 9 & 1 & 2400 & \(1\) \\
+O16 & 9 & 2 & 7200 & \(1\) \\
+O17 & 9 & 5 & 1440 & \(C_5\) \\
+O18 & 10 & 1 & 7200 & \(1\) \\
+O19 & 10 & 1 & 7200 & \(1\) \\
+O20 & 10 & 2 & 7200 & \(1\) \\
+O21 & 11 & 1 & 7200 & \(1\) \\
+O22 & 11 & 2 & 3600 & \(C_2\) \\
+O23 & 12 & 2 & 7200 & \(1\) \\
+O24 & 13 & 1 & 7200 & \(1\) \\
+O25 & 13 & 2 & 3600 & \(C_2\) \\
+O26 & 14 & 1 & 7200 & \(1\) \\
+O27 & 14 & 1 & 7200 & \(1\) \\
+O28 & 14 & 5 & 1440 & \(C_5\) \\
+O29 & 15 & 1 & 2400 & \(1\) \\
+O30 & 15 & 2 & 7200 & \(1\) \\
+O31 & 16 & 1 & 7200 & \(1\) \\
+O32 & 17 & 2 & 3600 & \(C_2\) \\
+O33 & 18 & 1 & 2400 & \(1\) \\
+O34 & 19 & 20 & 120 & \(A_5\) \\
+\end{longtable}
+}
+
+These data satisfy \begin{equation}
+\sum_oN_o=176520,\qquad
+600+\sum_ok_oN_o=259800.
+\end{equation} The \(600\) fixed centers are \(600\) singleton position
+orbits, not another moving orbit.
+
+\textbf{F --- Full local cap action.} Every cap admits its full
+tetrahedral rotation group \(A_4\), acting on the same complete
+subdivision. The chosen \(H_c\) is a nonidentity half-turn and \(T_c\)
+is a third-turn in that action.
+
+\textbf{I --- Retained generator-invariant certificate.} In the
+transported coordinates constructed below, each chosen primitive has
+even positional permutation separately in every moving orbit and zero
+total orientation image in each orbit's abelianization. This is a
+hypothesis about every generator, not an inference from sample
+scrambles.
+
+\textbf{C --- Nine pure-controller certificates.} For \begin{equation}
+\mathcal I=\{1,4,5,7,18,19,27,31,33\},
+\end{equation} each orbit has a legal word whose complete sticker
+permutation is a single three-cycle in that orbit and fixes every other
+sticker. A verified legal relocation produces a cycle
+\((A_o\,B_o\,C_o)\). For every other position \(X\) in that orbit, a
+verified legal setup fixes the two buffer sticker slots \(A_o,B_o\)
+pointwise and sends \(C_o\) to \(X\). Coverage means valid transitions
+and coverage of every nonbuffer destination, not merely a reported
+search-node count.
+
+The solved coloring has \(600\) distinct home-cell symbols, with six
+copies of each in O01, four in O33, and twelve in each of the other
+seven selected orbits.
+
+\textbf{E --- Equivariant geometric realization.} For the extended
+symmetry action, the entire retained subdivision and its piece grouping
+are preserved by the geometric action of \(K\). Each center slot is
+geometrically distinguished at its corresponding pole \(n_c\), and
+geometric permutations act on the same labelled sticker set as the legal
+moves. In particular, this is a faithful geometric realization, not an
+action on a collapsed display quotient.
+
+Hypotheses R, F, I, C, and E have different roles. In particular, C does
+not certify I, and neither certifies a reconstruction of all cuts. The
+supplied arithmetic and controller summaries are retained evidence for
+these hypotheses; their reported pass fields do not replace their full
+hypotheses.
+
+No independent derivation of the \(433\) retained regions per
+tetrahedron is claimed.
+
+\subsection{Lemma 6: Cap actions, signatures, and piece
+equivariance}\label{lemma-6-cap-actions-signatures-and-piece-equivariance}
+
+\subsubsection{Statement}\label{statement-5}
+
+Under R and F, \(H_c,T_c\) generate the full \(A_4\) action at each cap.
+The sticker-to-piece map \begin{equation}
+\rho:\mathcal S\longrightarrow\mathcal P
+\end{equation} is equivariant under every legal move and hence every
+legal word: \begin{equation}
+\rho(g(s))=\bar g(\rho(s)).
+\end{equation} Complete cap signatures identify the cut-chamber
+positions in this model, and \begin{equation}
+r(A)=|M(A)|-1,\qquad
+k(A)=|\operatorname{Host}(A)|.
+\end{equation} The quantity \(r(A)\) is neither a topological dimension
+nor a codimension.
+
+\subsubsection{Proof}\label{proof-5}
+
+The three nonidentity half-turns of a tetrahedron form the nonidentity
+elements of a normal Klein four subgroup of \(A_4\). Conjugation by any
+third-turn cycles these three elements. Thus \(H_c\) and its conjugates
+by \(T_c\) generate the Klein four group, and adjoining \(T_c\) gives
+all twelve elements of \(A_4\).
+
+All stickers of a physical piece travel together under a legal rigid cap
+rotation by R. Therefore the image piece \(\bar g(A)\) is well defined
+independently of the choice of sticker in \(A\), and the equivariance
+equation follows. The equation is preserved under composition and
+inversion.
+
+A full cap signature specifies every strict side choice in the cut
+arrangement. The corresponding chamber is an intersection of open
+half-spaces with \(\operatorname{int}\widetilde P\), so it has at most
+one connected component. Thus two different chamber positions cannot
+have the same complete signature. A hosting patch is an intersection of
+the chamber closure with a facet, with its lower-dimensional boundaries
+removed; the cut construction gives at most one such patch per hosting
+facet.
+
+Consequently \((M(A),h)\) addresses a sticker slot and \(\rho\) forgets
+\(h\). This justification depends on the complete cut-chamber model. In
+an arbitrary grip-set representation, signature injectivity would
+require a separate hypothesis.
+
+For a global geometric symmetry \(k\), cap and host labels are permuted:
+\begin{equation}
+M(kA)=kM(A),\qquad
+\operatorname{Host}(kA)=k\operatorname{Host}(A).
+\end{equation} A local twist need not act on every piece signature by
+one common permutation of all cap labels; the destination signature is
+determined by the actual destination chamber.
+
+The two numerical formulas are the definitions of application rank and
+sticker multiplicity. They count memberships and hosting patches.
+Physical cut chambers have four-dimensional interiors, and sticker
+interiors are three-dimensional, while the retained ranks range up to
+\(19\). Thus rank cannot be either dimension or codimension in the
+ambient four-space.
+
+Nor does rank identify a move orbit: for example, O04 and O05 have the
+same rank and sticker multiplicity but are distinct retained orbits.
+Twenty corner stickers also do not imply a cyclic orientation variable
+of order twenty; the specified corner frame group is \(A_5\).
+\(\square\)
+
+\subsection{Lemma 7: Transported frames and the ambient wreath
+product}\label{lemma-7-transported-frames-and-the-ambient-wreath-product}
+
+\subsubsection{Statement}\label{statement-6}
+
+Let \begin{equation}
+G=\langle H_c,T_c:c\in\mathcal C\rangle\le S_{\mathcal S}.
+\end{equation} Under R, coherent transported frame choices give an
+injective homomorphism \begin{equation}
+G\hookrightarrow
+\prod_{o=0}^{34}\left(H_o^{N_o}\rtimes S_{N_o}\right).
+\end{equation} With chronological multiplication, the coordinates
+satisfy \begin{equation}
+(p,a)(r,b)=(r\circ p,c),
+\qquad c_i=a_i b_{p(i)}.
+\end{equation}
+
+\subsubsection{Proof}\label{proof-6}
+
+Fix one moving orbit. Choose a reference position and a reference
+ordering of its stickers. Choose a legal transporter from the reference
+position to every other position. These transporters identify all
+sticker fibers with a common reference fiber.
+
+For any legal map taking position \(i\) to position \(j\), composing
+with the chosen transporters gives a return map on the reference fiber.
+Its faithful permutation action belongs to the retained local frame
+group \(H_o\). This constructs coherent coordinates; arbitrary
+independent screen orderings would not automatically have this property.
+
+Write the position permutation as \(p\), and the frame increment at
+source position \(i\) as \(a_i\in H_o\). In the right-action convention,
+an abstract frame state transforms by \begin{equation}
+(i,h)\longmapsto(p(i),ha_i).
+\end{equation} Applying \((p,a)\) and then \((r,b)\) gives
+\begin{equation}
+(i,h)\longmapsto
+\bigl(r(p(i)),\,h a_i b_{p(i)}\bigr).
+\end{equation} This proves the multiplication law, including its
+reindexing.
+
+Every legal move preserves each of its piece orbits, so the construction
+applies independently to the \(35\) moving orbits. If all resulting
+coordinates are trivial, every moving sticker is fixed, because each
+fiber action is faithful. The center stickers are fixed by R. Hence the
+original sticker permutation is the identity, proving injectivity.
+
+Changing the coherent reference frames conjugates the coordinate
+realization; it does not enlarge the legal group.
+
+For a source-to-destination sticker permutation \(g\), a labelled state
+array obeys \begin{equation}
+L'[g(s)]=L[s].
+\end{equation} This is consistent with the chronological convention used
+throughout. \(\square\)
+
+\subsection{Lemma 8: Necessary invariants and the conditional upper
+bound}\label{lemma-8-necessary-invariants-and-the-conditional-upper-bound}
+
+\subsubsection{Statement}\label{statement-7}
+
+Under R and I, \begin{equation}
+|G|
+\le
+\frac{\displaystyle\prod_{o=0}^{34}N_o!\,|H_o|^{N_o}}
+{2^{43}5^2}.
+\end{equation} The denominator is the exact index of the stated
+invariant kernel in the ambient product. Equality with \(|G|\) is not
+asserted.
+
+\subsubsection{Proof}\label{proof-7}
+
+Let \begin{equation}
+H_o^{\mathrm{ab}}=H_o/[H_o,H_o],
+\qquad
+\chi_o:H_o\to H_o^{\mathrm{ab}}.
+\end{equation} Write the abelian quotient additively and define
+\begin{equation}
+\Phi_o(p,a)=\sum_i\chi_o(a_i).
+\end{equation} Lemma 7 gives \begin{equation}
+\begin{aligned}
+\Phi_o((p,a)(r,b))
+&=\sum_i\chi_o(a_i b_{p(i)})\\
+&=\sum_i\chi_o(a_i)+\sum_i\chi_o(b_{p(i)})\\
+&=\Phi_o(p,a)+\Phi_o(r,b).
+\end{aligned}
+\end{equation} Thus \(\Phi_o\) is a homomorphism. Positional sign is
+also a homomorphism because \begin{equation}
+\operatorname{sgn}(r\circ p)=\operatorname{sgn}(r)\operatorname{sgn}(p).
+\end{equation} Hypothesis I says that every generator lies in the
+kernels of these maps, so every legal word does.
+
+The local abelianizations are \begin{equation}
+C_2^{\mathrm{ab}}=C_2,\quad
+C_5^{\mathrm{ab}}=C_5,\quad
+D_5^{\mathrm{ab}}=C_2,\quad
+A_5^{\mathrm{ab}}=1.
+\end{equation} For \(D_5\), the quotient by \(\langle R\rangle\) is
+\(C_2\), while \begin{equation}
+[R,F]=R^2
+\end{equation} generates \(\langle R\rangle\). Thus
+\([D_5,D_5]=\langle R\rangle\).
+
+For completeness, \(A_5\) is perfect: take \begin{equation}
+u=(1\,2)(4\,5),\qquad v=(2\,3)(4\,5).
+\end{equation} Their commutator is a three-cycle. The derived subgroup
+is normal, and all three-cycles are conjugate within \(A_5\). Since
+three-cycles generate \(A_5\), its derived subgroup is all of \(A_5\).
+
+There are thirty-five positional sign constraints, seven \(C_2\)
+orientation constraints, one \(D_5\) orientation constraint, and two
+\(C_5\) constraints.
+
+These constraints are independent in the ambient product. Positional
+parity can be prescribed using a transposition and identity frame
+increments. Each orientation quotient value can be prescribed using one
+frame coordinate and the identity positional permutation. Choices in
+different orbits are independent. Therefore the joint invariant map is
+onto a group of order \begin{equation}
+2^{35}\cdot2^7\cdot2\cdot5^2=2^{43}5^2.
+\end{equation} Its kernel has precisely this index. Lemma 7 and
+hypothesis I place \(G\) inside that kernel, proving the bound.
+
+A reflection-type element of the natural five-point \(D_5\) action
+exchanges two pairs and is even as a sticker permutation. Its
+abelianization bit therefore cannot be replaced by ordinary sticker
+sign. Likewise, an odd positional permutation in one orbit cannot cancel
+an odd positional permutation in another under I.
+
+The bound leaves open additional restrictions and reachability
+sufficiency. \(\square\)
+
+\subsection{Lemma 9: Pure stars generate independent alternating
+actions}\label{lemma-9-pure-stars-generate-independent-alternating-actions}
+
+\subsubsection{Statement}\label{statement-8}
+
+Under R and C, \(G\) contains a subgroup acting as \begin{equation}
+A_{3600}\times A_{2400}\times A_{7200}^{\,7}
+\end{equation} on the nine selected single-sticker orbits and fixing
+every other sticker.
+
+\subsubsection{Proof}\label{proof-8}
+
+Words execute from left to right. Let \begin{equation}
+t_C=(A\,B\,C)
+\end{equation} be a relocated pure controller. If \(S\) fixes \(A,B\)
+and sends \(C\) to \(X\), then the chronological word \begin{equation}
+S^{-1}t_CS
+\end{equation} has ordinary functional action
+\(S\circ t_C\circ S^{-1}\), so it is exactly \begin{equation}
+t_X=(A\,B\,X).
+\end{equation} Conjugating the complete pure permutation gives a
+complete pure permutation. Temporary collateral during its legal witness
+is irrelevant to this net support statement.
+
+For distinct nonbuffer positions \(X,Y\), direct evaluation gives
+\begin{equation}
+t_Y^{-1}t_X=(A\,Y\,X).
+\end{equation} Together with the original stars and their inverses,
+these supply every three-cycle containing \(A\). For distinct
+\(x,y,z\ne A\), \begin{equation}
+(A\,x\,y)(A\,z\,x)=(x\,y\,z).
+\end{equation} Thus the stars generate every three-cycle.
+
+Every even permutation is a product of three-cycles. For example,
+express it as an even number of transpositions and pair them; a pair
+sharing a point is a three-cycle, identical transpositions cancel, and a
+disjoint pair can be rewritten as \begin{equation}
+(a\,b)(c\,d)=(a\,b\,c)(a\,d\,c)
+\end{equation} in the chronological convention. Conversely, every star
+is even. The supported subgroup generated on this orbit is therefore
+exactly \(A_N\).
+
+The nine supported subgroups have disjoint full sticker supports. They
+commute, and the multiplication map from their direct product is
+injective: restricting an identity product to one selected orbit makes
+that factor the identity. This proves the claim.
+
+This identifies a supported subgroup of \(G\). It does not identify the
+full legal group or its actions on the other twenty-six moving orbits.
+\(\square\)
+
+\subsection{Lemma 10: Balanced-color lower
+bound}\label{lemma-10-balanced-color-lower-bound}
+
+\subsubsection{Statement}\label{statement-9}
+
+Under R and C, the set \(\Omega\) of reachable fixed-frame face-color
+states satisfies \begin{equation}
+|\Omega|\ge B,
+\end{equation} where \begin{equation}
+B=
+\frac{3600!}{(6!)^{600}}\,
+\frac{2400!}{(4!)^{600}}\,
+\left[\frac{7200!}{(12!)^{600}}\right]^7.
+\end{equation} These states can be attained with every unselected orbit
+solved at macro boundaries.
+
+\subsubsection{Proof}\label{proof-9}
+
+Consider one selected orbit with \(N=600m\) positions and \(m\) copies
+of each color. The stabilizer of its solved coloring in \(S_N\) is
+\begin{equation}
+Q=(S_m)^{600}.
+\end{equation} Since \(m\in\{4,6,12\}\), this stabilizer contains a
+transposition of two equal-colored positions and hence an odd
+permutation. Therefore \begin{equation}
+|A_N\cap Q|=\frac{|Q|}{2}.
+\end{equation} The number of colorings in the \(A_N\) orbit is
+\begin{equation}
+\frac{|A_N|}{|A_N\cap Q|}
+=
+\frac{N!/2}{(m!)^{600}/2}
+=
+\frac{N!}{(m!)^{600}}.
+\end{equation}
+
+The odd same-color transposition is used only to describe the coloring
+stabilizer. It need not itself be a legal move.
+
+Lemma 9 gives independent alternating actions with full purity, so the
+nine factors multiply and every unselected sticker remains solved at the
+ends of the resulting macros. This gives \(B\).
+
+A labelled state distinguishes every home sticker identity and is
+determined by an element of \(G\). A face-color state forgets
+distinctions between stickers with the same home-cell symbol. Thus \(B\)
+is a lower bound for colored states, whereas Lemma 8 is an upper bound
+for labelled states.
+
+The colors here are \(600\) distinct mathematical symbols in a fixed
+spatial frame. Repeated display RGB values or additional quotienting by
+spatial and symbol symmetries would define a different state set and
+require a separate count. \(\square\)
+
+\subsection{Lemma 11: Word-ball and total-variation
+bounds}\label{lemma-11-word-ball-and-total-variation-bounds}
+
+\subsubsection{Statement}\label{statement-10}
+
+Under R and C, use the unit-cost alphabet \begin{equation}
+\mathcal A=\{H_c,T_c,T_c^{-1}:c\in\mathcal C\},
+\qquad q=1800.
+\end{equation} Some reachable face-color state has distance at least
+\(46648\) from solved.
+
+If \(\mu_{1000}\) is any distribution produced by \(1000\) successive
+letters of this alphabet from solved and \(\nu\) is uniform on
+\(\Omega\), then \begin{equation}
+\|\mu_{1000}-\nu\|_{\mathrm{TV}}
+>1-10^{-148595}.
+\end{equation}
+
+\subsubsection{Proof}\label{proof-10}
+
+At most \(q^j\) words have length \(j\). Different words may give the
+same state, so \begin{equation}
+|\{x:d(\mathrm{solved},x)\le d\}|
+\le
+\sum_{j=0}^dq^j
+=
+\frac{q^{d+1}-1}{q-1}.
+\end{equation}
+
+The numerical comparisons needed here are the exact integer inequalities
+\begin{equation}
+1800^{46648}-1<1799B,
+\label{eq:blueprint-1}
+\end{equation} and \begin{equation}
+1800^{1000}\,10^{148595}<B.
+\label{eq:blueprint-2}
+\end{equation} They can be evaluated without logarithms: form the
+factorials in \(B\) as integer products, perform the indicated exact
+multinomial divisions, and compare positive integers. These comparisons
+are confirmed by the accompanying exact-integer audit. As an arithmetic
+cross-check, \begin{equation}
+1800^{46649}-1\ge1799B.
+\end{equation} The cross-check says only when this counting argument
+stops excluding coverage.
+
+By Equation\textasciitilde{}\eqref{eq:blueprint-1}, the radius-\(46647\)
+ball contains fewer than \(B\) states. Lemma 10 gives at least \(B\)
+reachable states, so some state lies outside that ball.
+
+Let \(A\) be the support of \(\mu_{1000}\). Then \begin{equation}
+|A|\le1800^{1000},\qquad \mu_{1000}(A)=1.
+\end{equation} Using the definition \begin{equation}
+\|\mu-\nu\|_{\mathrm{TV}}
+=\max_E|\mu(E)-\nu(E)|,
+\end{equation} we obtain \begin{equation}
+\begin{aligned}
+\|\mu_{1000}-\nu\|_{\mathrm{TV}}
+&\ge1-\frac{|A|}{|\Omega|}\\
+&\ge1-\frac{1800^{1000}}{B}\\
+&>1-10^{-148595},
+\end{aligned}
+\end{equation} where strictness follows from
+Equation\textasciitilde{}\eqref{eq:blueprint-2}. No stationarity,
+independence, or uniform choice of letters is needed for this support
+argument.
+
+These are statements about a specified alphabet and fixed-frame
+face-color states. Macro applications, simultaneous native commands, and
+camera motions are not single letters in this metric.
+
+The distance bound is existential, not a lower bound for every scramble.
+A known \(1000\)-letter scramble has an inverse solution of at most
+\(1000\) letters because \(\mathcal A\) is inverse closed.
+
+If a valid finite symmetry group \(L\) acts on the chosen state set,
+quotienting may reduce counts: generally \begin{equation}
+|\Omega/L|\ge\frac{|\Omega|}{|L|},
+\end{equation} rather than preserving \(|\Omega|\). A quotient's goals
+and metric must also be specified before transferring distance claims.
+\(\square\)
+
+\subsection{Lemma 12: Geometric normalization of the legal
+group}\label{lemma-12-geometric-normalization-of-the-legal-group}
+
+\subsubsection{Statement}\label{statement-11}
+
+Under R, F, and E, the geometric action of \(K\) normalizes \(G\), its
+intersection with \(G\) is trivial, and \begin{equation}
+\langle G,K\rangle\cong G\rtimes K.
+\end{equation}
+
+\subsubsection{Proof}\label{proof-11}
+
+Let \(k\in K\). Orthogonality and equivariance of poles give
+\begin{equation}
+k(U_c)=U_{kc}.
+\end{equation} Let \(R_{c,a}\) denote a legal cap rotation corresponding
+to \(a\in A_4\): it rotates the cap and fixes its complement. On the
+complete subdivision, \begin{equation}
+kR_{c,a}k^{-1}=R_{kc,kak^{-1}}.
+\end{equation} The restriction \(kak^{-1}\) fixes the new cap axis and
+is a proper rotation on its perpendicular three-space. This remains true
+when \(\det k=-1\), because determinant is preserved by conjugation. It
+is consequently an element of the new tetrahedron's \(A_4\) rotation
+group.
+
+By F and Lemma 6, every such local rotation is a finite word in
+\(H_{kc},T_{kc}\). Therefore \begin{equation}
+kGk^{-1}\subseteq G.
+\end{equation} Applying the same argument to \(k^{-1}\) gives equality.
+
+Now suppose \(g=k\) as sticker permutations, with \(g\in G\) and
+\(k\in K\). Every center slot is fixed by \(g\), hence by \(k\).
+Hypothesis E makes this mean \begin{equation}
+kn_c=n_c\qquad\text{for every }c.
+\end{equation} The poles span \(\mathbb R^4\). Otherwise a nonzero
+vector orthogonal to every pole would give an unbounded line in the
+intersection of the facet half-spaces, contradicting boundedness of
+\(\widetilde P\). Thus \(k\) fixes a spanning set and is the identity.
+Since \(G\) is a subgroup of the sticker symmetric group, its action is
+faithful, and \(g\) is also the identity.
+
+Normalization and trivial intersection imply that every element of
+\(\langle G,K\rangle\) has a unique form \(gk\). Multiplication is
+governed by the conjugation action of \(K\) on \(G\), giving the
+asserted internal semidirect product.
+
+The faithfulness requirements are essential. An action on a display
+quotient that identifies centers, or a geometric representation without
+a distinguished spanning center set, would not justify the intersection
+argument. \(\square\)
+
+\subsection{Distinct symmetry and motion
+groups}\label{distinct-symmetry-and-motion-groups}
+
+The groups appearing above serve different purposes.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Group
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Action and role
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(SO(4)\) & Continuous orientation-preserving changes of
+four-dimensional viewing frame \\
+\(\operatorname{Sp}(1)\times\operatorname{Sp}(1)\) & Double cover of
+\(SO(4)\), with diagonal \(\{\pm(1,1)\}\) kernel \\
+\(K^+\) & The \(7200\) orientation-preserving symmetries preserving the
+finite polytope \\
+\(K\) & All \(14400\) geometric symmetries of the polytope \\
+\(A_4\) at one cap & Its twelve local tetrahedral rotations \\
+\(G\) & The finite group of legal permutations of the retained sticker
+slots \\
+\end{longtable}
+}
+
+To see the continuous covering directly, take \(A\in SO(4)\) and put
+\(p=A(1)\). The map \(L_{p^{-1}}\circ A\) fixes \(1\) and restricts to
+an element of \(SO(3)\) on the imaginary quaternions. Every such
+three-dimensional rotation is \(x\mapsto qxq^{-1}\) for a unit
+quaternion \(q\), so \(A\) has a unit-quaternion-pair representation.
+The kernel calculation is the same as in Lemma 4.
+
+A generic camera rotation does not preserve the finite set \(V\). A
+local cap turn generally is not a global rigid symmetry. Under C, the
+lower bound \(B>10^{151851}\) alone already separates the scale of the
+legal action from the finite geometric group.
+
+\subsection{Lemma 13: Conditions for sound symmetry
+reduction}\label{lemma-13-conditions-for-sound-symmetry-reduction}
+
+\subsubsection{Statement}\label{statement-12}
+
+Normalization of \(G\) by \(K\) does not imply preservation of the
+chosen \(1800\)-symbol word metric.
+
+A symmetry quotient preserves shortest-path distance to a goal set if
+the symmetries act by cost-preserving automorphisms of the actual
+allowed state graph, preserve the goal set and the required protection
+conditions, and quotient paths retain sufficient information to lift to
+actual labelled paths.
+
+\subsubsection{Proof}\label{proof-12}
+
+Normalization says that a conjugated generator is an element of \(G\).
+It says nothing about its length in \(\mathcal A\).
+
+Already in one tetrahedral group, take \begin{equation}
+H=(1\,2)(3\,4),\qquad T=(1\,2\,3).
+\end{equation} Conjugating \(H\) by \(T\) gives a different half-turn.
+This is none of the three chosen local symbols \(H,T,T^{-1}\), although
+it is a finite word in them. Thus the local generating set is not
+invariant under all local conjugations. Global geometric symmetry
+supplies no automatic remedy for this failure. A separate audit would be
+needed to show preservation of the particular global alphabet and its
+primitive costs.
+
+Now let \(\Gamma\) be the actual allowed state graph, with edge costs,
+and let \(L\) act by cost-preserving graph automorphisms. Suppose the
+goal set is \(L\)-invariant. The graph must already encode the relevant
+allowed states, protected buffers or frames, legal generators, and any
+restrictions on intermediate behavior.
+
+Projection sends every path to a quotient path of the same cost.
+Conversely, suppose an edge of a quotient path is represented by
+\(u\to v\), while the current lifted state is \(x=\ell u\). The edge
+lifts to \begin{equation}
+x=\ell u\longrightarrow\ell v
+\end{equation} with the same cost, because \(\ell\) is a graph
+automorphism. Repeating this lifts the entire path. If its quotient
+endpoint is a goal orbit, the lifted endpoint is a goal because the goal
+set is invariant. Therefore the quotient and original minimum costs
+agree.
+
+To implement the lift, one must retain a representative edge, its actual
+move, and the symmetry needed to align its source with the current
+lifted state. Ordered frames, labels, and buffer identities must be
+transported as part of this information.
+
+For fixed-frame solved colors, a geometric permutation of positions
+alone need not preserve the solved coloring or even the reachable color
+set: it moves centers with distinct colors. A combined position action
+and matching permutation of home-cell symbols may preserve solved, but
+that is a separately defined action.
+
+Likewise, setwise preservation of two buffers is insufficient when the
+task protects them individually with ordered frames. The acting subgroup
+must preserve the actual requirement or carry explicitly tracked buffer
+data.
+
+Without these conditions, a quotient may change the goal, admit
+forbidden transitions, reduce costs artificially, or lose the data
+needed to reconstruct a legal labelled solution. \(\square\)
+
+\subsection{Lemma 14: Complete endpoint transport and certified
+caching}\label{lemma-14-complete-endpoint-transport-and-certified-caching}
+
+\subsubsection{Statement}\label{statement-13}
+
+Let \(W\) and \(S\) be verified legal sticker permutations, with
+chronological witnesses. Suppose the complete nonfixed map of \(W\) is
+\begin{equation}
+E_W=\{(u,W(u)):W(u)\ne u\}.
+\end{equation} Then the complete nonfixed map of the chronological
+conjugate \(S^{-1}WS\) is \begin{equation}
+E_{S^{-1}WS}
+=
+\{(S(u),S(W(u))):(u,W(u))\in E_W\}.
+\end{equation} Thus transporting both endpoints computes exactly the
+same full permutation as replaying the conjugated legal witness,
+including all collateral.
+
+\subsubsection{Proof}\label{proof-13}
+
+As an ordinary function, the chronological word \(S^{-1}WS\) is
+\begin{equation}
+S\circ W\circ S^{-1}.
+\end{equation} For each \(u\), \begin{equation}
+(S\circ W\circ S^{-1})(S(u))=S(W(u)).
+\end{equation} Since \(S\) is bijective, \(S(W(u))\ne S(u)\) exactly
+when \(W(u)\ne u\). Every moved source of the conjugate is therefore
+represented, and no fixed source is included.
+
+This proves equality on every sticker, not merely on a target orbit.
+Collateral cycles are transported by exactly the same formula.
+
+Consequently a cached full map can be certified by a complete seed map,
+a verified setup witness, the endpoint transport calculation, and
+consistent permutation conventions. Cache identity must distinguish the
+underlying model, seed, and setup data sufficiently to avoid
+substituting a different map.
+
+The result licenses exact reuse of a permutation. It gives no numerical
+performance guarantee and does not shorten the retained primitive
+witness. \(\square\)
+
+\subsection{Lemma 15: Guarded setup graphs and legal
+inverses}\label{lemma-15-guarded-setup-graphs-and-legal-inverses}
+
+\subsubsection{Statement}\label{statement-14}
+
+Fix two buffer positions with their sticker frames pointwise protected.
+On the finite graph of ordered target sticker frames, enlarging the
+positive guarded alphabet by legal inverses cannot increase any minimum
+unit-cost setup length.
+
+For nonnegative unequal edge costs, minimum cost must be computed by a
+suitable weighted shortest-path algorithm rather than ordinary
+breadth-first search.
+
+\subsubsection{Proof}\label{proof-14}
+
+A vertex records a complete ordered target frame \begin{equation}
+f=(s_1,\ldots,s_{k_o})
+\end{equation} at a nonbuffer position. An allowed primitive \(g\)
+induces the transition \begin{equation}
+f\longmapsto(g(s_1),\ldots,g(s_{k_o})).
+\end{equation} Allowed moves fix both buffer sticker fibers pointwise.
+In the retained cap guard, forbidding every cap in \begin{equation}
+M(A)\cup M(B)
+\end{equation} is a sufficient condition for this fixed-buffer property.
+
+Let \(E_+\) be the edges arising from allowed positive moves. Adding
+their legal inverses gives an edge set \(E_{\pm}\) with \begin{equation}
+E_+\subseteq E_{\pm}.
+\end{equation} Every positive setup path is still available with the
+same unit cost. Thus, with infinite distance allowed for unreachable
+vertices, \begin{equation}
+d_{\pm}(f_0,f)\le d_+(f_0,f).
+\end{equation}
+
+In this setting inverse moves also fix the buffers. Moreover,
+\(H_c^{-1}=H_c\) and \(T_c^{-1}=T_c^2\), so inverse transitions already
+have positive legal witnesses. Adding inverse letters can shorten paths
+in the chosen alphabet without needing to enlarge its reachable
+component.
+
+For unit costs, breadth-first search explores vertices in nondecreasing
+path length and finds minimum setup lengths in that graph. If costs are
+nonnegative but unequal, path length is no longer path cost. A weighted
+algorithm, such as Dijkstra's algorithm, is appropriate. Adding inverse
+edges still cannot increase minimum cost provided old edges retain their
+costs.
+
+These statements compare precisely specified graphs. They do not claim
+strict improvement, numerical speedup, or global optimality among
+different buffer choices or setups allowed to move the buffers
+temporarily. \(\square\)
+
+\subsection{Scope tests: collateral, commutation, and quotient
+equality}\label{scope-tests-collateral-commutation-and-quotient-equality}
+
+Two elementary examples expose invalid stronger claims.
+
+First, on six stickers the permutations \begin{equation}
+u=(1\,2\,3),
+\qquad
+v=(1\,2\,3)(4\,5\,6)
+\end{equation} have identical restrictions to the target orbit
+\(\{1,2,3\}\) but different complete actions. Both are even. Equality in
+a target-orbit quotient therefore does not justify replacing a
+full-state macro. One must prove equality on the whole state, or
+explicitly justify the collateral difference under the application's
+current conditions.
+
+Second, consider \begin{equation}
+a=(1\,2)(5\,6),
+\qquad
+b=(3\,4)(6\,7).
+\end{equation} If only stickers \(1,2,3,4\) are displayed, their visible
+supports are disjoint. But their full actions do not commute: applying
+\(a\) then \(b\) sends \(5\) to \(7\), whereas applying \(b\) then \(a\)
+sends \(5\) to \(6\).
+
+By contrast, permutations with disjoint full supports commute. Each
+permutation fixes the support of the other pointwise, and a permutation
+maps its own support to itself; checking a point in either support or
+outside both gives equality of the two compositions.
+
+These examples refute the stronger quotient and visible-support claims.
+They are consistent with, and explain the necessity of, the
+complete-support hypotheses in Lemmas 9 and 14.
+
+\subsection{Theorem: Full 600-cell theory
+package}\label{theorem-full-600-cell-theory-package}
+
+\subsubsection{Statement}\label{statement-15}
+
+Let \(V,P,K,K^+\), the pole convention, and hypotheses R, F, I, C and E
+be as defined above. Then the following assertions hold, with the
+hypotheses indicated separately.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \textbf{Unconditional geometry and topology.} The radius-two polytope
+  \(P\) is the regular \(\{3,3,5\}\) 600-cell with edge length
+  \(2/\phi\), face vector \((120,720,1200,600)\), tetrahedral facets and
+  icosahedral vertex links. Five facets meet at each edge and twenty at
+  each vertex. Its boundary is radially homeomorphic to \(S^3\), with
+  integral homology \(\mathbb Z\) in degrees zero and three, zero in
+  degrees one and two, and trivial fundamental group. Its polar is a
+  regular 120-cell. The finite checker verifies its specified arithmetic
+  and incidence statements; mod-2 Betti numbers alone do not establish
+  this topological identification.
+\item
+  \textbf{Unconditional geometric symmetry.} The unit vertices \(V/2\)
+  form \(I^*\), and the left/right quaternion action identifies \(K^+\)
+  with \((I^*\times I^*)/\langle(-1,-1)\rangle\), of order 7,200.
+  Quaternion conjugation extends this action to \(K=W(H_4)\) of order
+  14,400, with the Coxeter presentation stated in Lemma 4. These finite
+  groups are distinct from \(SO(4)\), the rotation group of a cap and
+  the legal twist group.
+\item
+  \textbf{Retained cut model, under R and F.} The 600 oriented poles
+  describe 300 antipodal axes with two outer layers at normalized
+  distance \(121/125\) and a fixed middle layer during an outer-layer
+  turn about that axis. The retained model has 259,800 sticker slots,
+  177,120 surface pieces, 600 fixed centers and the stated 35 moving
+  orbits. Sticker-to-piece incidence is equivariant under legal twists.
+  Complete cap signatures and hosting sets provide the specified
+  addresses, while \(|M|-1\) is a membership rank rather than a
+  dimension. The pair \(H_c,T_c\) generates the full local \(A_4\)
+  action. The count of 433 sticker regions per facet remains a
+  retained-model input.
+\item
+  \textbf{Legal actions and conditional bounds.} Under R and F, the
+  legal group embeds in the stated product of transported-frame wreath
+  products, with chronological multiplication
+  \((p,a)(r,b)=(r\circ p,c)\) and \(c_i=a_i b_{p(i)}\). With the
+  additional generator-invariant hypothesis I, positional parity and
+  orientation abelianization give
+
+  \begin{equation}
+  |G|\leq \frac{\prod_o N_o!\,|H_o|^{N_o}}{2^{43}5^2}.
+  \end{equation}
+
+  With the separate pure-controller hypothesis C, the supported action
+  contains \(A_{3600}\times A_{2400}\times A_{7200}^{7}\) and yields the
+  balanced fixed-frame color lower bound \(B\) of Lemma 10. Neither
+  bound determines the exact order of \(G\) or proves sufficiency of the
+  listed invariants.
+\item
+  \textbf{Specified word metric, under R and C.} For the 1,800-symbol
+  alphabet \(\{H_c,T_c,T_c^{-1}\}\), the word-ball inequality implies a
+  worst-case distance of at least 46,648. Any 1,000-step distribution
+  from solved has total-variation distance strictly greater than
+  \(1-10^{-148595}\) from uniform reachable fixed-frame face-color
+  states. This is not a lower bound for each scramble; a recorded
+  1,000-letter word has an inverse of at most 1,000 letters. Labelled
+  states, face-color states and symmetry quotients remain distinct.
+\item
+  \textbf{Extended geometric action, under R, F and E.} The faithful
+  geometric action on the complete retained subdivision normalizes
+  \(G\). Since legal moves fix every distinguished center and those
+  centers span the geometric space, \(G\cap K=\{1\}\) and
+  \(\langle G,K\rangle\cong G\rtimes K\). Normalization does not
+  automatically preserve the chosen move alphabet or cost. Sound
+  shortest-path reduction requires the graph, goal, protection and
+  reconstruction conditions of Lemma 13.
+\item
+  \textbf{Sound optimization.} Under the complete-action and
+  guarded-graph hypotheses of Lemmas 14 and 15, transport of both
+  support endpoints computes the full conjugated net permutation, and
+  adding legal inverse edges cannot increase minimum unit-cost setup
+  length. Unequal nonnegative costs require weighted shortest-path
+  search. Equality on a target orbit does not establish equality of
+  full-state macros; disjoint full supports suffice for commutation,
+  while disjoint visible supports do not. No numerical speedup, new
+  solve or performance record follows from these statements.
+\end{enumerate}
+
+\subsubsection{Proof}\label{proof-15}
+
+Lemmas 1--3 establish the unconditional coordinate geometry, face
+incidences, radial homeomorphism, integral homology, fundamental group,
+and polar duality required in part (1). The finite-checker discussion
+specifies the exact enumeration algorithm, the supporting-facet
+completeness argument, and the conclusions outside its computational
+scope.
+
+Lemma 4 identifies the quaternion symmetry action, proves its kernel,
+establishes both the lower and upper symmetry counts, and proves the
+Coxeter presentation required in part (2). The continuous covering
+argument and the group-role table distinguish camera motions, finite
+geometric symmetries, local cap rotations, and legal sticker
+permutations.
+
+Lemma 5 gives the exact scale conversion for part (3). The
+retained-model definitions specify the \(600\) oriented caps, their
+\(300\) antipodal axes, signatures, hosting sets, and census without
+claiming an independent cut reconstruction. Lemma 6 proves local \(A_4\)
+generation and piece equivariance and explains the application rank.
+
+Lemma 7 proves the faithful ambient embedding and chronological frame
+law. Lemma 8 derives the conditional invariant upper bound under I,
+including independence of its ambient index factors. Lemmas 9 and 10
+derive the independent alternating actions and balanced-color lower
+bound under the separate pure-controller hypothesis C. These establish
+part (4) without asserting full reachability or an exact legal-group
+order.
+
+Lemma 11 proves part (5) from the word count, the color lower bound, and
+explicit integer inequalities. It distinguishes worst-case existence
+from individual scramble length and distinguishes fixed-frame color
+states from labelled and symmetry-quotiented states.
+
+Lemma 12 proves part (6)'s normalization, trivial intersection, and
+semidirect product under the complete geometric realization E. Its proof
+uses the faithful sticker action and the spanning geometric center set
+explicitly. Lemma 13 shows why normalization alone is insufficient for
+the chosen metric and proves the conditions and reconstruction
+obligation for sound shortest-path symmetry reduction.
+
+Finally, Lemmas 14 and 15 prove the two optimization statements in part
+(7). The complete-support examples establish the stated limitations on
+macro substitution and commutation. None of these arguments asserts a
+numerical speedup, a new solve or performance record, or a determination
+of the unknown full legal-group order. \(\square\) \newpage
+
+\section{From theory to
+implementation}\label{from-theory-to-implementation}
+
+The preceding results offer several ways to reduce work without changing
+the puzzle. The practical target is preservation of the full labelled
+action. A faster operation is useful only if it carries the same piece
+identities, orientations, collateral effects and history semantics as
+its reference implementation.
+
+\subsection{Normalization without changing model
+identity}\label{normalization-without-changing-model-identity}
+
+For the radius-two coordinates, the supporting-facet calculation gives
+squared inradius
+
+\begin{equation}
+r^2=\frac{(4+6\phi)^2}{16+24\phi}
+=1+\frac32\phi=\frac{\phi^4}{2}.
+\end{equation}
+
+The retained pole convention has \(\|n_0\|^2=\phi^6+3=8\phi^2\). Thus
+the ratio between its inradius and the radius-two model's inradius is
+\(4/\phi\). A suitable orthogonal identification and that scale relate
+the two geometric descriptions. They do not determine the application's
+cell numbering or sticker IDs. The normalized cap plane at \(121/125\)
+of the cell distance lies inward by \(4/125\) of the inradius. This is a
+geometric distance ratio, not a statement that 3.2 percent of the pieces
+move.
+
+Keeping the normalization explicit prevents a particularly subtle error:
+applying the numeric constant 0.968 to coordinates whose supporting
+planes have a different distance from the origin. Any replacement
+geometry pipeline should transform both positions and plane equations
+coherently, then verify its cell and sticker correspondence against the
+immutable model manifest.
+
+\subsection{State representation and incremental
+updates}\label{state-representation-and-incremental-updates}
+
+Let \(S\) be the fixed set of 259,800 sticker slots. Store \(L[s]\) as
+the identity of the sticker currently occupying slot \(s\). A legal
+permutation \(m:S\to S\) is applied by
+
+\begin{equation}
+L_{\mathrm{new}}[m(s)]=L_{\mathrm{old}}[s].
+\end{equation}
+
+Let \(D=\operatorname{supp}(m)\), and let \(\pi:S\to\mathcal P\) map a
+slot to its host piece position. Since a permutation preserves its own
+support, only the destination positions in \(\pi(D)\) can have changed
+their occupants or ordered frames. This licenses an incremental progress
+update: update the inverse location map and recalculate correctness for
+the affected piece positions, then adjust the per-orbit totals. It does
+not license dropping stickers from the mechanical state.
+
+The present \texttt{PuzzleState.refresh} reconstructs location and
+correctness information with full-array work. A future incremental
+implementation should retain the full refresh as an independent oracle.
+For each legal generator, its inverse, a composite macro and an imported
+replay, compare the complete inverse-location arrays, every
+piece-correctness bit and every per-orbit count. A discrepancy must
+reject the optimization before it can affect a saved session. Dense
+moves may make a full vectorized refresh faster than bookkeeping over a
+large support; the decision should be measured against support size.
+
+The model identity and the full-state hash have different purposes. The
+former fixes geometry, IDs, cuts, frames and generator meaning; the
+latter identifies a particular labelled configuration. Neither may be
+replaced by a smaller displayed subset. In particular, an incremental
+noncryptographic XOR digest is not a substitute for the current SHA-256
+boundary used by previews and certificates. A change to hashing
+semantics would require an explicit protocol version and new validation.
+
+\subsection{Certified net maps and
+caches}\label{certified-net-maps-and-caches}
+
+A long legal word may have a small net support. The endpoint-transport
+result in the blueprint justifies caching the complete conjugated net
+permutation while retaining its primitive witness. Applying that cache
+can reduce execution work from repeated full-word replay to movement of
+the net support. This is a distinction between execution cost and
+mathematical word length: it does not shorten the recorded legal
+witness.
+
+A cache record should bind at least the model identifier, frame
+convention, seed identifier and digest, setup word and direction,
+complete net-map digest, and protected-orbit contract. Retain both
+source and destination endpoints and verify bijectivity. An orbit-only
+map is inadequate for a raw seed whose other effects occur in later
+stages. Two macros with the same target three-cycle may be incompatible
+substitutes because they move different collateral pieces.
+
+There are also two separate symmetry-caching opportunities. For
+geometric data, an exactly verified element of \(K\) can transport
+incidence and sticker endpoints. For search, the same element is useful
+only if it preserves the allowed transitions, edge costs, distinguished
+buffers and goal condition, or if the search explicitly transforms all
+of them. The theorem \(K\leq N(G)\) concerns legal reachability; it does
+not establish that \(K\) acts by isometries of the chosen 1,800-symbol
+metric.
+
+\subsection{Search graphs, orientation and
+cost}\label{search-graphs-orientation-and-cost}
+
+The guarded setup graph tracks an \textbf{ordered target sticker frame},
+with both buffers fixed. Forgetting frame order merges distinct
+orientations. That merge can yield a setup that places the correct piece
+in the correct position while leaving a nonabelian orientation error.
+The retained controller graph has at most
+
+\begin{equation}
+V_o=(N_o-2)|H_o|
+\end{equation}
+
+candidate target frames for orbit \(o\). A transition that applies a
+guarded generator must transport the whole frame. With \(b\) generators
+and \(k\) sticker entries per frame, straightforward graph construction
+costs \(O(V_obk)\), apart from generator storage. A predecessor tree
+needs \(O(V_o)\) records rather than storing a complete setup word at
+every vertex.
+
+Adding legal inverses to a positive unit-cost alphabet cannot increase
+any shortest setup distance. It may nevertheless increase the time spent
+building the graph, so shorter words and lower build latency should be
+measured separately. Ordinary BFS is appropriate for unit costs.
+Primitive length, elapsed execution cost and ergonomic cost are
+different nonnegative weight functions; a weighted search must use an
+appropriate algorithm such as Dijkstra's algorithm. Bidirectional search
+needs correctly reversed transitions and compatible fixed-buffer
+conditions.
+
+The retained workload tables identify O02, O15 and O29 as expensive
+targets: together they account for about 40.34 percent of the
+constructive primitive bound while requiring about 3.8 percent of its
+stars. Shorter complete witnesses for those orbits could therefore
+improve the primitive bound disproportionately. They need not improve
+interactive speed by the same amount when the workbench already executes
+cached net permutations. Every replacement requires full-support replay
+and revalidation of the collateral order.
+
+\subsection{Stable rendering through finite
+symmetry}\label{stable-rendering-through-finite-symmetry}
+
+The geometric relationship between cells suggests an instancing design.
+Let \(v_j\) be vertices of one reference cell's subdivided geometry and
+let \(R_c\) place that geometry in cell \(c\). Let \(Q\in SO(4)\) be a
+camera rotation. A candidate rendering pipeline computes
+
+\begin{equation}
+v_{c,j}=R_cv_j,\qquad u_{c,j}=Qv_{c,j},\qquad
+p_{c,j}=\Pi_3\bigl(\Pi_4(u_{c,j})\bigr).
+\end{equation}
+
+Here \(\Pi_4\) is a specified 4D-to-3D projection and \(\Pi_3\) the
+final screen projection. For example, a perspective projection may use
+\(\Pi_4(x,y,z,w)=d(x,y,z)/(d-w)\), restricted away from its singular
+plane. Clipping must handle the valid domain before division; a small
+denominator is not a reason to corrupt coordinates or alter the puzzle
+state. The real application may use additional shrink, visibility and
+view parameters, which must be reproduced as well.
+
+The web mesh asset has 30,480 base vertices and 10,160 base triangles.
+Replicating that mesh over 600 cells represents 6,096,000 triangles
+before view-dependent rejection. This is a count for the web asset,
+\textbf{not a measurement of the native DirectX renderer's mesh}.
+Sticker count alone is therefore an inadequate graphics workload
+descriptor. Profiling should report actual submitted vertices,
+triangles, lines, draw calls and uploaded bytes for the native path.
+
+One prospective GPU implementation would retain immutable reference
+geometry and cell transforms, update the camera in a small uniform
+buffer, and obtain colors and selection styles through a sticker-ID
+lookup. Such a design could reduce repeated CPU projection and packing.
+It still has to reproduce clipping, ordering, transparency and
+selection. The installed Managed DirectX path and device capabilities
+constrain what is practical; a renderer rewrite is a separate, tested
+engineering change, not a consequence already implemented by the group
+theory.
+
+The existing native optimization reuses a 28-byte-per-vertex upload
+array around a pinned upstream renderer. This reduces allocation and
+marshaling while preserving the established projection path. It leaves
+CPU projection and triangle/line packing in place. A useful next
+experiment must therefore time those stages separately before
+attributing the remaining delay to the GPU.
+
+\subsection{Filtering, framework visibility and
+picking}\label{filtering-framework-visibility-and-picking}
+
+A filter is a predicate on pieces, potentially using their solved
+identity, current position, orbit, rank, correctness or an explicit
+context rule. It determines which geometry is displayed; it does not
+define a smaller puzzle. All stickers belonging to a hidden piece must
+be excluded consistently from rendering and hit testing. Buffer or
+preview context outside the selected predicate should be explicit, so
+additional pieces cannot be confused with a failed filter.
+
+The 600-cell framework is a separate draw layer. Hiding it must suppress
+its lines at every draw entry point, including animation and direct
+redraws. It must retain the cell planes and clipping information used by
+visible stickers. Removing structural clipping data to remove a visual
+outline conflates geometry with presentation and can produce both
+rendering and picking defects.
+
+Render and pick operations should consume a coherent snapshot:
+
+\begin{equation}
+\mathcal R=(\text{revision},L,Q,F,\text{frame policy},\text{motion policy}).
+\end{equation}
+
+The picker's candidate set must use the same visibility predicate \(F\)
+as the displayed scene. A cached projection is valid only for the
+matching revision, camera and view parameters. After a sampled motion
+frame, exact picking needs either a refreshed projection of the complete
+visible geometry or a mathematically equivalent ray test against that
+geometry. Invisible triangles and stale axes must not remain
+interactive.
+
+During movement, adaptive detail can improve responsiveness while the
+complete state remains unchanged. When movement stops, restoring all
+visible geometry is a distinct latency that should be reported. A
+sampled frame must never be counted as a successful full-detail frame in
+the 30 FPS qualification workload.
+
+\subsection{Transactions and optimization
+boundaries}\label{transactions-and-optimization-boundaries}
+
+The state transition remains authoritative. A preview binds the current
+revision, full-state hash and protection constraints; commit rechecks
+all three. The complete net permutation is applied and journalled
+atomically before the new head is exposed. Rendering consumes the
+resulting immutable snapshot. Changing frame visibility, camera pose or
+sampling policy must leave the state hash unchanged.
+
+Reset and import require complete validation before durable writes and a
+recoverable previous state. Checkpoints and log exports should record
+the model identity, chronological moves or certified macros, and enough
+state information to verify replay. A failed image update after a
+successful database commit must not cause the operation to be applied
+twice. These contracts matter especially for scrambling: color transport
+follows the committed labelled permutation rather than a partly updated
+display array.
+
+The rendering queue may coalesce obsolete camera snapshots when a newer
+view is available. It may not coalesce or discard committed mechanical
+moves from the history. Likewise, progress reports may cache aggregates,
+but sessions reports must describe durable operations rather than
+estimates derived from animation completion.
+
+\subsection{What performance evidence
+supports}\label{what-performance-evidence-supports}
+
+The frozen 0.2.4 validation recorded an optimized full-detail mean of
+453.45 ms and a 95th percentile of 533.82 ms at a \(931\times604\)
+viewport. The comparison path averaged 626.57 ms. The 27.63 percent
+reduction comes from 18 fixed-pose redraw measurements, not a sustained
+rotation test. The reciprocal of 453.45 ms is approximately 2.2 frames
+per second; it is not a qualified 1080p frame rate.
+
+For a mean baseline \(T\) and a measured nonaccelerated fraction \(f\),
+an idealized Amdahl model gives
+
+\begin{equation}
+T_{\mathrm{new}}=fT+\frac{(1-f)T}{r}.
+\end{equation}
+
+Even infinite acceleration of the second term could reduce 453.45 ms to
+33.33 ms only if \(f<0.0736\). The prior total process-CPU figure is not
+a measurement of this critical-path fraction; CPU and GPU overlap,
+waiting, packing and submission must be separated before using the model
+quantitatively. More GPU throughput alone cannot be promised to satisfy
+the target.
+
+The target minimum remains \textbf{30 FPS at 1920 by 1080 with all
+259,800 stickers present at full detail}. No specific minimum GPU model
+is certified. Intel HD Graphics 620 supports the measured
+filtered/adaptive workflow but has not passed this full-detail
+qualification. Neither the new theory nor the exact geometry audit
+changes that status.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Proposed experiment
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Evidence required before acceptance
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Incremental state/progress updates & Complete state, inverse-location
+map and orbit counts agree with full recomputation \\
+Symmetry or macro cache & Complete labelled net map equals legal
+witness, including all collateral \\
+Inverse or weighted setup search & Correct ordered frame, both buffers
+fixed, measured cost and reconstructed legal word \\
+GPU projection or instancing & Clipping and reference-image agreement,
+stable sticker IDs and matching picking \\
+Full-detail rotation qualification & At least 60 seconds each of warmed
+3D and 4D motion at 1080p; full workload; frame-time distribution and
+presentation method \\
+Adaptive motion & Interaction latency, exact restoration latency,
+unchanged mechanical hash and correct post-motion picking \\
+\end{longtable}
+}
+
+For the full-detail qualification, report mean, median, 95th and 99th
+percentile frame times; target a 95th percentile no greater than 33.33
+ms as well as sustained 30 FPS. Identify the application build, driver,
+viewport, clipping settings and actual visibility count. Check
+representative images against the rendering reference, and verify
+identical labelled hashes before and after camera-only runs. Cold
+construction, restore latency and device recovery are separate
+measurements. These are acceptance criteria for future work, not claims
+that the present supplement ran those graphics experiments.
+
+\section{Reproduction and
+interpretation}\label{reproduction-and-interpretation}
+
+The accompanying standard-library geometry audit is self-contained. It
+constructs the 120 exact vertices, enumerates adjacency and simplex
+cliques, verifies supporting facets, forms simplicial boundary maps over
+\(\mathbb F_2\), computes graph distances, and enumerates the
+quaternion-induced symmetry maps. Its JSON result records both numerical
+outputs and the scope boundary. Running it does not open the application
+or read a user session.
+
+The original 35-orbit algorithms paper and the curated replay archive
+remain unchanged. They supply the complete algorithm cards and finite
+words. The existing configuration-bound and extended-derivation audits
+remain the references for retained controller and arithmetic evidence.
+The new checker addresses base geometry; it does not replace those
+audits.
+
+Rethlas was used at upstream revision
+\texttt{887cc46427636bbdd235160a112f9a30ae81d040}, with separate
+generation and verification invocations of Astra. The stock file-based
+runner could not read its task inputs under the nested Windows execution
+policy. The adaptation supplies the reviewed public inputs as text to
+read-only agents and lets the external coordinator persist outputs
+through Rethlas's memory and strict verification schema. The coordinator
+retains rejected candidates and repair reports; acceptance requires the
+verifier's error and gap lists both to be empty. Public records contain
+the reviewed blueprint, exact verdicts, scope and hashes, while local
+paths, raw execution logs and unrelated material are excluded.
+
+The first complete inline blueprint, comprising fifteen lemmas and the
+combined theorem, received the strict verdict \textbf{correct}, with
+zero critical errors and zero gaps. No mathematical repair round was
+required. Earlier file-policy attempts produced no candidate and are not
+counted as completed reviews. The exact returned blueprint and verdict
+are retained separately. This typeset exposition removes the
+generation-time status paragraph, normalizes equation references, and
+replaces imperative task wording in the combined statement with an
+equivalent declarative statement. The engineering discussion is a
+separately authored analysis.
+
+The resulting mathematical review is informal. It neither proves the
+exact legal-group order nor formally verifies the entire software stack.
+Source provenance, exact finite checks and explicit hypotheses make its
+conclusions inspectable; independent reproduction and mathematical
+review remain possible without the private design transcript.
+
+\newpage
+
+\section{Reading guide}\label{reading-guide}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Hypercubing community, Formal Introduction to Grip Theory.}
+  Defines active grips, attitudes and the distinction between general
+  piece states and twist-reachable states. Read it alongside the
+  blueprint's frame convention; the program's finite sticker action need
+  not retain an invisible geometric attitude.
+  \url{https://hypercubing.xyz/theory/grip-theory/formal/}
+\item
+  \textbf{Hypercubing community, Piece Invariants.} Background on parity
+  and orientation constraints. Its hypercube monoflip example is
+  illustrative rather than a full-600-cell certificate.
+  \url{https://hypercubing.xyz/theory/invariants/}
+\item
+  \textbf{Hypercubing community, God's Number.} Explains metric-specific
+  counting arguments and the distinction between a worst-case bound and
+  a solution length for one state.
+  \url{https://hypercubing.xyz/theory/gods-number/}
+\item
+  \textbf{Hypercubing community, Cut Depths.} Establishes normalized
+  cut-distance conventions and illustrates how changing cuts changes a
+  puzzle's pieces. It does not enumerate the retained full-600-cell
+  subdivision. \url{https://hypercubing.xyz/theory/cut-depths/}
+\item
+  \textbf{John C. Baez, From the Icosahedron to E8.} Primary background
+  for binary icosahedral quaternions and 600-cell coordinates;
+  arXiv:1712.06436v2. \url{https://arxiv.org/abs/1712.06436}
+\item
+  \textbf{Jihyun Choi and Jae-Hyouk Lee, Binary Icosahedral Group and
+  600-Cell.} \emph{Symmetry} 10(8), 326 (2018). A primary geometric
+  treatment connecting quaternion multiplication to the regular
+  polytope. \url{https://doi.org/10.3390/sym10080326}
+\item
+  \textbf{David Vogan, Regular polyhedra and Coxeter groups.} Tufts
+  lecture, 25 January 2019. Background for flag counting and finite
+  reflection groups. \url{https://math.mit.edu/~dav/regpolyTUFTSHO2.pdf}
+\item
+  \textbf{Rethlas.} Upstream generation and independent
+  proof-verification workflow. The companion provenance describes the
+  local I/O adaptation and records the actual review outcome.
+  \url{https://github.com/frenzymath/Rethlas}
+\item
+  \textbf{C600 Studio research materials.} The technical report,
+  unchanged original algorithms paper, synthetic replay supplement,
+  audits, and Full Detail Rotation requirements.
+  \url{https://github.com/KonomiYuzu01/C600-MPUlt/tree/main/research}
+\item
+  \textbf{Andrey Astrelin, Magic Puzzle Ultimate.} Original simulator
+  and renderer underlying this mod.
+  \url{https://superliminal.com/andrey/mpu/}
+\end{enumerate}
+
+Web references were checked on 7 September 2026. These links identify
+public technical sources, not personal conversation histories.
+
+\end{document}

@@ -59,3 +59,9 @@ The completed [extended-results.json](extended-results.json) includes the input 
 The word-count bound is a worst-case existence statement. A state produced by a known 1,000-turn word always has a solution of at most 1,000 turns by inversion. Likewise, a constrained ambient upper count is not an exact reachable-state count, and the constructive workload is not an optimal solution bound for an individual scramble.
 
 The extended checker does not repeat the original nine-controller full-word audit, regenerate clipping geometry, or validate every oriented transition and generator invariant across all 35 orbits. Matching retained tree dimensions and parent depths alone would not establish those stronger properties. Both checkers refuse Python `-O`; check the exit status before accepting an existing results file as a new pass.
+
+## Exact regular-polytope geometry
+
+[verify_regular_geometry.py](verify_regular_geometry.py) is a separate standard-library checker for the uncut regular 600-cell. Its [results](regular-geometry-results.json) include exact supporting tetrahedra, incidence counts, mod-2 chain ranks, primal and dual graph distances, quaternion closure and geometric symmetry maps. The [Puzzle theory supplement](../PUZZLE_THEORY.md) supplies the radial topology proof and explains the checker's scope. It does not reconstruct the 433 cut regions per cell or replace the controller audit above.
+
+Run from the repository root with `python research/audit/verify_regular_geometry.py`, with assertions enabled.
