@@ -88,6 +88,8 @@ The principal documentary source is \emph{600 Cell Solving Strategy}, a 52-page 
 
 The transcript is treated as a record of claims and design decisions, not as proof merely because an assertion appears in it. The analysis separates mathematical arguments, finite computational certificates, historical execution reports, synthetic integration tests, and subsequent native Windows checks. A new audit verifies the nine controllers used in the configuration lower bound. The public companion preserves synthetic replay data and the original algorithm reference, while a source guide maps the report's discussion back to transcript page ranges. The original conversation export, account-bearing links, personal sessions, and third-party solve histories are not included in the public research bundle.
 
+The companion \emph{Puzzle Theory of the Full 600-Cell} develops the geometric foundations and optimization conditions in fifteen lemmas and a combined theorem. Its mathematical blueprint passed an independent, informal Rethlas review using a documented Windows adaptation, with no critical errors or gaps. That verdict concerns the stated conditional mathematics, not the entire software stack or this report \cite{puzzletheory}.
+
 \subsection{Prior solving and software foundations}
 
 Magic Puzzle Ultimate, including its original puzzle simulator and renderer, is Andrey Astrelin's work. C600 Studio is a modification built around that foundation. Its contribution consists of an authoritative full-state engine, certified solving tools, a journal, and adaptations around the inherited native viewport; it does not replace the original authorship claim \cite{announcement,validation}.
@@ -98,6 +100,12 @@ The ivan216 MPUlt and mc7d-kb projects provide software background: an accessibl
 
 \section{The retained model and its invariants}
 \label{sec:3}
+
+\subsection{Geometric foundation and scope}
+
+The regular base polytope has Schl\"afli symbol \(\{3,3,5\}\), face vector \((120,720,1200,600)\), and a boundary radially homeomorphic to \(S^3\). Its full geometric symmetry group is \(W(H_4)\), of order 14,400, with 7,200 orientation-preserving elements. These are rigid symmetries of the polytope, distinct from the legal twist group and the continuous \(SO(4)\) camera group. Sticker interiors are three-dimensional regions of tetrahedral facets; the rank defined below counts cap memberships rather than spatial dimension \cite{puzzletheory}.
+
+The supplement's exact arithmetic checker verifies base-polytope coordinates, incidences and explicit symmetries. Its radial argument supplies the topological identification; mod-2 homology ranks alone do not. Neither calculation reconstructs the 433 cut regions per cell or proves an exact order for the legal twist group. The retained cut and controller certificates remain separate inputs.
 
 \subsection{Stable addresses and legal actions}
 
@@ -366,6 +374,8 @@ Initialize the queue with the ordered frame at \(C\), with parent \(-1\) and dep
 An inverse setup is reconstructed by reversing its parent path and inverting every move. Breadth-first depth is minimal within this particular guarded positive alphabet. It is not a shortest solution among arbitrary native moves, all inverse generators, alternative buffer choices, or setups that temporarily move the buffers. In particular, the word ``shortest'' should not be promoted from a graph-search property into a claim of globally optimal algorithms.
 
 If \(V_o=(N_o-2)|H_o|\) and \(b_o\) is the number of allowed generators, traversal takes at most \(O(V_o b_o k_o)\) elementary frame-coordinate transports when a move lookup is constant-time. Parent storage is \(O(V_o)\); explicitly storing every ordered frame uses \(O(V_o k_o)\). The implementation's sparse lookups add their own search costs. These expressions explain why the corner orbit, although containing only 120 pieces, still needs 7,080 oriented setup states. A table of destination IDs alone would discard the orientation information needed for insertion.
+
+Adding legal inverse edges cannot increase minimum unit-cost setup length, although it can increase graph-construction work. Unequal nonnegative costs require weighted search. Likewise, conjugating legal moves by a geometric symmetry does not automatically preserve the chosen 1,800-symbol metric. A symmetry reduction must preserve the actual graph, edge costs, goals and protected frames, and retain enough information to lift a path back to the labelled puzzle \cite{puzzletheory}.
 
 \subsection{Stage correctness and the role of collateral}
 
@@ -703,7 +713,7 @@ The relevant performance quantity is complete frame latency, not GPU specificati
 \end{equation}
 This is the fixed-workload bottleneck reasoning associated with Amdahl's analysis \cite{amdahl}. Applied only as a diagnostic model to a 453.45 ms baseline and a 33.33 ms target, even unlimited acceleration of the chosen part requires the unaccelerated fraction to be below approximately 7.35 percent. No value of \(f\) is estimated here from aggregate CPU counters: overlapping CPU/GPU work and process-wide CPU time do not provide the needed serial critical-path measurement.
 
-The next useful experiments should therefore instrument projection, triangle/line packing, staging/upload, draw submission, presentation, and waiting separately. They should retain the exact full-detail workload and report both elapsed time and CPU/GPU measurements with their synchronization method. Candidate changes include batching fewer submission calls, reducing repeated packing, or moving mathematically equivalent projection work to the GPU. Each would require renewed image equivalence, picking, clipping, and camera tests; it is a research direction rather than a feature claimed for 0.2.4.
+The next useful experiments should therefore instrument projection, triangle/line packing, staging/upload, draw submission, presentation, and waiting separately. They should retain the exact full-detail workload and report both elapsed time and CPU/GPU measurements with their synchronization method. Candidate changes include batching fewer submission calls, reducing repeated packing, or moving mathematically equivalent projection work to the GPU. The theory supplement further describes cell instancing, complete permutation caches and incremental progress updates, each with explicit equivalence obligations \cite{puzzletheory}. Rendering changes require renewed image equivalence, picking, clipping, and camera tests; these remain research directions rather than features claimed for 0.2.4.
 
 Hardware qualification should follow such measurements. A nominally faster GPU cannot remedy a long unaccelerated stage by itself. Conversely, a CPU-side optimization that shortens one stage does not establish the performance of an untested GPU/driver combination. The 1080p/30 FPS requirement remains a complete-configuration acceptance test, with every sticker retained and the previously stated percentile and state-invariance conditions.
 
@@ -730,9 +740,9 @@ The subsequent workbench turns those ideas into a tested native workflow with co
 
 \phantomsection\addcontentsline{toc}{section}{Data availability and attribution}
 
-The report, its source, the unchanged 51-page algorithm reference, exact orbit words, selected generated tables, three synthetic compact solve records, and independent count audit accompany the C600-MPUlt repository. The companion introduction distinguishes historical reports from newly repeated checks. The original exported conversation is retained privately; its technical evidence is mapped by page range without publishing account identifiers or personal exchanges. Personal databases, screenshots, raw diagnostics, original third-party solve logs, and derived personal-history traces are excluded. No proprietary runtime assemblies are added with these research files.
+The repository includes this report and source, the unchanged 51-page algorithm reference, exact orbit words and selected tables, three synthetic solve records, the independent count audit, and the Puzzle theory supplement. Its introduction distinguishes historical reports from repeated checks. The private conversation is documented only by technical page ranges. Personal exchanges, account identifiers, databases, screenshots, diagnostics, third-party solve logs, and personal-history traces are excluded; no proprietary runtime assemblies are added.
 
-Primary credit for the original MPUlt simulator and renderer belongs to Andrey Astrelin. The C600 workbench is a mod and retains its upstream notices. Nan Ma's solving methods and ivan216's software projects are acknowledged as antecedents. The source corpus includes AI-assisted analysis and code generation; its assertions are evaluated through explicit arguments, retained certificates, and stated execution checks rather than by treating conversational output as an authority. This technical report is not presented as a peer-reviewed publication.
+Andrey Astrelin receives primary credit for the original MPUlt simulator and renderer; this mod retains its upstream notices. Nan Ma's solving methods and ivan216's projects are acknowledged as antecedents. AI-assisted assertions are assessed through explicit arguments, retained certificates and execution checks. This report is not a peer-reviewed publication.
 
 
 \clearpage
@@ -836,16 +846,18 @@ python research/audit/verify\_extended\_derivations.py
 \end{quote}
 No application session or native renderer is opened by this calculation. It does not independently regenerate clipping geometry, verify every oriented transition of all 35 setup trees, or replay the enormous primitive expansions. The three original synthetic replay commands remain documented inside the frozen companion ZIP. Their accepted endpoints and stage checks are preserved rather than replaced by newly generated solutions.
 
+The separate command \path{python research/audit/verify_regular_geometry.py} records exact incidence, quaternion and mod-2 chain calculations in \path{regular-geometry-results.json}. Puzzle theory links the proof blueprint, strict verdict and review provenance \cite{puzzletheory}.
+
 \subsection{Audit trail and publication scope}
 
-The new report-specific bounds are developments of the retained model and are not attributed retroactively to the original conversation or to Nan Ma's simplified solve. The original algorithm paper and curated reference ZIP remain byte-identical. Only the report, its LaTeX source, explanatory documentation, and the new bounded arithmetic supplement are expanded. The application release continues to be 0.2.4.
+The new report-specific bounds are developments of the retained model and are not attributed retroactively to the original conversation or to Nan Ma's simplified solve. The original algorithm paper and curated reference ZIP remain byte-identical. Only the report, its LaTeX source, explanatory documentation, and bounded research supplements are expanded. The application release continues to be 0.2.4.
 
 Checksums connect the PDF and archive to the published inventory, while source-control history identifies each documentation revision. This establishes byte identity and a reviewable lineage; it is not independent certification of authorship. The public materials retain no account-bearing conversation links, personal databases, original third-party histories, screenshots, raw local diagnostics, or credentials. Technical page ranges in the archival guide provide the necessary documentary connection without exposing those materials.
 
 \begingroup
 \small
-\begin{thebibliography}{14}
-\setlength{\itemsep}{4pt}
+\begin{thebibliography}{15}
+\setlength{\itemsep}{2pt}
 \setlength{\parskip}{0pt}
 
 \bibitem{transcript}
@@ -890,6 +902,9 @@ SQLite project. \emph{Atomic Commit in SQLite}. Official documentation, accessed
 
 \bibitem{amdahl}
 Amdahl, G. M. \emph{Validity of the single processor approach to achieving large scale computing capabilities}. AFIPS Spring Joint Computer Conference, 1967, pp. 483--485. \url{https://doi.org/10.1145/1465482.1465560}. Author's paper: \url{https://www.cs.cmu.edu/~18742/papers/Amdahl1967.pdf}.
+
+\bibitem{puzzletheory}
+C600 Studio project. \emph{Puzzle Theory of the Full 600-Cell: Geometry, Topology, Group Actions, and Sound Optimization}. LaTeX supplement with geometry audit and Rethlas review, 7 September 2026; revision \texttt{d5dabe2c896f}. \url{https://github.com/KonomiYuzu01/C600-MPUlt/blob/d5dabe2c896f1e39901f2cca707d4624004047d2/research/PUZZLE_THEORY.md}.
 
 \end{thebibliography}
 \endgroup

@@ -575,14 +575,14 @@
     {
       "path": "research/Full_600cell_Technical_Report.pdf",
       "provenance": "reviewed-research-material",
-      "bytes": 421106,
-      "sha256": "6c97a2b2a8e6dcab1a8fcd3450e5ce20f2d0bd622e944e96ca62db79f819d7c8"
+      "bytes": 424281,
+      "sha256": "6fcefa5c07527960a16b49f5d5cfd36181e36fdc3c72ce933c8f8ca81fd2ff41"
     },
     {
       "path": "research/Full_600cell_Technical_Report.tex",
       "provenance": "reviewed-research-material",
-      "bytes": 102286,
-      "sha256": "cf8fd76fce9c36af38ae74488b6703fa740404d08d26c5b6a3b2deb462b0e788"
+      "bytes": 104728,
+      "sha256": "8f1600ec48e3437682f0496df6edfaaf46f72f21aef2b30a139dc41177f7d377"
     },
     {
       "path": "research/PUZZLE_THEORY.md",
@@ -593,14 +593,14 @@
     {
       "path": "research/README.md",
       "provenance": "reviewed-research-material",
-      "bytes": 5814,
-      "sha256": "3fe03c52d823b16a4c67505b6874b9af898606c4d201efe2830e122d8fe7ebfd"
+      "bytes": 5985,
+      "sha256": "2ed98b382acd84d2420861c93639f107925690b58dfd91f032939be1e4deb209"
     },
     {
       "path": "research/SHA256SUMS.txt",
       "provenance": "reviewed-research-material",
       "bytes": 422,
-      "sha256": "3aa036624ba3dd25a522b15053de46b08d481114f7b95e8dee952121a09b15a2"
+      "sha256": "27a5ac32f52e43e112eb9482e3345ae5b2657e9448be05d61299c196e48c2be6"
     },
     {
       "path": "research/audit/README.md",

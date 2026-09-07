@@ -1,6 +1,6 @@
 # Full 600-cell research materials
 
-**[Certified Control of the Full 600-Cell](Full_600cell_Technical_Report.pdf)** is an expanded, 27-page technical report on the full puzzle's mathematics and C600 Studio's software architecture. It centers on the original design transcript and algorithm reference, with 31 numbered equations, two propositions with proofs, the complete moving-orbit census, and component-level software contracts. Historical claims, new derivations, repeated computational checks, and recorded Windows measurements are distinguished throughout. The report is typeset entirely in LaTeX; its [complete source](Full_600cell_Technical_Report.tex) is included.
+**[Certified Control of the Full 600-Cell](Full_600cell_Technical_Report.pdf)** is an expanded, 27-page technical report on the full puzzle's mathematics and C600 Studio's software architecture. It centers on the original design transcript and algorithm reference, with 31 numbered equations, two propositions with proofs, the complete moving-orbit census, and component-level software contracts. Historical claims, new derivations, repeated computational checks, and recorded Windows measurements are distinguished throughout. The report is typeset entirely in LaTeX; its [complete source](Full_600cell_Technical_Report.tex) is included. A brief update connects its geometric scope and search/rendering optimization discussion to the [Puzzle theory supplement](PUZZLE_THEORY.md) and its proof-review records.
 
 | Material | Introduction |
 | --- | --- |
