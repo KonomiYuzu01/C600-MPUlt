@@ -40,8 +40,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 873,
-      "sha256": "183e8041e1a5e950453aa449fe0d6e9d614e5f1e55ed3e6e66cf21d004d90706",
+      "bytes": 1278,
+      "sha256": "672d712d2a518ea3450a8fa7173137767e68bb6d76eee7f37f017f98aafe039b",
       "provenance": "reviewed-doc-or-license"
     },
     {
@@ -541,6 +541,78 @@
       "bytes": 15,
       "sha256": "99f43573522565d7c480efd1f954892948033915df6a4e685327e995d3396eb6",
       "provenance": "project-source"
+    },
+    {
+      "path": "research/ARCHIVAL_SOURCE_GUIDE.md",
+      "provenance": "reviewed-research-material",
+      "bytes": 5782,
+      "sha256": "a6624d38d18b0635a920dbc24f6dedecf65d2f7e459611af3137451e0222b8a5"
+    },
+    {
+      "path": "research/FULL_DETAIL_ROTATION_REQUIREMENTS.md",
+      "provenance": "reviewed-research-material",
+      "bytes": 3801,
+      "sha256": "c3aeef46fcba31956313986ce88e6805b35dd093a9208ed1303b5cabe78839e1"
+    },
+    {
+      "path": "research/Full_600cell_Curated_Reference_and_Replay.zip",
+      "provenance": "allowlisted-research-companion-with-member-provenance",
+      "bytes": 23794249,
+      "sha256": "85d2d9a6b337442aae10b7c26056f518ce0d0a738e2f098d47d8a52678d0ec5a"
+    },
+    {
+      "path": "research/Full_600cell_Technical_Report.pdf",
+      "provenance": "reviewed-research-material",
+      "bytes": 305856,
+      "sha256": "6950ba5837b0f42cff43c783558847d2f28e83fa89eb94292b7da4dc6186a597"
+    },
+    {
+      "path": "research/Full_600cell_Technical_Report.tex",
+      "provenance": "reviewed-research-material",
+      "bytes": 45555,
+      "sha256": "afcdce3387690b32fde348424e25845ceceebf7e6e4ce9bc9303e33e4f5dd063"
+    },
+    {
+      "path": "research/README.md",
+      "provenance": "reviewed-research-material",
+      "bytes": 4250,
+      "sha256": "4c040a8cf3a68adb8d5d19035282757e3635eeb5226c95ebc0e5997ea17328e2"
+    },
+    {
+      "path": "research/SHA256SUMS.txt",
+      "provenance": "reviewed-research-material",
+      "bytes": 325,
+      "sha256": "8d725f3c96c768a4e1a4724cf55252b785de4d16b94825c23adf735150fd391e"
+    },
+    {
+      "path": "research/audit/README.md",
+      "provenance": "reviewed-research-material",
+      "bytes": 3549,
+      "sha256": "d7a320845aff1bbc02163324d587ad77b8b9d442fc01ebd5f76c93b4f43ba36e"
+    },
+    {
+      "path": "research/audit/requirements.txt",
+      "provenance": "reviewed-research-material",
+      "bytes": 12,
+      "sha256": "a83a2a4ed7ab2e022b9b8a83cfa2b8cf52cc243006c597e8b96f90a8365590ac"
+    },
+    {
+      "path": "research/audit/results.json",
+      "provenance": "reviewed-research-material",
+      "bytes": 17247,
+      "sha256": "ff440bc7268303fc467ed3765338bbc5e61cd55897d807092f5d00013a8ba45b"
+    },
+    {
+      "path": "research/audit/verify_color_bound.py",
+      "provenance": "reviewed-research-material",
+      "bytes": 15179,
+      "sha256": "c9c7e695445ec0f3d2194b826d059b2bfa130f966dacc1fe898bca9cb0d51c6e"
+    },
+    {
+      "path": "research/reference/Full_600cell_35_Orbit_Algorithms.pdf",
+      "provenance": "unchanged-user-supplied-algorithm-reference",
+      "bytes": 672733,
+      "sha256": "5b8761a38527451217b1eb6351b5cb8b4e81491ae8c248b392f1cc5f38d6d530"
     },
     {
       "path": "server.py",

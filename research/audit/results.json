@@ -1,0 +1,652 @@
+{
+  "scope": "Independent declarative-data checks of nine pure single-sticker orbits; no supplied solver code executed.",
+  "census": {
+    "total_pieces": 177120,
+    "moving": 176520,
+    "fixed": 600,
+    "stickers": 259800,
+    "orbits": 35
+  },
+  "groups": [
+    {
+      "orbit": 0,
+      "size": 2,
+      "element_orders": {
+        "1": 1,
+        "2": 1
+      },
+      "commutator_elements": 1,
+      "abelianization_order": 2,
+      "all_sticker_permutations_even": false
+    },
+    {
+      "orbit": 1,
+      "size": 1,
+      "element_orders": {
+        "1": 1
+      },
+      "commutator_elements": 1,
+      "abelianization_order": 1,
+      "all_sticker_permutations_even": true
+    },
+    {
+      "orbit": 2,
+      "size": 1,
+      "element_orders": {
+        "1": 1
+      },
+      "commutator_elements": 1,
+      "abelianization_order": 1,
+      "all_sticker_permutations_even": true
+    },
+    {
+      "orbit": 3,
+      "size": 2,
+      "element_orders": {
+        "1": 1,
+        "2": 1
+      },
+      "commutator_elements": 1,
+      "abelianization_order": 2,
+      "all_sticker_permutations_even": false
+    },
+    {
+      "orbit": 4,
+      "size": 1,
+      "element_orders": {
+        "1": 1
+      },
+      "commutator_elements": 1,
+      "abelianization_order": 1,
+      "all_sticker_permutations_even": true
+    },
+    {
+      "orbit": 5,
+      "size": 1,
+      "element_orders": {
+        "1": 1
+      },
+      "commutator_elements": 1,
+      "abelianization_order": 1,
+      "all_sticker_permutations_even": true
+    },
+    {
+      "orbit": 6,
+      "size": 10,
+      "element_orders": {
+        "1": 1,
+        "2": 5,
+        "5": 4
+      },
+      "commutator_elements": 5,
+      "abelianization_order": 2,
+      "all_sticker_permutations_even": true
+    },
+    {
+      "orbit": 7,
+      "size": 1,
+      "element_orders": {
+        "1": 1
+      },
+      "commutator_elements": 1,
+      "abelianization_order": 1,
+      "all_sticker_permutations_even": true
+    },
+    {
+      "orbit": 8,
+      "size": 2,
+      "element_orders": {
+        "1": 1,
+        "2": 1
+      },
+      "commutator_elements": 1,
+      "abelianization_order": 2,
+      "all_sticker_permutations_even": false
+    },
+    {
+      "orbit": 9,
+      "size": 1,
+      "element_orders": {
+        "1": 1
+      },
+      "commutator_elements": 1,
+      "abelianization_order": 1,
+      "all_sticker_permutations_even": true
+    },
+    {
+      "orbit": 10,
+      "size": 1,
+      "element_orders": {
+        "1": 1
+      },
+      "commutator_elements": 1,
+      "abelianization_order": 1,
+      "all_sticker_permutations_even": true
+    },
+    {
+      "orbit": 11,
+      "size": 2,
+      "element_orders": {
+        "1": 1,
+        "2": 1
+      },
+      "commutator_elements": 1,
+      "abelianization_order": 2,
+      "all_sticker_permutations_even": false
+    },
+    {
+      "orbit": 12,
+      "size": 1,
+      "element_orders": {
+        "1": 1
+      },
+      "commutator_elements": 1,
+      "abelianization_order": 1,
+      "all_sticker_permutations_even": true
+    },
+    {
+      "orbit": 13,
+      "size": 1,
+      "element_orders": {
+        "1": 1
+      },
+      "commutator_elements": 1,
+      "abelianization_order": 1,
+      "all_sticker_permutations_even": true
+    },
+    {
+      "orbit": 14,
+      "size": 1,
+      "element_orders": {
+        "1": 1
+      },
+      "commutator_elements": 1,
+      "abelianization_order": 1,
+      "all_sticker_permutations_even": true
+    },
+    {
+      "orbit": 15,
+      "size": 1,
+      "element_orders": {
+        "1": 1
+      },
+      "commutator_elements": 1,
+      "abelianization_order": 1,
+      "all_sticker_permutations_even": true
+    },
+    {
+      "orbit": 16,
+      "size": 1,
+      "element_orders": {
+        "1": 1
+      },
+      "commutator_elements": 1,
+      "abelianization_order": 1,
+      "all_sticker_permutations_even": true
+    },
+    {
+      "orbit": 17,
+      "size": 5,
+      "element_orders": {
+        "1": 1,
+        "5": 4
+      },
+      "commutator_elements": 1,
+      "abelianization_order": 5,
+      "all_sticker_permutations_even": true
+    },
+    {
+      "orbit": 18,
+      "size": 1,
+      "element_orders": {
+        "1": 1
+      },
+      "commutator_elements": 1,
+      "abelianization_order": 1,
+      "all_sticker_permutations_even": true
+    },
+    {
+      "orbit": 19,
+      "size": 1,
+      "element_orders": {
+        "1": 1
+      },
+      "commutator_elements": 1,
+      "abelianization_order": 1,
+      "all_sticker_permutations_even": true
+    },
+    {
+      "orbit": 20,
+      "size": 1,
+      "element_orders": {
+        "1": 1
+      },
+      "commutator_elements": 1,
+      "abelianization_order": 1,
+      "all_sticker_permutations_even": true
+    },
+    {
+      "orbit": 21,
+      "size": 1,
+      "element_orders": {
+        "1": 1
+      },
+      "commutator_elements": 1,
+      "abelianization_order": 1,
+      "all_sticker_permutations_even": true
+    },
+    {
+      "orbit": 22,
+      "size": 2,
+      "element_orders": {
+        "1": 1,
+        "2": 1
+      },
+      "commutator_elements": 1,
+      "abelianization_order": 2,
+      "all_sticker_permutations_even": false
+    },
+    {
+      "orbit": 23,
+      "size": 1,
+      "element_orders": {
+        "1": 1
+      },
+      "commutator_elements": 1,
+      "abelianization_order": 1,
+      "all_sticker_permutations_even": true
+    },
+    {
+      "orbit": 24,
+      "size": 1,
+      "element_orders": {
+        "1": 1
+      },
+      "commutator_elements": 1,
+      "abelianization_order": 1,
+      "all_sticker_permutations_even": true
+    },
+    {
+      "orbit": 25,
+      "size": 2,
+      "element_orders": {
+        "1": 1,
+        "2": 1
+      },
+      "commutator_elements": 1,
+      "abelianization_order": 2,
+      "all_sticker_permutations_even": false
+    },
+    {
+      "orbit": 26,
+      "size": 1,
+      "element_orders": {
+        "1": 1
+      },
+      "commutator_elements": 1,
+      "abelianization_order": 1,
+      "all_sticker_permutations_even": true
+    },
+    {
+      "orbit": 27,
+      "size": 1,
+      "element_orders": {
+        "1": 1
+      },
+      "commutator_elements": 1,
+      "abelianization_order": 1,
+      "all_sticker_permutations_even": true
+    },
+    {
+      "orbit": 28,
+      "size": 5,
+      "element_orders": {
+        "1": 1,
+        "5": 4
+      },
+      "commutator_elements": 1,
+      "abelianization_order": 5,
+      "all_sticker_permutations_even": true
+    },
+    {
+      "orbit": 29,
+      "size": 1,
+      "element_orders": {
+        "1": 1
+      },
+      "commutator_elements": 1,
+      "abelianization_order": 1,
+      "all_sticker_permutations_even": true
+    },
+    {
+      "orbit": 30,
+      "size": 1,
+      "element_orders": {
+        "1": 1
+      },
+      "commutator_elements": 1,
+      "abelianization_order": 1,
+      "all_sticker_permutations_even": true
+    },
+    {
+      "orbit": 31,
+      "size": 1,
+      "element_orders": {
+        "1": 1
+      },
+      "commutator_elements": 1,
+      "abelianization_order": 1,
+      "all_sticker_permutations_even": true
+    },
+    {
+      "orbit": 32,
+      "size": 2,
+      "element_orders": {
+        "1": 1,
+        "2": 1
+      },
+      "commutator_elements": 1,
+      "abelianization_order": 2,
+      "all_sticker_permutations_even": false
+    },
+    {
+      "orbit": 33,
+      "size": 1,
+      "element_orders": {
+        "1": 1
+      },
+      "commutator_elements": 1,
+      "abelianization_order": 1,
+      "all_sticker_permutations_even": true
+    },
+    {
+      "orbit": 34,
+      "size": 60,
+      "element_orders": {
+        "1": 1,
+        "2": 15,
+        "3": 20,
+        "5": 24
+      },
+      "commutator_elements": 60,
+      "abelianization_order": 1,
+      "all_sticker_permutations_even": true
+    }
+  ],
+  "counts": {
+    "moving_piece_histogram": {
+      "120": 1,
+      "720": 1,
+      "1200": 1,
+      "1440": 2,
+      "2400": 4,
+      "3600": 7,
+      "7200": 19
+    },
+    "labelled_structural_log10": "598075.03994523583915848733504230913247712437276817780423622750388",
+    "necessary_invariant_constrained_log10": "598060.69771541361592948357174762542826302687698303785778603377635",
+    "constraint_log10": "14.342229822223229003763294683704214097495785139946450193727525907",
+    "status": "Upper counts. The stronger count assumes the source-reported separate orbit parity and transported-frame abelian invariants; that all-generator audit is not rerun here. Equality requires full reachability sufficiency."
+  },
+  "source_reported_pure_raw_orbits": [
+    1,
+    4,
+    5,
+    7,
+    18,
+    19,
+    20,
+    27,
+    30,
+    31,
+    32,
+    33
+  ],
+  "stored_dependency_order_valid": true,
+  "stored_35_buffer_counts_consistent": true,
+  "independent_single_sticker_checks": [
+    {
+      "orbit": 1,
+      "pieces": 3600,
+      "symbols": 600,
+      "copies_per_symbol": 6,
+      "raw_word_length": 2190,
+      "independent_full_word_three_cycle": [
+        563,
+        31179,
+        76327
+      ],
+      "all_other_259797_slots_fixed": true,
+      "relocation_anchors_verified": true,
+      "relocation_length": 11,
+      "relocated_piece_cycle": [
+        536,
+        176045,
+        54890
+      ],
+      "independent_guarded_positive_bfs": 3598,
+      "expected_bfs": 3598,
+      "antipodal_cap_sets": true,
+      "colored_log10_lower": "9527.0066212894421807005312786359159732168655192425789194668332386"
+    },
+    {
+      "orbit": 4,
+      "pieces": 7200,
+      "symbols": 600,
+      "copies_per_symbol": 12,
+      "raw_word_length": 546,
+      "independent_full_word_three_cycle": [
+        9337,
+        11963,
+        32720
+      ],
+      "all_other_259797_slots_fixed": true,
+      "relocation_anchors_verified": true,
+      "relocation_length": 8,
+      "relocated_piece_cycle": [
+        7321,
+        170575,
+        24311
+      ],
+      "independent_guarded_positive_bfs": 7198,
+      "expected_bfs": 7198,
+      "antipodal_cap_sets": true,
+      "colored_log10_lower": "19439.999287361084774821214331187238218026898409434275827534345089"
+    },
+    {
+      "orbit": 5,
+      "pieces": 7200,
+      "symbols": 600,
+      "copies_per_symbol": 12,
+      "raw_word_length": 546,
+      "independent_full_word_three_cycle": [
+        9336,
+        11970,
+        25256
+      ],
+      "all_other_259797_slots_fixed": true,
+      "relocation_anchors_verified": true,
+      "relocation_length": 8,
+      "relocated_piece_cycle": [
+        7320,
+        170500,
+        18999
+      ],
+      "independent_guarded_positive_bfs": 7198,
+      "expected_bfs": 7198,
+      "antipodal_cap_sets": true,
+      "colored_log10_lower": "19439.999287361084774821214331187238218026898409434275827534345089"
+    },
+    {
+      "orbit": 7,
+      "pieces": 7200,
+      "symbols": 600,
+      "copies_per_symbol": 12,
+      "raw_word_length": 286,
+      "independent_full_word_three_cycle": [
+        3926,
+        6754,
+        14548
+      ],
+      "all_other_259797_slots_fixed": true,
+      "relocation_anchors_verified": true,
+      "relocation_length": 6,
+      "relocated_piece_cycle": [
+        3388,
+        173556,
+        11190
+      ],
+      "independent_guarded_positive_bfs": 7198,
+      "expected_bfs": 7198,
+      "antipodal_cap_sets": true,
+      "colored_log10_lower": "19439.999287361084774821214331187238218026898409434275827534345089"
+    },
+    {
+      "orbit": 18,
+      "pieces": 7200,
+      "symbols": 600,
+      "copies_per_symbol": 12,
+      "raw_word_length": 1534,
+      "independent_full_word_three_cycle": [
+        49241,
+        86125,
+        95346
+      ],
+      "all_other_259797_slots_fixed": true,
+      "relocation_anchors_verified": true,
+      "relocation_length": 6,
+      "relocated_piece_cycle": [
+        36006,
+        148492,
+        68044
+      ],
+      "independent_guarded_positive_bfs": 7198,
+      "expected_bfs": 7198,
+      "antipodal_cap_sets": true,
+      "colored_log10_lower": "19439.999287361084774821214331187238218026898409434275827534345089"
+    },
+    {
+      "orbit": 19,
+      "pieces": 7200,
+      "symbols": 600,
+      "copies_per_symbol": 12,
+      "raw_word_length": 142,
+      "independent_full_word_three_cycle": [
+        3843,
+        33743,
+        49310
+      ],
+      "all_other_259797_slots_fixed": true,
+      "relocation_anchors_verified": true,
+      "relocation_length": 5,
+      "relocated_piece_cycle": [
+        3324,
+        173823,
+        36046
+      ],
+      "independent_guarded_positive_bfs": 7198,
+      "expected_bfs": 7198,
+      "antipodal_cap_sets": true,
+      "colored_log10_lower": "19439.999287361084774821214331187238218026898409434275827534345089"
+    },
+    {
+      "orbit": 27,
+      "pieces": 7200,
+      "symbols": 600,
+      "copies_per_symbol": 12,
+      "raw_word_length": 94,
+      "independent_full_word_three_cycle": [
+        3809,
+        70562,
+        6848
+      ],
+      "all_other_259797_slots_fixed": true,
+      "relocation_anchors_verified": true,
+      "relocation_length": 5,
+      "relocated_piece_cycle": [
+        3299,
+        173737,
+        5511
+      ],
+      "independent_guarded_positive_bfs": 7198,
+      "expected_bfs": 7198,
+      "antipodal_cap_sets": true,
+      "colored_log10_lower": "19439.999287361084774821214331187238218026898409434275827534345089"
+    },
+    {
+      "orbit": 31,
+      "pieces": 7200,
+      "symbols": 600,
+      "copies_per_symbol": 12,
+      "raw_word_length": 142,
+      "independent_full_word_three_cycle": [
+        2832,
+        16010,
+        25542
+      ],
+      "all_other_259797_slots_fixed": true,
+      "relocation_anchors_verified": true,
+      "relocation_length": 5,
+      "relocated_piece_cycle": [
+        2520,
+        175707,
+        19145
+      ],
+      "independent_guarded_positive_bfs": 7198,
+      "expected_bfs": 7198,
+      "antipodal_cap_sets": true,
+      "colored_log10_lower": "19439.999287361084774821214331187238218026898409434275827534345089"
+    },
+    {
+      "orbit": 33,
+      "pieces": 2400,
+      "symbols": 600,
+      "copies_per_symbol": 4,
+      "raw_word_length": 46,
+      "independent_full_word_three_cycle": [
+        3029,
+        38102,
+        48927
+      ],
+      "all_other_259797_slots_fixed": true,
+      "relocation_anchors_verified": true,
+      "relocation_length": 5,
+      "relocated_piece_cycle": [
+        2712,
+        175618,
+        35778
+      ],
+      "independent_guarded_positive_bfs": 2398,
+      "expected_bfs": 2398,
+      "antipodal_cap_sets": true,
+      "colored_log10_lower": "6244.1626891477907387217571918416687345220761719045079916976454372"
+    }
+  ],
+  "colored_lower_log10": "151851.16432196482634317078878878825223392723055718701770390489430",
+  "four_power_seven_loose_color_log10_upper": "65723.566077932881358697972311817458006117056057364624463449595114",
+  "four_power_seven_multinomial_log10_upper": "65695.47051007531304985095721300939925046344342498975060044830064",
+  "lower_over_multinomial_upper_log10": "86155.69381188951329331983157577885298346378713219726710345659366",
+  "exact_integer_comparison": {
+    "lower_exceeds_14_power_57344": true,
+    "lower_exceeds_10_power_151851": true,
+    "loose_upper_below_10_power_65724": true,
+    "multinomial_upper_below_10_power_65696": true,
+    "lower_over_multinomial_upper_exceeds_10_power_86155": true,
+    "note": "Exact integer division and comparisons; no logarithm rounding is used for these assertions."
+  },
+  "comparison_assumptions": "4^7: 57344 fixed sticker positions, 14 symbols, 4096 copies each. Full 600-cell: 600 distinct cell-colour symbols in each selected orbit; all other stickers fixed at macro boundaries. Fixed-frame counting on both sides, without a global spatial-rotation quotient. The upper bound ignores legality.",
+  "input_sha256": {
+    "engine/census.json": "779aaae849d363856ef622080649c5c02130be44090944846f86aa2b25c4f3eb",
+    "engine/target_seeds.json": "1a3b6c13f5dcc64de5fc28ed49a295507fd9b072065ef4cdd7dd93a0c62767a1",
+    "engine/buffer_certificates.json": "253e4a47883a13a6fbc5badfd81a53ab83458badab32c1aa50eb1fcc9edf287c",
+    "engine/model.npz": "680de6710e8a05b12dd4ba2ea22c866e645af032a31faf985d869798521f8b13",
+    "audits/expansion_audit.json": "67cc4ab574f8f268235c79f2f20738c8be91d750e4fa923c0a6eb28d5910c523"
+  },
+  "workload_arithmetic": {
+    "star_bound": 405945,
+    "primitive_bound": 385797152,
+    "seed600_mean_primitives_per_star": "942.59471695289407715044711340591910801810902832341826617278407603",
+    "seed600_phase_sum": 374178,
+    "evidence": "Arithmetic from census and retained maximum expansion lengths; all35 expansion audits are not rerun here."
+  }
+}

@@ -10,6 +10,8 @@ Run the Windows setup executable, or extract the portable ZIP and open `C600Stud
 
 See [Usage](USAGE.md) and [Building](docs/DEVELOPMENT.md). Thanks also to ivan216 for source references and Nan Ma for historical solving material. [Credits](CREDITS.md) · [MIT license](LICENSE) · [Third-party notices](THIRD_PARTY_NOTICES.md).
 
+[Research materials](research/README.md) include a LaTeX technical report, the full 35-orbit algorithms paper, reproducible synthetic replays, an independent configuration-count audit, and Full Detail Rotation hardware requirements.
+
 ## License
 
 C600 Studio is a derivative work of Magic Puzzle Ultimate, © 2010 Andrey Astrelin. This project is distributed under the same terms as the original project.
