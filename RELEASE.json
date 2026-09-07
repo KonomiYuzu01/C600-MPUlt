@@ -1,0 +1,10 @@
+{
+  "version": "0.2.4",
+  "profile": "600-cell-Full",
+  "native_source_combined_sha256": "a4eadfa999dae4487bac5d69fa22211fddbe2f87673920e2a87abe009598f0e9",
+  "asset_manifest_sha256": "b5db4469f3da9ba3cdbd93806a703f594153e61b08ce32d4fcce9de9c5cc60bc",
+  "runtime_sha256": "228b3145460a399e2accc17cb5b891568ec8ddd33c011f1f2a32a00c59743327",
+  "microsoft_directx_payload_included": false,
+  "distribution": "Source repository; Windows installers are separate release artifacts",
+  "build_validation": "See the separately verified release artifacts; no raw local diagnostic metadata is included."
+}

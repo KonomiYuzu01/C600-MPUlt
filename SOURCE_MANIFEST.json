@@ -1,0 +1,872 @@
+{
+  "format": "C600-public-source-inventory-v1",
+  "version": "0.2.4",
+  "files": [
+    {
+      "path": ".gitignore",
+      "bytes": 224,
+      "sha256": "89d2dfd89251311897211924afa9a555c2dc05076b5f46a4f2c584fa5c3ba2e4",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "AGENTS.md",
+      "bytes": 1942,
+      "sha256": "2275388b33bd3be7da53e2c565e6a18383081f922c193794ddbe8c00ae111562",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "CREDITS.md",
+      "bytes": 1355,
+      "sha256": "21699f5eacd1d8e53d36d8198873f0ad8cac6a1314d9f1a2e99b2881cca00249",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "DEPENDENCIES.md",
+      "bytes": 1832,
+      "sha256": "af4ee2c0c2b5be4a0f64dc0fac8f9fe42f6ccaf9f9f2ef9bf79539d56b4b125c",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "DIRECTX.md",
+      "bytes": 1231,
+      "sha256": "9c3d9ca3d9c3e254b437a5e5e6583d293cd6abeea62791775aae2fc1255dcbb1",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 1081,
+      "sha256": "1828f18097aba614b92bfd12dcf66835c1a3753dff240fc454302d8ac9e488c0",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "README.md",
+      "bytes": 873,
+      "sha256": "183e8041e1a5e950453aa449fe0d6e9d614e5f1e55ed3e6e66cf21d004d90706",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "RELEASE.json",
+      "bytes": 606,
+      "sha256": "0b41844f6724f0f4fcf95912334ea3fa1a32f09f0567d23c4acce49e1869f95d",
+      "provenance": "public-release-metadata"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.md",
+      "bytes": 2083,
+      "sha256": "e65e090e7070a0ed4a41880c69803147bec248ae01a7d943f4087fbd29925be5",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "USAGE.md",
+      "bytes": 2455,
+      "sha256": "ffb50f433f4160657b6995524ff4b4a7092d752d0ac3dca5b981c50e87241b9b",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "assets/buffer_certificates.json",
+      "bytes": 20446,
+      "sha256": "253e4a47883a13a6fbc5badfd81a53ab83458badab32c1aa50eb1fcc9edf287c",
+      "provenance": "project-source"
+    },
+    {
+      "path": "assets/cell_frames.f32",
+      "bytes": 38400,
+      "sha256": "2dfceb37625b3f37985ea94193eca79c6e50e6ad00563eb4ba13a54dd7d3001f",
+      "provenance": "project-source"
+    },
+    {
+      "path": "assets/cell_normals.f32",
+      "bytes": 9600,
+      "sha256": "d012234cc8be0d44f17e16ff3b077e0e873c52a2267585561098b1f8d2f6cc2d",
+      "provenance": "project-source"
+    },
+    {
+      "path": "assets/census.json",
+      "bytes": 40716,
+      "sha256": "779aaae849d363856ef622080649c5c02130be44090944846f86aa2b25c4f3eb",
+      "provenance": "project-source"
+    },
+    {
+      "path": "assets/demo_scramble.json",
+      "bytes": 5581,
+      "sha256": "1e6a8478d5a219169a4dc022ea2ca5eb84fa663cfce8e7c38a4fca55d54ada4a",
+      "provenance": "project-source"
+    },
+    {
+      "path": "assets/execution_trees.json.gz",
+      "bytes": 2566116,
+      "sha256": "a820837c948eeff41df6f064d817312dcb9206ba4e2a73d0ced5ccf136ea3d20",
+      "provenance": "project-source"
+    },
+    {
+      "path": "assets/lab_to_native.json",
+      "bytes": 53308,
+      "sha256": "112a5ef9c5215427339605589007b37c4b41f411250276556e0b1f7dd5cec1bd",
+      "provenance": "project-source"
+    },
+    {
+      "path": "assets/manifest.json",
+      "bytes": 7648,
+      "sha256": "b5db4469f3da9ba3cdbd93806a703f594153e61b08ce32d4fcce9de9c5cc60bc",
+      "provenance": "project-source"
+    },
+    {
+      "path": "assets/mesh.json",
+      "bytes": 2658,
+      "sha256": "357fb767272d8e08caa8220903d4f3fc687be47c771b96b170f2cff4ac6ddb03",
+      "provenance": "project-source"
+    },
+    {
+      "path": "assets/mesh_centers.f32",
+      "bytes": 6928,
+      "sha256": "91ac80a0be89c3ec2f78ff8ecb214e9949266c8bbdbabf30d18b441c3cbe1cbb",
+      "provenance": "project-source"
+    },
+    {
+      "path": "assets/mesh_sticker.u32",
+      "bytes": 121920,
+      "sha256": "34d15cf938814957a40c360822889bc7f4e4c9ac65388d63242af31b170e26c7",
+      "provenance": "project-source"
+    },
+    {
+      "path": "assets/mesh_vertices.f32",
+      "bytes": 487680,
+      "sha256": "696f82b56ba7562126a6fc158936cdfe837c594ba666b9b342815bde66a7f4df",
+      "provenance": "project-source"
+    },
+    {
+      "path": "assets/model.npz",
+      "bytes": 19723105,
+      "sha256": "680de6710e8a05b12dd4ba2ea22c866e645af032a31faf985d869798521f8b13",
+      "provenance": "project-source"
+    },
+    {
+      "path": "assets/primitives.npz",
+      "bytes": 12899259,
+      "sha256": "1fac185bef9fc6d26afd821238a56b8856024a4c3e5a9ae5c03f77bb1407d5a5",
+      "provenance": "project-source"
+    },
+    {
+      "path": "assets/puzzle_definition.txt",
+      "bytes": 284,
+      "sha256": "4b391669ba1194f244ad68e1eb51587a88457d667d36212bd99dca2488723bb7",
+      "provenance": "project-source"
+    },
+    {
+      "path": "assets/seed_atlas.json",
+      "bytes": 1878658,
+      "sha256": "de41b58067ac8c0bf5339c11e43b828aa4944b6b40e8b2e7e1287e625e898891",
+      "provenance": "project-source"
+    },
+    {
+      "path": "assets/slot_piece.u32",
+      "bytes": 1039200,
+      "sha256": "eeb319424ad5a83b87626f6a83d75ad186a15b13faa521baf1d6f94439f8fd1b",
+      "provenance": "project-source"
+    },
+    {
+      "path": "build_assets.py",
+      "bytes": 3558,
+      "sha256": "36ef1d8d330206e8f684800c9ca9ab3c0b57279f234274874f37e2b750aa588c",
+      "provenance": "project-source"
+    },
+    {
+      "path": "check_state_engine_windows.bat",
+      "bytes": 787,
+      "sha256": "374a4cb87122e212e16c9336a8b7d137db53a1e6f64d18ebf0ad50f354e90db2",
+      "provenance": "project-source"
+    },
+    {
+      "path": "collect_native_diagnostics.bat",
+      "bytes": 290,
+      "sha256": "78289e163f76595752a959b6f16e0a59e87bdb2876eab45645c2c9aa907a6ac3",
+      "provenance": "project-source"
+    },
+    {
+      "path": "core.py",
+      "bytes": 22310,
+      "sha256": "a1786235028fb2f0479e71dbd5d8aeb7c65b71adb1ba495103891d5603f7f96b",
+      "provenance": "project-source"
+    },
+    {
+      "path": "debug_native_windows.bat",
+      "bytes": 806,
+      "sha256": "f37028cf4443100230cf6ec00b63522a4d926bb0126fa5b430bb38ef9f5881c2",
+      "provenance": "project-source"
+    },
+    {
+      "path": "docs/DEVELOPMENT.md",
+      "bytes": 2674,
+      "sha256": "32f766e70e0476f9ecfe33f0ecefc25f209b38f75a47e499cbccdf7b727b038a",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/RUNTIME_PROVENANCE.md",
+      "bytes": 2088,
+      "sha256": "c3c58ff774b4c092239ba133dad6f530fd1213aa5662faf022ba667c0c58feca",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "engine_process.py",
+      "bytes": 15232,
+      "sha256": "f1e7731d5c191afcf303324092b11129adf61139676b69d69a2c10901a0b1acd",
+      "provenance": "project-source"
+    },
+    {
+      "path": "enhanced.py",
+      "bytes": 6221,
+      "sha256": "8e0f3d96ba23baa91e935c83f8188669a3faad080fed44398408e24731e58f43",
+      "provenance": "project-source"
+    },
+    {
+      "path": "grips.py",
+      "bytes": 1608,
+      "sha256": "ffd0989dabac4f70478b567753e6d0241902a116b99dad604e6162b7fbd69cbc",
+      "provenance": "project-source"
+    },
+    {
+      "path": "licenses/Inno-Setup-LICENSE.txt",
+      "bytes": 1521,
+      "sha256": "2e5346868c2a18434489824e11d65c3031620f792fefc415d05f19cd441abf5c",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "licenses/MPUlt-MIT.txt",
+      "bytes": 1070,
+      "sha256": "518f309e27b161ef8db901e269eb411b0f28eac555b01b922d6fa1e02146a36c",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "licenses/NumPy/LICENSE.txt",
+      "bytes": 45831,
+      "sha256": "a804dff0ead9fadc5293456410bcbfc32bf024be9c4513459663fb7b442d2341",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "licenses/NumPy/numpy/_core/include/numpy/libdivide/LICENSE.txt",
+      "bytes": 1039,
+      "sha256": "d544761558b510866c21f7e8a2d5716fca76e0b98117e3b6b86314db7244d150",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "licenses/NumPy/numpy/_core/src/common/pythoncapi-compat/COPYING",
+      "bytes": 704,
+      "sha256": "aea41976c720f91bd19725c16916a1ace40eb1ea42620d340e587a5de4bbcea0",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "licenses/NumPy/numpy/_core/src/highway/LICENSE",
+      "bytes": 21155,
+      "sha256": "d208152e2777ffd0126eacc1bd21c0320d69e4e6b622d21a2a12a47e8ef73763",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "licenses/NumPy/numpy/_core/src/multiarray/dragon4_LICENSE.txt",
+      "bytes": 1441,
+      "sha256": "b0fd592d4ead563148e3977e7b589169d46a5ef2ff133c755a81af880a3fc919",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "licenses/NumPy/numpy/_core/src/npysort/x86-simd-sort/LICENSE.md",
+      "bytes": 1542,
+      "sha256": "a732977853530066790c42817087f4829b518dd98d340c916acbfd227e39d3cb",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "licenses/NumPy/numpy/_core/src/umath/svml/LICENSE",
+      "bytes": 1573,
+      "sha256": "585483905b13d4b42f800c55ba99e89d6e2e33ccd5f503e201c07531d148ff41",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "licenses/NumPy/numpy/fft/pocketfft/LICENSE.md",
+      "bytes": 1523,
+      "sha256": "8db000e158c162e7249787852d8c69764706502ccee725c06641b31c1e95c8af",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "licenses/NumPy/numpy/linalg/lapack_lite/LICENSE.txt",
+      "bytes": 2314,
+      "sha256": "19060ef465e1797d682ee0fc3081bd25ab1395e995e43d25c9d13c95d9a3cd6b",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "licenses/NumPy/numpy/ma/LICENSE",
+      "bytes": 1616,
+      "sha256": "d78dbb208b80d92b4d333e41a4baae50d12444f46e53199fa7726a91de6e2da7",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "licenses/NumPy/numpy/random/LICENSE.md",
+      "bytes": 3582,
+      "sha256": "b4bc2f4fa1c95778f1ed3dd8f14706bece399475b978f9f34b5d3cd72521b48a",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "licenses/NumPy/numpy/random/src/distributions/LICENSE.md",
+      "bytes": 2805,
+      "sha256": "cf5619f25b112d5ce7c896efffc8e610bcb345dfadcc19f2c1460aa48fff2c9e",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "licenses/NumPy/numpy/random/src/mt19937/LICENSE.md",
+      "bytes": 2986,
+      "sha256": "92c10699884321f1c2947fe2a70ab23b0fbf1507f756d89dd08f38c61fc3d4fa",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "licenses/NumPy/numpy/random/src/pcg64/LICENSE.md",
+      "bytes": 1176,
+      "sha256": "41190663b77bee5302386495a07b7eabfbfa571aa0ae2f11da6764162062fc4f",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "licenses/NumPy/numpy/random/src/philox/LICENSE.md",
+      "bytes": 1540,
+      "sha256": "322ac46d870c8aeead6c53adcccc839296fb3c8e456eae155081297daf7f8013",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "licenses/NumPy/numpy/random/src/sfc64/LICENSE.md",
+      "bytes": 1253,
+      "sha256": "28cad82ce1379dc529df30da78ec012d7d0d1d576b03ddcb93388aee53659f59",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "licenses/NumPy/numpy/random/src/splitmix64/LICENSE.md",
+      "bytes": 340,
+      "sha256": "454ec7350e478e037061850b67395753b425b1cb0a34bbc26290b020bf89d763",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "licenses/PyInstaller/COPYING.txt",
+      "bytes": 32138,
+      "sha256": "dcf75fdb959db1e3b41c0f8505069d2ece781b5ec6b3d0a4d30975cfc6580245",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "licenses/Python-LICENSE.txt",
+      "bytes": 35407,
+      "sha256": "935cf13e19f8c31b497d20b05d73623431a226b230c3599bc30fa3348979bc68",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "log_io.py",
+      "bytes": 7840,
+      "sha256": "c06d3a10584bdcd4863f1697c5ef1a81a8769ea0c64fcd0b59661473bd9ed6a8",
+      "provenance": "project-source"
+    },
+    {
+      "path": "mpult_log.py",
+      "bytes": 12156,
+      "sha256": "58ab02f4be44010d6a4a8b5adde9734e0c05b5770c4c8b8f312a75cbb97e7ada",
+      "provenance": "project-source"
+    },
+    {
+      "path": "native/LICENSE.MPUlt.txt",
+      "bytes": 1070,
+      "sha256": "518f309e27b161ef8db901e269eb411b0f28eac555b01b922d6fa1e02146a36c",
+      "provenance": "project-source"
+    },
+    {
+      "path": "native/NativeDiagnostics.cs",
+      "bytes": 1151,
+      "sha256": "8a58f76b918632f749a5bf068ba7a0cc3df543ad870a4be35315a1f2e60fd469",
+      "provenance": "project-source"
+    },
+    {
+      "path": "native/NativeDockLayout.cs",
+      "bytes": 2682,
+      "sha256": "76767f0a230800266c9dd3b06db6b76d1ce9bca14e48b9087d8d3a00424b27c8",
+      "provenance": "project-source"
+    },
+    {
+      "path": "native/NativeFullRenderer.cs",
+      "bytes": 14090,
+      "sha256": "5e639b1ec59eb86fb2c0dfe91ccc825046452b9137365559382f9c292a9500cd",
+      "provenance": "project-source"
+    },
+    {
+      "path": "native/NativeHost.cs",
+      "bytes": 68201,
+      "sha256": "3fb9e8dd3df9209c8ef50c87efdd57dcd9b46a34bb7abdeb159469007f078aa3",
+      "provenance": "project-source"
+    },
+    {
+      "path": "native/NativeHost.exe.config",
+      "bytes": 212,
+      "sha256": "cd0597af1cf76b8a0301f62d9d0e9591c5ec28048ad252e857413644840af312",
+      "provenance": "project-source"
+    },
+    {
+      "path": "native/NativePickingVisibility.cs",
+      "bytes": 8532,
+      "sha256": "94c3ebdb72afe1f2509f2ab03d4d6552f19bbfe9ac113b93d2221da1fd2eec5c",
+      "provenance": "project-source"
+    },
+    {
+      "path": "native/NativeRenderSubset.cs",
+      "bytes": 10711,
+      "sha256": "65f83f5eb68ec258e418104e633b78153ce014e60006011e38d00fa100d7aeb0",
+      "provenance": "project-source"
+    },
+    {
+      "path": "native/NativeRendererLifecycle.cs",
+      "bytes": 13014,
+      "sha256": "99266c233cc14ff27fae6ce053e6e70dba2bfea321a8d5aaec0b3983094587b8",
+      "provenance": "project-source"
+    },
+    {
+      "path": "native/NativeSnapshot.cs",
+      "bytes": 1268,
+      "sha256": "eb4c629ad11c3b89fb1c7fd239c3f33f6f9669cc74017c7455baf68838aeb8eb",
+      "provenance": "project-source"
+    },
+    {
+      "path": "native/NativeStickerAccess.cs",
+      "bytes": 1920,
+      "sha256": "32a6f0743697b16a9066d6d204cff3c982e75161e7c0ad4b218295f7727141f5",
+      "provenance": "project-source"
+    },
+    {
+      "path": "native/bootstrap.py",
+      "bytes": 9095,
+      "sha256": "6aa2c8f2305298a66ad8f24a5972c565ab85b807b4b485a9a3efd684342f4d4d",
+      "provenance": "project-source"
+    },
+    {
+      "path": "native/collect_diagnostics.py",
+      "bytes": 2645,
+      "sha256": "96a261b05e5b0756efa46435b2b210e02f8d700a8b2c8e1daf7a3bb56829de0c",
+      "provenance": "project-source"
+    },
+    {
+      "path": "native/directx_runtime.py",
+      "bytes": 2792,
+      "sha256": "aa92f338a40b6d4b6f45e471bc7f14d4aa6f01b9d68b6aab63b5e1f5622d740f",
+      "provenance": "project-source"
+    },
+    {
+      "path": "native/inspect_runtime.py",
+      "bytes": 3991,
+      "sha256": "2efb4d782766bfd22a79a5728a76383b058a0e1d91930a29656ff71577933497",
+      "provenance": "project-source"
+    },
+    {
+      "path": "native/patch_ivan_renderer.py",
+      "bytes": 2377,
+      "sha256": "2ad08b7cd3664e3ec180e689529fc9a51d4b25a4c0ae2e6a19a12be746d179cb",
+      "provenance": "project-source"
+    },
+    {
+      "path": "native/runtime/MPUlt.exe",
+      "bytes": 196608,
+      "sha256": "228b3145460a399e2accc17cb5b891568ec8ddd33c011f1f2a32a00c59743327",
+      "provenance": "project-source"
+    },
+    {
+      "path": "native/runtime/MPUlt_puzzles.txt",
+      "bytes": 30016,
+      "sha256": "b52bf61866d2d47e582b28e1adb64dda3141ed42591b639b955f91dc60c598e2",
+      "provenance": "project-source"
+    },
+    {
+      "path": "native/runtime/MPUlt_settings.txt",
+      "bytes": 5053,
+      "sha256": "40f2b52ea72bbfe5c56f69e878d6cb2a0e318c7f1875e9ca1270e4d7099e19dc",
+      "provenance": "project-source"
+    },
+    {
+      "path": "native_bridge.py",
+      "bytes": 5536,
+      "sha256": "f01b64de34698f3e6dff2d3587903f3afb759d2a25f3b483ae68f1b95b67709f",
+      "provenance": "project-source"
+    },
+    {
+      "path": "oracle/move_engine.py",
+      "bytes": 3175,
+      "sha256": "17111911c572d2db6f20398f8fd247a9584f8cb6f4fdc7b2968db00116619c95",
+      "provenance": "project-source"
+    },
+    {
+      "path": "packaging/C600Studio.iss",
+      "bytes": 1322,
+      "sha256": "d8ddb551149a25d1e2b6026258f94405a28155a6f46a6964246d6aeca3126d9b",
+      "provenance": "project-source"
+    },
+    {
+      "path": "packaging/C600Studio.spec",
+      "bytes": 1479,
+      "sha256": "7fc503aeee639ad87cf6ab6bbc75f00c3e9d9db8ba28ee1e76a3562ae57027f0",
+      "provenance": "project-source"
+    },
+    {
+      "path": "packaging/README.md",
+      "bytes": 2507,
+      "sha256": "280b016c183ec3faa77f03a53add6affa2770778ca24dbad12a46ba4b0db4357",
+      "provenance": "project-source"
+    },
+    {
+      "path": "packaging/build_installer.py",
+      "bytes": 2207,
+      "sha256": "01855d9707965cd6af0409ce6c91d6e5beab641eb2824e121d76c58ab3921ac6",
+      "provenance": "project-source"
+    },
+    {
+      "path": "packaging/build_windows.py",
+      "bytes": 10012,
+      "sha256": "612968982e0c4e144ee817f124f380b6e32b9d3980b610a30fba25eb311d03fb",
+      "provenance": "project-source"
+    },
+    {
+      "path": "packaging/engine_entry.py",
+      "bytes": 389,
+      "sha256": "c0650a8557adca697340d3281241648704c243f8b7718c013f517ce29f598c22",
+      "provenance": "project-source"
+    },
+    {
+      "path": "packaging/launcher.py",
+      "bytes": 9713,
+      "sha256": "a50713b96854300ee7547d1cdd7b651a1160557376e2a72090e2b48b13d9fbcf",
+      "provenance": "project-source"
+    },
+    {
+      "path": "packaging/requirements-build.txt",
+      "bytes": 20,
+      "sha256": "f9d0679767cea835d1adcab8bf9d076b049354ce62f7e387b354579ef1e13728",
+      "provenance": "project-source"
+    },
+    {
+      "path": "requirements.txt",
+      "bytes": 15,
+      "sha256": "99f43573522565d7c480efd1f954892948033915df6a4e685327e995d3396eb6",
+      "provenance": "project-source"
+    },
+    {
+      "path": "server.py",
+      "bytes": 20399,
+      "sha256": "cabe30d2f5baa6131202975d25684f3abc4c850a1c29935c36e43a58484172cd",
+      "provenance": "project-source"
+    },
+    {
+      "path": "session.py",
+      "bytes": 18864,
+      "sha256": "6abbd20bc1a66169e48013f67215cc35282ce9fb60234a5bfbea4ab0560eff6a",
+      "provenance": "project-source"
+    },
+    {
+      "path": "session_lock.py",
+      "bytes": 923,
+      "sha256": "6797bea8e724cbf8dbee2e52b66c9e9fe21d40fc652a72e9bd2ba33d71f61ca8",
+      "provenance": "project-source"
+    },
+    {
+      "path": "start_native_windows.bat",
+      "bytes": 555,
+      "sha256": "a4617acaa9906aa959f6c7af50c3297bd9f5a852cc3f131ae04fe2a1fda4dd03",
+      "provenance": "project-source"
+    },
+    {
+      "path": "start_unix.sh",
+      "bytes": 264,
+      "sha256": "79efbd3b9d87eac6312c4c2518880e8bc611bdd6e52e24d21070a2187b6bddbd",
+      "provenance": "project-source"
+    },
+    {
+      "path": "start_windows.bat",
+      "bytes": 529,
+      "sha256": "5b1a5a0c4d2c792077aabb47eb63469d26798de2baef4ef769a3608ea745a6ae",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/VALIDATION.md",
+      "bytes": 5332,
+      "sha256": "b0920d0a44d86ffae829bac29729cc247ea10dfc617e3cb235f25a38402107af",
+      "provenance": "root-reviewed-public-validation"
+    },
+    {
+      "path": "tests/benchmark_core.py",
+      "bytes": 1637,
+      "sha256": "1216b37aab3692c93a15625b3441443baaa93b6aa7f7c8b120e7c260da55c894",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/browser_harness.py",
+      "bytes": 3024,
+      "sha256": "0bb3c3fbadfa557a4bf1fcff7a09f7dd08831bd531d96c0f0325309ebb6b845f",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/native/NativeDataRegression.cs",
+      "bytes": 5618,
+      "sha256": "7a2772ff282c20a188a6b0a0de842e739daa36d5f4cc7e44b28042f049481f54",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/native/NativeDeviceRecoveryRegression.cs",
+      "bytes": 4666,
+      "sha256": "d50ac0c00600372586fd81c510a4bcdaf815ca5ac14655f757ea7c43276e4b26",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/native/NativeFramePolicyRegression.cs",
+      "bytes": 15588,
+      "sha256": "4ee71e65d8566e248f6e1a35a800399d6c3154f324cdd10c4bb2a5b9a987f443",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/native/NativeFullRendererRegression.cs",
+      "bytes": 4132,
+      "sha256": "d22dbc98870c46488720443da512b7a50594113e115713b7c050cb6b4f4db9bd",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/native/NativeHostRegression.cs",
+      "bytes": 10474,
+      "sha256": "d75b9014fda6f79fd0d2445b00a2d55b253579b19ce0e56faa16aab7dc8bf13d",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/native/NativePerformanceRegression.cs",
+      "bytes": 34278,
+      "sha256": "6d1b6ca3b66aebab9a0badde656bf60edb6109c768913a5f696f8c055c6ef549",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/native/NativePickingRegression.cs",
+      "bytes": 23915,
+      "sha256": "d263b137ee25613253fbc038156841cbdcb36febb57a4880d73c400bbb9ec3a6",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/native/NativeRenderSubsetRegression.cs",
+      "bytes": 9740,
+      "sha256": "3d329564097a1062440202718164f408b59af3d16699338878348d67a146e119",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/native/NativeRendererRegression.cs",
+      "bytes": 71092,
+      "sha256": "d36f80c5b605079c799a81bae934fbdb4b9b056ab4dfd8b8ab8a2aca90a2ec49",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/native/NativeSessionLogRegression.cs",
+      "bytes": 9961,
+      "sha256": "677f8c6fd22a1d7c14523d5ab5700e34c99ef2e3c3eef817c06eebb1480f9cd6",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/native/NativeToolRegression.cs",
+      "bytes": 8291,
+      "sha256": "4656fb2e8517e8e9c0bec634b500d1c94668684b8db79d2d5317100c7696c299",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/reference_solve.json.gz",
+      "bytes": 953086,
+      "sha256": "afcc88a55c9569630cca4360606322a0b394f5ffb140ee65047d33a635223802",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/reproduce_v021_readiness.py",
+      "bytes": 2959,
+      "sha256": "e634eda0ef391604be79b38bfa14100df222ba814b27890521f4608411f6f346",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/run_debug.py",
+      "bytes": 8410,
+      "sha256": "335143d9a6bf891bb8cacb4eb9c4a60f6009cf9c65e2ef127e630cfc2e844d29",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/test_browser_ui.py",
+      "bytes": 4887,
+      "sha256": "adeb17ec9c3ee1e6cf1591543f097ab33c4df9f1ee232b7804e57fd8488f4ad2",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/test_core.py",
+      "bytes": 4653,
+      "sha256": "52c02aa87d6e2d03727d19478bb804f04b1cad745b5fc6572280097b23e10f63",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/test_crash.py",
+      "bytes": 1576,
+      "sha256": "9e84770d09a01e97d6d5baa0f29a0b5a36f2cf2dc783729739cdffad92b4698c",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/test_debug_cleanup.py",
+      "bytes": 1454,
+      "sha256": "d38d94ad80d178ecf23cb480ebdcb6d2e7e3ef71413411fff1fb21b33162537d",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/test_engine_lifecycle.py",
+      "bytes": 13332,
+      "sha256": "8299f5b163cb12e0a009a169c68744524d942a502a353f1107f589d8ab2636d8",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/test_frame_preferences.py",
+      "bytes": 1961,
+      "sha256": "44da87c5ad17d6afdefdd0c80fb31de505eec8bba0ca242f0504fa9a8bb93e5c",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/test_full_reference_replay.py",
+      "bytes": 1568,
+      "sha256": "616ee92bae2d077c175a24ab3103cdca7f93d91b6ce6632c31b7761ee16ef6f1",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/test_http_boundary.py",
+      "bytes": 1676,
+      "sha256": "d295367191be7dff74b3c2fd3294862d235edf501ac11088b6dc04cf1b778d65",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/test_log_workflow.py",
+      "bytes": 12933,
+      "sha256": "87bc530b716373d93de065afb8fdbe0879af4f27640d1b35734f672914a5962a",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/test_mpult_log.py",
+      "bytes": 8712,
+      "sha256": "6e72e3d2385332d50415ceb919b627e18ef36173bfa51f075aed6bd44ae5ddbe",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/test_native_bridge.py",
+      "bytes": 3477,
+      "sha256": "40c5595fb7b95e0dc5b019b0071f0487bac641dbe3dac8295117699400cad619",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/test_native_selection_http.py",
+      "bytes": 4534,
+      "sha256": "dcd0da80d43092431b93a89958cddb241f9c6ce03712d6b498036a95642b9f91",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/test_native_snapshot.py",
+      "bytes": 4663,
+      "sha256": "63e28dfdd924303324067cdcf37c54d3e83991f470334341ab684a626a3ad6b9",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/test_native_startup_contract.py",
+      "bytes": 3315,
+      "sha256": "bf6822e72029fc27bf5367ef81839fb0c587a782032de50a32a372da8183b192",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/test_packaged_engine_command.py",
+      "bytes": 3065,
+      "sha256": "12ad6b67efb9ba6bbf9b1cc861cecfb1d7fe26e5b746ce6085c7120352bffce6",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/test_piece_filters.py",
+      "bytes": 14614,
+      "sha256": "7e66f50e766094da9e16b7ea2b579f8200ef50512a273cc0d3a8613efe32467f",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/test_portable_package.py",
+      "bytes": 8037,
+      "sha256": "5dcba6257d241bb4d4a470801ff1e5814ce81f56fb58502fe298986fcaef46b3",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/test_recovery_camera.py",
+      "bytes": 9597,
+      "sha256": "cfc7e0fad758d28b71253e7d977da218251638be140714bed54d9d3b01e00001",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/test_reference_maps.py",
+      "bytes": 921,
+      "sha256": "c1ffdfabae855f73e171dc148cae36a2d51efd63acc68a649904051b82d9f2e6",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/test_scramble.py",
+      "bytes": 8509,
+      "sha256": "7504b3f3773e6b6c326c8ff3ae46f70870ffd6be33b1f585961bc63bbddaa0a3",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/test_v02.py",
+      "bytes": 3031,
+      "sha256": "1e4707e06398118767fcfcd986c90a085f439406c41ab821c37f717d44aa1788",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/test_workflow_windows.py",
+      "bytes": 19352,
+      "sha256": "8bbe3825c0ee5c89565f15c219d1fff7d2c78d11c7ad426680db426770b9161a",
+      "provenance": "project-source"
+    },
+    {
+      "path": "verify.py",
+      "bytes": 3925,
+      "sha256": "7756871546c958a3c206cb3b171b3ea43cb728e68bdffe98bc97c6d4bc17158a",
+      "provenance": "project-source"
+    },
+    {
+      "path": "web/app.js",
+      "bytes": 22561,
+      "sha256": "7c5d7d60e3255932b9aab6635bef763bda2f7350a3c4be2bccd733128c324a31",
+      "provenance": "project-source"
+    },
+    {
+      "path": "web/index.html",
+      "bytes": 13233,
+      "sha256": "adb128cd5a303d4c073f3da6e87ebc38d1fe5ca63a78e48b60b0a823937e3de1",
+      "provenance": "project-source"
+    },
+    {
+      "path": "web/renderer.js",
+      "bytes": 17968,
+      "sha256": "5cef8c6dab15c40c13a4d3bff3b01b19e4bb278a56faeb5cbb0149deec667021",
+      "provenance": "project-source"
+    },
+    {
+      "path": "web/style.css",
+      "bytes": 10105,
+      "sha256": "88047651dc5ab1f475c017ae8f5dcfcba534e927f8fcb7104df1c77c2e3c8999",
+      "provenance": "project-source"
+    },
+    {
+      "path": "web/workbench.js",
+      "bytes": 14817,
+      "sha256": "d3e13e81d54671a0bb3ea317c6dc1890fc1d9c7028bf939179a9d2f0d3bb04cf",
+      "provenance": "project-source"
+    },
+    {
+      "path": "web/worker.js",
+      "bytes": 730,
+      "sha256": "b1d45225fa4c9307a5eee9809ca3b8c7b74344e829fe68bf48d35499237ef83f",
+      "provenance": "project-source"
+    }
+  ],
+  "native_source_order": [
+    "NativeHost.cs",
+    "NativeDockLayout.cs",
+    "NativeDiagnostics.cs",
+    "NativeRendererLifecycle.cs",
+    "NativeSnapshot.cs",
+    "NativeStickerAccess.cs",
+    "NativeRenderSubset.cs",
+    "NativePickingVisibility.cs",
+    "NativeFullRenderer.cs"
+  ],
+  "native_production_combined_sha256": "a4eadfa999dae4487bac5d69fa22211fddbe2f87673920e2a87abe009598f0e9",
+  "private_data_included": false,
+  "microsoft_directx_payload_included": false
+}

@@ -1,0 +1,2870 @@
+{
+  "pieces": 177120,
+  "stickers": 259800,
+  "stickers_per_cell": 433,
+  "fixed_centers": 600,
+  "moving_orbits": 35,
+  "orbits": [
+    {
+      "id": 0,
+      "rank": 1,
+      "colors": 2,
+      "pieces": 1200,
+      "stickers": 2400,
+      "representative": 1,
+      "mask": [
+        0,
+        13
+      ],
+      "faces": [
+        0,
+        13
+      ],
+      "orientation_order": 2,
+      "orientation_group": "C2",
+      "orientation_permutations": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "primitive_parity_bits": [
+        0,
+        0
+      ],
+      "orientation_abelian_modulus": 2,
+      "orientation_abelian_generator_totals": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": 1,
+      "rank": 2,
+      "colors": 1,
+      "pieces": 3600,
+      "stickers": 3600,
+      "representative": 3,
+      "mask": [
+        0,
+        12,
+        13
+      ],
+      "faces": [
+        0
+      ],
+      "orientation_order": 1,
+      "orientation_group": "trivial",
+      "primitive_parity_bits": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": 2,
+      "rank": 3,
+      "colors": 1,
+      "pieces": 2400,
+      "stickers": 2400,
+      "representative": 11,
+      "mask": [
+        0,
+        10,
+        12,
+        13
+      ],
+      "faces": [
+        0
+      ],
+      "orientation_order": 1,
+      "orientation_group": "trivial",
+      "primitive_parity_bits": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": 3,
+      "rank": 3,
+      "colors": 2,
+      "pieces": 3600,
+      "stickers": 7200,
+      "representative": 4,
+      "mask": [
+        0,
+        12,
+        13,
+        17
+      ],
+      "faces": [
+        0,
+        12
+      ],
+      "orientation_order": 2,
+      "orientation_group": "C2",
+      "orientation_permutations": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "primitive_parity_bits": [
+        0,
+        0
+      ],
+      "orientation_abelian_modulus": 2,
+      "orientation_abelian_generator_totals": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": 4,
+      "rank": 4,
+      "colors": 1,
+      "pieces": 7200,
+      "stickers": 7200,
+      "representative": 12,
+      "mask": [
+        0,
+        10,
+        12,
+        13,
+        38
+      ],
+      "faces": [
+        0
+      ],
+      "orientation_order": 1,
+      "orientation_group": "trivial",
+      "primitive_parity_bits": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": 5,
+      "rank": 4,
+      "colors": 1,
+      "pieces": 7200,
+      "stickers": 7200,
+      "representative": 13,
+      "mask": [
+        0,
+        10,
+        12,
+        13,
+        35
+      ],
+      "faces": [
+        0
+      ],
+      "orientation_order": 1,
+      "orientation_group": "trivial",
+      "primitive_parity_bits": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": 6,
+      "rank": 4,
+      "colors": 5,
+      "pieces": 720,
+      "stickers": 3600,
+      "representative": 10,
+      "mask": [
+        0,
+        10,
+        12,
+        35,
+        38
+      ],
+      "faces": [
+        0,
+        10,
+        12,
+        35,
+        38
+      ],
+      "orientation_order": 10,
+      "orientation_group": "D5 (order 10)",
+      "orientation_permutations": [
+        [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        [
+          0,
+          2,
+          1,
+          4,
+          3
+        ],
+        [
+          1,
+          0,
+          4,
+          3,
+          2
+        ],
+        [
+          1,
+          4,
+          0,
+          2,
+          3
+        ],
+        [
+          2,
+          0,
+          3,
+          4,
+          1
+        ],
+        [
+          2,
+          3,
+          0,
+          1,
+          4
+        ],
+        [
+          3,
+          2,
+          4,
+          1,
+          0
+        ],
+        [
+          3,
+          4,
+          2,
+          0,
+          1
+        ],
+        [
+          4,
+          1,
+          3,
+          2,
+          0
+        ],
+        [
+          4,
+          3,
+          1,
+          0,
+          2
+        ]
+      ],
+      "primitive_parity_bits": [
+        0,
+        0
+      ],
+      "orientation_abelian_modulus": 2,
+      "orientation_abelian_generator_totals": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": 7,
+      "rank": 5,
+      "colors": 1,
+      "pieces": 7200,
+      "stickers": 7200,
+      "representative": 14,
+      "mask": [
+        0,
+        10,
+        12,
+        13,
+        35,
+        38
+      ],
+      "faces": [
+        0
+      ],
+      "orientation_order": 1,
+      "orientation_group": "trivial",
+      "primitive_parity_bits": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": 8,
+      "rank": 5,
+      "colors": 2,
+      "pieces": 3600,
+      "stickers": 7200,
+      "representative": 16,
+      "mask": [
+        0,
+        10,
+        12,
+        13,
+        17,
+        35
+      ],
+      "faces": [
+        0,
+        12
+      ],
+      "orientation_order": 2,
+      "orientation_group": "C2",
+      "orientation_permutations": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "primitive_parity_bits": [
+        0,
+        0
+      ],
+      "orientation_abelian_modulus": 2,
+      "orientation_abelian_generator_totals": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": 9,
+      "rank": 6,
+      "colors": 2,
+      "pieces": 7200,
+      "stickers": 14400,
+      "representative": 17,
+      "mask": [
+        0,
+        10,
+        12,
+        13,
+        17,
+        35,
+        38
+      ],
+      "faces": [
+        0,
+        12
+      ],
+      "orientation_order": 1,
+      "orientation_group": "trivial",
+      "orientation_permutations": [
+        [
+          0,
+          1
+        ]
+      ],
+      "primitive_parity_bits": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": 10,
+      "rank": 7,
+      "colors": 1,
+      "pieces": 7200,
+      "stickers": 7200,
+      "representative": 22,
+      "mask": [
+        0,
+        8,
+        10,
+        12,
+        13,
+        17,
+        35,
+        38
+      ],
+      "faces": [
+        0
+      ],
+      "orientation_order": 1,
+      "orientation_group": "trivial",
+      "primitive_parity_bits": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": 11,
+      "rank": 7,
+      "colors": 2,
+      "pieces": 3600,
+      "stickers": 7200,
+      "representative": 31,
+      "mask": [
+        0,
+        6,
+        10,
+        12,
+        13,
+        17,
+        35,
+        38
+      ],
+      "faces": [
+        0,
+        12
+      ],
+      "orientation_order": 2,
+      "orientation_group": "C2",
+      "orientation_permutations": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "primitive_parity_bits": [
+        0,
+        0
+      ],
+      "orientation_abelian_modulus": 2,
+      "orientation_abelian_generator_totals": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": 12,
+      "rank": 8,
+      "colors": 1,
+      "pieces": 7200,
+      "stickers": 7200,
+      "representative": 32,
+      "mask": [
+        0,
+        6,
+        8,
+        10,
+        12,
+        13,
+        17,
+        35,
+        38
+      ],
+      "faces": [
+        0
+      ],
+      "orientation_order": 1,
+      "orientation_group": "trivial",
+      "primitive_parity_bits": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": 13,
+      "rank": 8,
+      "colors": 1,
+      "pieces": 7200,
+      "stickers": 7200,
+      "representative": 41,
+      "mask": [
+        0,
+        5,
+        8,
+        10,
+        12,
+        13,
+        17,
+        35,
+        38
+      ],
+      "faces": [
+        0
+      ],
+      "orientation_order": 1,
+      "orientation_group": "trivial",
+      "primitive_parity_bits": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": 14,
+      "rank": 8,
+      "colors": 2,
+      "pieces": 7200,
+      "stickers": 14400,
+      "representative": 23,
+      "mask": [
+        0,
+        8,
+        10,
+        12,
+        13,
+        17,
+        35,
+        38,
+        67
+      ],
+      "faces": [
+        0,
+        12
+      ],
+      "orientation_order": 1,
+      "orientation_group": "trivial",
+      "orientation_permutations": [
+        [
+          0,
+          1
+        ]
+      ],
+      "primitive_parity_bits": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": 15,
+      "rank": 9,
+      "colors": 1,
+      "pieces": 2400,
+      "stickers": 2400,
+      "representative": 64,
+      "mask": [
+        0,
+        5,
+        6,
+        8,
+        10,
+        12,
+        13,
+        17,
+        35,
+        38
+      ],
+      "faces": [
+        0
+      ],
+      "orientation_order": 1,
+      "orientation_group": "trivial",
+      "primitive_parity_bits": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": 16,
+      "rank": 9,
+      "colors": 2,
+      "pieces": 7200,
+      "stickers": 14400,
+      "representative": 33,
+      "mask": [
+        0,
+        6,
+        8,
+        10,
+        12,
+        13,
+        17,
+        35,
+        38,
+        67
+      ],
+      "faces": [
+        0,
+        12
+      ],
+      "orientation_order": 1,
+      "orientation_group": "trivial",
+      "orientation_permutations": [
+        [
+          0,
+          1
+        ]
+      ],
+      "primitive_parity_bits": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": 17,
+      "rank": 9,
+      "colors": 5,
+      "pieces": 1440,
+      "stickers": 7200,
+      "representative": 25,
+      "mask": [
+        0,
+        8,
+        10,
+        12,
+        13,
+        17,
+        35,
+        38,
+        45,
+        67
+      ],
+      "faces": [
+        0,
+        10,
+        12,
+        35,
+        38
+      ],
+      "orientation_order": 5,
+      "orientation_group": "C5",
+      "orientation_permutations": [
+        [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        [
+          1,
+          4,
+          0,
+          2,
+          3
+        ],
+        [
+          2,
+          0,
+          3,
+          4,
+          1
+        ],
+        [
+          3,
+          2,
+          4,
+          1,
+          0
+        ],
+        [
+          4,
+          3,
+          1,
+          0,
+          2
+        ]
+      ],
+      "primitive_parity_bits": [
+        0,
+        0
+      ],
+      "orientation_abelian_modulus": 5,
+      "orientation_abelian_generator_totals": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": 18,
+      "rank": 10,
+      "colors": 1,
+      "pieces": 7200,
+      "stickers": 7200,
+      "representative": 65,
+      "mask": [
+        0,
+        5,
+        6,
+        8,
+        10,
+        12,
+        13,
+        17,
+        35,
+        38,
+        67
+      ],
+      "faces": [
+        0
+      ],
+      "orientation_order": 1,
+      "orientation_group": "trivial",
+      "primitive_parity_bits": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": 19,
+      "rank": 10,
+      "colors": 1,
+      "pieces": 7200,
+      "stickers": 7200,
+      "representative": 66,
+      "mask": [
+        0,
+        5,
+        6,
+        8,
+        10,
+        12,
+        13,
+        17,
+        35,
+        38,
+        56
+      ],
+      "faces": [
+        0
+      ],
+      "orientation_order": 1,
+      "orientation_group": "trivial",
+      "primitive_parity_bits": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": 20,
+      "rank": 10,
+      "colors": 2,
+      "pieces": 7200,
+      "stickers": 14400,
+      "representative": 34,
+      "mask": [
+        0,
+        6,
+        8,
+        10,
+        12,
+        13,
+        17,
+        35,
+        38,
+        45,
+        67
+      ],
+      "faces": [
+        0,
+        12
+      ],
+      "orientation_order": 1,
+      "orientation_group": "trivial",
+      "orientation_permutations": [
+        [
+          0,
+          1
+        ]
+      ],
+      "primitive_parity_bits": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": 21,
+      "rank": 11,
+      "colors": 1,
+      "pieces": 7200,
+      "stickers": 7200,
+      "representative": 69,
+      "mask": [
+        0,
+        5,
+        6,
+        8,
+        10,
+        12,
+        13,
+        17,
+        35,
+        38,
+        45,
+        67
+      ],
+      "faces": [
+        0
+      ],
+      "orientation_order": 1,
+      "orientation_group": "trivial",
+      "primitive_parity_bits": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": 22,
+      "rank": 11,
+      "colors": 2,
+      "pieces": 3600,
+      "stickers": 7200,
+      "representative": 67,
+      "mask": [
+        0,
+        5,
+        6,
+        8,
+        10,
+        12,
+        13,
+        17,
+        35,
+        38,
+        56,
+        67
+      ],
+      "faces": [
+        0,
+        12
+      ],
+      "orientation_order": 2,
+      "orientation_group": "C2",
+      "orientation_permutations": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "primitive_parity_bits": [
+        0,
+        0
+      ],
+      "orientation_abelian_modulus": 2,
+      "orientation_abelian_generator_totals": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": 23,
+      "rank": 12,
+      "colors": 2,
+      "pieces": 7200,
+      "stickers": 14400,
+      "representative": 70,
+      "mask": [
+        0,
+        5,
+        6,
+        8,
+        10,
+        12,
+        13,
+        17,
+        35,
+        38,
+        45,
+        56,
+        67
+      ],
+      "faces": [
+        0,
+        12
+      ],
+      "orientation_order": 1,
+      "orientation_group": "trivial",
+      "orientation_permutations": [
+        [
+          0,
+          1
+        ]
+      ],
+      "primitive_parity_bits": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": 24,
+      "rank": 13,
+      "colors": 1,
+      "pieces": 7200,
+      "stickers": 7200,
+      "representative": 74,
+      "mask": [
+        0,
+        5,
+        6,
+        8,
+        10,
+        12,
+        13,
+        17,
+        35,
+        38,
+        39,
+        45,
+        56,
+        67
+      ],
+      "faces": [
+        0
+      ],
+      "orientation_order": 1,
+      "orientation_group": "trivial",
+      "primitive_parity_bits": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": 25,
+      "rank": 13,
+      "colors": 2,
+      "pieces": 3600,
+      "stickers": 7200,
+      "representative": 81,
+      "mask": [
+        0,
+        5,
+        6,
+        8,
+        10,
+        12,
+        13,
+        17,
+        30,
+        35,
+        38,
+        39,
+        45,
+        67
+      ],
+      "faces": [
+        0,
+        10
+      ],
+      "orientation_order": 2,
+      "orientation_group": "C2",
+      "orientation_permutations": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "primitive_parity_bits": [
+        0,
+        0
+      ],
+      "orientation_abelian_modulus": 2,
+      "orientation_abelian_generator_totals": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": 26,
+      "rank": 14,
+      "colors": 1,
+      "pieces": 7200,
+      "stickers": 7200,
+      "representative": 82,
+      "mask": [
+        0,
+        5,
+        6,
+        8,
+        10,
+        12,
+        13,
+        17,
+        30,
+        35,
+        38,
+        39,
+        45,
+        56,
+        67
+      ],
+      "faces": [
+        0
+      ],
+      "orientation_order": 1,
+      "orientation_group": "trivial",
+      "primitive_parity_bits": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": 27,
+      "rank": 14,
+      "colors": 1,
+      "pieces": 7200,
+      "stickers": 7200,
+      "representative": 90,
+      "mask": [
+        0,
+        5,
+        6,
+        8,
+        10,
+        12,
+        13,
+        17,
+        26,
+        35,
+        38,
+        39,
+        45,
+        56,
+        67
+      ],
+      "faces": [
+        0
+      ],
+      "orientation_order": 1,
+      "orientation_group": "trivial",
+      "primitive_parity_bits": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": 28,
+      "rank": 14,
+      "colors": 5,
+      "pieces": 1440,
+      "stickers": 7200,
+      "representative": 75,
+      "mask": [
+        0,
+        5,
+        6,
+        8,
+        10,
+        12,
+        13,
+        17,
+        35,
+        38,
+        39,
+        45,
+        56,
+        67,
+        91
+      ],
+      "faces": [
+        0,
+        10,
+        12,
+        35,
+        38
+      ],
+      "orientation_order": 5,
+      "orientation_group": "C5",
+      "orientation_permutations": [
+        [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        [
+          1,
+          4,
+          0,
+          2,
+          3
+        ],
+        [
+          2,
+          0,
+          3,
+          4,
+          1
+        ],
+        [
+          3,
+          2,
+          4,
+          1,
+          0
+        ],
+        [
+          4,
+          3,
+          1,
+          0,
+          2
+        ]
+      ],
+      "primitive_parity_bits": [
+        0,
+        0
+      ],
+      "orientation_abelian_modulus": 5,
+      "orientation_abelian_generator_totals": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": 29,
+      "rank": 15,
+      "colors": 1,
+      "pieces": 2400,
+      "stickers": 2400,
+      "representative": 105,
+      "mask": [
+        0,
+        5,
+        6,
+        8,
+        10,
+        12,
+        13,
+        17,
+        26,
+        30,
+        35,
+        38,
+        39,
+        45,
+        56,
+        67
+      ],
+      "faces": [
+        0
+      ],
+      "orientation_order": 1,
+      "orientation_group": "trivial",
+      "primitive_parity_bits": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": 30,
+      "rank": 15,
+      "colors": 2,
+      "pieces": 7200,
+      "stickers": 14400,
+      "representative": 83,
+      "mask": [
+        0,
+        5,
+        6,
+        8,
+        10,
+        12,
+        13,
+        17,
+        30,
+        35,
+        38,
+        39,
+        45,
+        56,
+        67,
+        91
+      ],
+      "faces": [
+        0,
+        10
+      ],
+      "orientation_order": 1,
+      "orientation_group": "trivial",
+      "orientation_permutations": [
+        [
+          0,
+          1
+        ]
+      ],
+      "primitive_parity_bits": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": 31,
+      "rank": 16,
+      "colors": 1,
+      "pieces": 7200,
+      "stickers": 7200,
+      "representative": 106,
+      "mask": [
+        0,
+        5,
+        6,
+        8,
+        10,
+        12,
+        13,
+        17,
+        26,
+        30,
+        35,
+        38,
+        39,
+        45,
+        56,
+        67,
+        91
+      ],
+      "faces": [
+        0
+      ],
+      "orientation_order": 1,
+      "orientation_group": "trivial",
+      "primitive_parity_bits": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": 32,
+      "rank": 17,
+      "colors": 2,
+      "pieces": 3600,
+      "stickers": 7200,
+      "representative": 108,
+      "mask": [
+        0,
+        5,
+        6,
+        8,
+        10,
+        12,
+        13,
+        17,
+        26,
+        30,
+        35,
+        38,
+        39,
+        45,
+        56,
+        60,
+        67,
+        91
+      ],
+      "faces": [
+        0,
+        12
+      ],
+      "orientation_order": 2,
+      "orientation_group": "C2",
+      "orientation_permutations": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "primitive_parity_bits": [
+        0,
+        0
+      ],
+      "orientation_abelian_modulus": 2,
+      "orientation_abelian_generator_totals": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": 33,
+      "rank": 18,
+      "colors": 1,
+      "pieces": 2400,
+      "stickers": 2400,
+      "representative": 115,
+      "mask": [
+        0,
+        5,
+        6,
+        8,
+        10,
+        12,
+        13,
+        17,
+        26,
+        30,
+        35,
+        38,
+        39,
+        45,
+        49,
+        56,
+        60,
+        67,
+        91
+      ],
+      "faces": [
+        0
+      ],
+      "orientation_order": 1,
+      "orientation_group": "trivial",
+      "primitive_parity_bits": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": 34,
+      "rank": 19,
+      "colors": 20,
+      "pieces": 120,
+      "stickers": 2400,
+      "representative": 116,
+      "mask": [
+        0,
+        5,
+        6,
+        8,
+        10,
+        12,
+        13,
+        17,
+        26,
+        30,
+        35,
+        38,
+        39,
+        45,
+        49,
+        56,
+        60,
+        67,
+        74,
+        91
+      ],
+      "faces": [
+        0,
+        5,
+        6,
+        8,
+        10,
+        12,
+        13,
+        17,
+        26,
+        30,
+        35,
+        38,
+        39,
+        45,
+        49,
+        56,
+        60,
+        67,
+        74,
+        91
+      ],
+      "orientation_order": 60,
+      "orientation_group": "A5 (order 60)",
+      "orientation_permutations": [
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ],
+        [
+          0,
+          7,
+          10,
+          2,
+          6,
+          4,
+          5,
+          11,
+          17,
+          15,
+          3,
+          1,
+          8,
+          9,
+          16,
+          13,
+          19,
+          12,
+          18,
+          14
+        ],
+        [
+          0,
+          11,
+          3,
+          10,
+          5,
+          6,
+          4,
+          1,
+          12,
+          13,
+          2,
+          7,
+          17,
+          15,
+          19,
+          9,
+          14,
+          8,
+          18,
+          16
+        ],
+        [
+          1,
+          2,
+          0,
+          8,
+          9,
+          3,
+          6,
+          4,
+          5,
+          7,
+          12,
+          14,
+          16,
+          18,
+          15,
+          11,
+          10,
+          13,
+          17,
+          19
+        ],
+        [
+          1,
+          4,
+          12,
+          0,
+          6,
+          9,
+          3,
+          14,
+          13,
+          11,
+          8,
+          2,
+          5,
+          7,
+          10,
+          18,
+          19,
+          16,
+          17,
+          15
+        ],
+        [
+          1,
+          14,
+          8,
+          12,
+          3,
+          6,
+          9,
+          2,
+          16,
+          18,
+          0,
+          4,
+          13,
+          11,
+          19,
+          7,
+          15,
+          5,
+          17,
+          10
+        ],
+        [
+          2,
+          0,
+          1,
+          5,
+          7,
+          8,
+          6,
+          9,
+          3,
+          4,
+          16,
+          15,
+          10,
+          17,
+          11,
+          14,
+          12,
+          18,
+          13,
+          19
+        ],
+        [
+          2,
+          9,
+          16,
+          1,
+          6,
+          7,
+          8,
+          15,
+          18,
+          14,
+          5,
+          0,
+          3,
+          4,
+          12,
+          17,
+          19,
+          10,
+          13,
+          11
+        ],
+        [
+          2,
+          15,
+          5,
+          16,
+          8,
+          6,
+          7,
+          0,
+          10,
+          17,
+          1,
+          9,
+          18,
+          14,
+          19,
+          4,
+          11,
+          3,
+          13,
+          12
+        ],
+        [
+          3,
+          0,
+          11,
+          6,
+          1,
+          12,
+          4,
+          13,
+          10,
+          5,
+          14,
+          9,
+          2,
+          8,
+          7,
+          19,
+          17,
+          18,
+          15,
+          16
+        ],
+        [
+          3,
+          9,
+          6,
+          14,
+          12,
+          4,
+          1,
+          0,
+          2,
+          8,
+          11,
+          13,
+          18,
+          19,
+          16,
+          5,
+          7,
+          10,
+          15,
+          17
+        ],
+        [
+          3,
+          13,
+          14,
+          11,
+          4,
+          1,
+          12,
+          9,
+          18,
+          19,
+          6,
+          0,
+          10,
+          5,
+          17,
+          8,
+          16,
+          2,
+          15,
+          7
+        ],
+        [
+          4,
+          6,
+          5,
+          1,
+          3,
+          11,
+          0,
+          10,
+          7,
+          2,
+          13,
+          12,
+          9,
+          14,
+          8,
+          17,
+          15,
+          19,
+          16,
+          18
+        ],
+        [
+          4,
+          10,
+          13,
+          5,
+          0,
+          3,
+          11,
+          12,
+          19,
+          17,
+          1,
+          6,
+          7,
+          2,
+          15,
+          14,
+          18,
+          9,
+          16,
+          8
+        ],
+        [
+          4,
+          12,
+          1,
+          13,
+          11,
+          0,
+          3,
+          6,
+          9,
+          14,
+          5,
+          10,
+          19,
+          17,
+          18,
+          2,
+          8,
+          7,
+          16,
+          15
+        ],
+        [
+          5,
+          2,
+          15,
+          6,
+          0,
+          10,
+          7,
+          17,
+          16,
+          8,
+          11,
+          4,
+          1,
+          3,
+          9,
+          19,
+          18,
+          13,
+          14,
+          12
+        ],
+        [
+          5,
+          4,
+          6,
+          11,
+          10,
+          7,
+          0,
+          2,
+          1,
+          3,
+          15,
+          17,
+          13,
+          19,
+          12,
+          8,
+          9,
+          16,
+          14,
+          18
+        ],
+        [
+          5,
+          17,
+          11,
+          15,
+          7,
+          0,
+          10,
+          4,
+          13,
+          19,
+          6,
+          2,
+          16,
+          8,
+          18,
+          3,
+          12,
+          1,
+          14,
+          9
+        ],
+        [
+          6,
+          3,
+          9,
+          4,
+          0,
+          2,
+          1,
+          8,
+          14,
+          12,
+          7,
+          5,
+          11,
+          10,
+          13,
+          16,
+          18,
+          15,
+          19,
+          17
+        ],
+        [
+          6,
+          5,
+          4,
+          7,
+          2,
+          1,
+          0,
+          3,
+          11,
+          10,
+          9,
+          8,
+          15,
+          16,
+          17,
+          12,
+          13,
+          14,
+          19,
+          18
+        ],
+        [
+          6,
+          8,
+          7,
+          9,
+          1,
+          0,
+          2,
+          5,
+          15,
+          16,
+          4,
+          3,
+          14,
+          12,
+          18,
+          10,
+          17,
+          11,
+          19,
+          13
+        ],
+        [
+          7,
+          6,
+          8,
+          0,
+          5,
+          15,
+          2,
+          16,
+          9,
+          1,
+          17,
+          10,
+          4,
+          11,
+          3,
+          18,
+          14,
+          19,
+          12,
+          13
+        ],
+        [
+          7,
+          10,
+          0,
+          17,
+          15,
+          2,
+          5,
+          6,
+          4,
+          11,
+          8,
+          16,
+          19,
+          18,
+          13,
+          1,
+          3,
+          9,
+          12,
+          14
+        ],
+        [
+          7,
+          16,
+          17,
+          8,
+          2,
+          5,
+          15,
+          10,
+          19,
+          18,
+          0,
+          6,
+          9,
+          1,
+          14,
+          11,
+          13,
+          4,
+          12,
+          3
+        ],
+        [
+          8,
+          1,
+          14,
+          6,
+          2,
+          16,
+          9,
+          18,
+          12,
+          3,
+          15,
+          7,
+          0,
+          5,
+          4,
+          19,
+          13,
+          17,
+          11,
+          10
+        ],
+        [
+          8,
+          7,
+          6,
+          15,
+          16,
+          9,
+          2,
+          1,
+          0,
+          5,
+          14,
+          18,
+          17,
+          19,
+          10,
+          3,
+          4,
+          12,
+          11,
+          13
+        ],
+        [
+          8,
+          18,
+          15,
+          14,
+          9,
+          2,
+          16,
+          7,
+          17,
+          19,
+          6,
+          1,
+          12,
+          3,
+          13,
+          5,
+          10,
+          0,
+          11,
+          4
+        ],
+        [
+          9,
+          6,
+          3,
+          2,
+          8,
+          14,
+          1,
+          12,
+          4,
+          0,
+          18,
+          16,
+          7,
+          15,
+          5,
+          13,
+          11,
+          19,
+          10,
+          17
+        ],
+        [
+          9,
+          12,
+          18,
+          3,
+          1,
+          8,
+          14,
+          16,
+          19,
+          13,
+          2,
+          6,
+          4,
+          0,
+          11,
+          15,
+          17,
+          7,
+          10,
+          5
+        ],
+        [
+          9,
+          16,
+          2,
+          18,
+          14,
+          1,
+          8,
+          6,
+          7,
+          15,
+          3,
+          12,
+          19,
+          13,
+          17,
+          0,
+          5,
+          4,
+          10,
+          11
+        ],
+        [
+          10,
+          0,
+          7,
+          4,
+          11,
+          17,
+          5,
+          15,
+          2,
+          6,
+          19,
+          13,
+          3,
+          12,
+          1,
+          16,
+          8,
+          18,
+          9,
+          14
+        ],
+        [
+          10,
+          13,
+          4,
+          19,
+          17,
+          5,
+          11,
+          0,
+          3,
+          12,
+          7,
+          15,
+          18,
+          16,
+          14,
+          6,
+          1,
+          2,
+          9,
+          8
+        ],
+        [
+          10,
+          15,
+          19,
+          7,
+          5,
+          11,
+          17,
+          13,
+          18,
+          16,
+          4,
+          0,
+          2,
+          6,
+          8,
+          12,
+          14,
+          3,
+          9,
+          1
+        ],
+        [
+          11,
+          3,
+          0,
+          12,
+          13,
+          10,
+          4,
+          5,
+          6,
+          1,
+          17,
+          19,
+          14,
+          18,
+          9,
+          7,
+          2,
+          15,
+          8,
+          16
+        ],
+        [
+          11,
+          5,
+          17,
+          0,
+          4,
+          13,
+          10,
+          19,
+          15,
+          7,
+          12,
+          3,
+          6,
+          1,
+          2,
+          18,
+          16,
+          14,
+          8,
+          9
+        ],
+        [
+          11,
+          19,
+          12,
+          17,
+          10,
+          4,
+          13,
+          3,
+          14,
+          18,
+          0,
+          5,
+          15,
+          7,
+          16,
+          1,
+          9,
+          6,
+          8,
+          2
+        ],
+        [
+          12,
+          1,
+          4,
+          9,
+          14,
+          13,
+          3,
+          11,
+          0,
+          6,
+          19,
+          18,
+          8,
+          16,
+          2,
+          10,
+          5,
+          17,
+          7,
+          15
+        ],
+        [
+          12,
+          11,
+          19,
+          4,
+          3,
+          14,
+          13,
+          18,
+          17,
+          10,
+          9,
+          1,
+          0,
+          6,
+          5,
+          16,
+          15,
+          8,
+          7,
+          2
+        ],
+        [
+          12,
+          18,
+          9,
+          19,
+          13,
+          3,
+          14,
+          1,
+          8,
+          16,
+          4,
+          11,
+          17,
+          10,
+          15,
+          6,
+          2,
+          0,
+          7,
+          5
+        ],
+        [
+          13,
+          4,
+          10,
+          3,
+          12,
+          19,
+          11,
+          17,
+          5,
+          0,
+          18,
+          14,
+          1,
+          9,
+          6,
+          15,
+          7,
+          16,
+          2,
+          8
+        ],
+        [
+          13,
+          14,
+          3,
+          18,
+          19,
+          11,
+          12,
+          4,
+          1,
+          9,
+          10,
+          17,
+          16,
+          15,
+          8,
+          0,
+          6,
+          5,
+          2,
+          7
+        ],
+        [
+          13,
+          17,
+          18,
+          10,
+          11,
+          12,
+          19,
+          14,
+          16,
+          15,
+          3,
+          4,
+          5,
+          0,
+          7,
+          9,
+          8,
+          1,
+          2,
+          6
+        ],
+        [
+          14,
+          3,
+          13,
+          1,
+          9,
+          18,
+          12,
+          19,
+          11,
+          4,
+          16,
+          8,
+          6,
+          2,
+          0,
+          17,
+          10,
+          15,
+          5,
+          7
+        ],
+        [
+          14,
+          8,
+          1,
+          16,
+          18,
+          12,
+          9,
+          3,
+          6,
+          2,
+          13,
+          19,
+          15,
+          17,
+          7,
+          4,
+          0,
+          11,
+          5,
+          10
+        ],
+        [
+          14,
+          19,
+          16,
+          13,
+          12,
+          9,
+          18,
+          8,
+          15,
+          17,
+          1,
+          3,
+          11,
+          4,
+          10,
+          2,
+          7,
+          6,
+          5,
+          0
+        ],
+        [
+          15,
+          5,
+          2,
+          10,
+          17,
+          16,
+          7,
+          8,
+          6,
+          0,
+          18,
+          19,
+          11,
+          13,
+          4,
+          9,
+          1,
+          14,
+          3,
+          12
+        ],
+        [
+          15,
+          8,
+          18,
+          2,
+          7,
+          17,
+          16,
+          19,
+          14,
+          9,
+          10,
+          5,
+          6,
+          0,
+          1,
+          13,
+          12,
+          11,
+          3,
+          4
+        ],
+        [
+          15,
+          19,
+          10,
+          18,
+          16,
+          7,
+          17,
+          5,
+          11,
+          13,
+          2,
+          8,
+          14,
+          9,
+          12,
+          0,
+          4,
+          6,
+          3,
+          1
+        ],
+        [
+          16,
+          2,
+          9,
+          7,
+          15,
+          18,
+          8,
+          14,
+          1,
+          6,
+          19,
+          17,
+          5,
+          10,
+          0,
+          12,
+          3,
+          13,
+          4,
+          11
+        ],
+        [
+          16,
+          14,
+          19,
+          9,
+          8,
+          15,
+          18,
+          17,
+          13,
+          12,
+          7,
+          2,
+          1,
+          6,
+          3,
+          10,
+          11,
+          5,
+          4,
+          0
+        ],
+        [
+          16,
+          17,
+          7,
+          19,
+          18,
+          8,
+          15,
+          2,
+          5,
+          10,
+          9,
+          14,
+          13,
+          12,
+          11,
+          6,
+          0,
+          1,
+          4,
+          3
+        ],
+        [
+          17,
+          7,
+          16,
+          5,
+          10,
+          19,
+          15,
+          18,
+          8,
+          2,
+          13,
+          11,
+          0,
+          4,
+          6,
+          14,
+          9,
+          12,
+          1,
+          3
+        ],
+        [
+          17,
+          11,
+          5,
+          13,
+          19,
+          15,
+          10,
+          7,
+          0,
+          4,
+          16,
+          18,
+          12,
+          14,
+          3,
+          2,
+          6,
+          8,
+          1,
+          9
+        ],
+        [
+          17,
+          18,
+          13,
+          16,
+          15,
+          10,
+          19,
+          11,
+          12,
+          14,
+          5,
+          7,
+          8,
+          2,
+          9,
+          4,
+          3,
+          0,
+          1,
+          6
+        ],
+        [
+          18,
+          9,
+          12,
+          8,
+          16,
+          19,
+          14,
+          13,
+          3,
+          1,
+          17,
+          15,
+          2,
+          7,
+          6,
+          11,
+          4,
+          10,
+          0,
+          5
+        ],
+        [
+          18,
+          13,
+          17,
+          12,
+          14,
+          16,
+          19,
+          15,
+          10,
+          11,
+          8,
+          9,
+          3,
+          1,
+          4,
+          7,
+          5,
+          2,
+          0,
+          6
+        ],
+        [
+          18,
+          15,
+          8,
+          17,
+          19,
+          14,
+          16,
+          9,
+          2,
+          7,
+          12,
+          13,
+          10,
+          11,
+          5,
+          1,
+          6,
+          3,
+          0,
+          4
+        ],
+        [
+          19,
+          10,
+          15,
+          11,
+          13,
+          18,
+          17,
+          16,
+          7,
+          5,
+          14,
+          12,
+          4,
+          3,
+          0,
+          8,
+          2,
+          9,
+          6,
+          1
+        ],
+        [
+          19,
+          12,
+          11,
+          14,
+          18,
+          17,
+          13,
+          10,
+          4,
+          3,
+          15,
+          16,
+          9,
+          8,
+          1,
+          5,
+          0,
+          7,
+          6,
+          2
+        ],
+        [
+          19,
+          16,
+          14,
+          15,
+          17,
+          13,
+          18,
+          12,
+          9,
+          8,
+          11,
+          10,
+          7,
+          5,
+          2,
+          3,
+          1,
+          4,
+          6,
+          0
+        ]
+      ],
+      "primitive_parity_bits": [
+        0,
+        0
+      ]
+    }
+  ],
+  "simplified_base_elements": [
+    {
+      "element_vertices": [
+        0
+      ],
+      "piece": 116,
+      "orbit": 34,
+      "rank": 19,
+      "colors": 20
+    },
+    {
+      "element_vertices": [
+        1
+      ],
+      "piece": 238,
+      "orbit": 34,
+      "rank": 19,
+      "colors": 20
+    },
+    {
+      "element_vertices": [
+        2
+      ],
+      "piece": 432,
+      "orbit": 34,
+      "rank": 19,
+      "colors": 20
+    },
+    {
+      "element_vertices": [
+        3
+      ],
+      "piece": 365,
+      "orbit": 34,
+      "rank": 19,
+      "colors": 20
+    },
+    {
+      "element_vertices": [
+        0,
+        1
+      ],
+      "piece": 10,
+      "orbit": 6,
+      "rank": 4,
+      "colors": 5
+    },
+    {
+      "element_vertices": [
+        0,
+        2
+      ],
+      "piece": 37,
+      "orbit": 6,
+      "rank": 4,
+      "colors": 5
+    },
+    {
+      "element_vertices": [
+        0,
+        3
+      ],
+      "piece": 27,
+      "orbit": 6,
+      "rank": 4,
+      "colors": 5
+    },
+    {
+      "element_vertices": [
+        1,
+        2
+      ],
+      "piece": 133,
+      "orbit": 6,
+      "rank": 4,
+      "colors": 5
+    },
+    {
+      "element_vertices": [
+        1,
+        3
+      ],
+      "piece": 122,
+      "orbit": 6,
+      "rank": 4,
+      "colors": 5
+    },
+    {
+      "element_vertices": [
+        2,
+        3
+      ],
+      "piece": 286,
+      "orbit": 6,
+      "rank": 4,
+      "colors": 5
+    },
+    {
+      "element_vertices": [
+        0,
+        1,
+        2
+      ],
+      "piece": 5,
+      "orbit": 0,
+      "rank": 1,
+      "colors": 2
+    },
+    {
+      "element_vertices": [
+        0,
+        1,
+        3
+      ],
+      "piece": 2,
+      "orbit": 0,
+      "rank": 1,
+      "colors": 2
+    },
+    {
+      "element_vertices": [
+        0,
+        2,
+        3
+      ],
+      "piece": 1,
+      "orbit": 0,
+      "rank": 1,
+      "colors": 2
+    },
+    {
+      "element_vertices": [
+        1,
+        2,
+        3
+      ],
+      "piece": 117,
+      "orbit": 0,
+      "rank": 1,
+      "colors": 2
+    },
+    {
+      "element_vertices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "piece": 0,
+      "orbit": -1,
+      "rank": 0,
+      "colors": 1
+    }
+  ],
+  "simplified_moving_orbits": [
+    0,
+    6,
+    34
+  ]
+}
