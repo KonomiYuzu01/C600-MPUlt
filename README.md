@@ -8,7 +8,7 @@ It adds recoverable reset, exact piece filters, checkpoints, macros, buffer and 
 
 Run the Windows setup executable, or extract the portable ZIP and open `C600Studio.exe`. No separate Python or compiler is needed. Install [Microsoft Managed DirectX](DIRECTX.md) if prompted.
 
-See [Usage](USAGE.md) and [Building](docs/DEVELOPMENT.md). Thanks also to ivan216 for source references and Nan Ma for historical solving material. [Credits](CREDITS.md) · [MIT license](LICENSE) · [Third-party notices](THIRD_PARTY_NOTICES.md).
+See [Usage](USAGE.md) and [Building](docs/DEVELOPMENT.md). Acknowledgements to ivan216 for source references and Nan Ma for historical solving material. [Credits](CREDITS.md) · [MIT license](LICENSE) · [Third-party notices](THIRD_PARTY_NOTICES.md).
 
 [Research materials](research/README.md) include a LaTeX technical report, the full 35-orbit algorithms paper, reproducible synthetic replays, an independent configuration-count audit, and Full Detail Rotation hardware requirements.
 
