@@ -4,7 +4,9 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
-\usepackage{amsmath,amssymb}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{longtable}
+\newtheorem{proposition}{Proposition}[section]
 \usepackage{microtype}
 \usepackage[a4paper,top=23mm,bottom=24mm,left=24mm,right=24mm]{geometry}
 \usepackage{booktabs,tabularx,array}
@@ -35,15 +37,13 @@
 \title{\LARGE\bfseries Certified Control of the Full 600-Cell\\[0.45em]
   \large\normalfont Orbit structure, constructive algorithms, and a validated native workbench}
 \author{C600 Studio project}
-\date{Technical report, September 2026}
+\date{Expanded technical report, September 2026}
 \begin{document}
 \maketitle
 
 
 \begin{abstract}
-
-The full-cut 600-cell is a four-dimensional twisty puzzle with 177,120 surface pieces and 259,800 sticker slots. This report reconstructs the mathematical and engineering development documented in a 52-page design transcript, its accompanying 51-page algorithm reference, and the subsequent C600 Studio 0.2.4 validation. The central construction combines an exact orbit census, two-buffer setup trees, orientation-aware three-cycles, and a dependency order that retains every collateral move. An additional bounded computation verifies nine independent single-sticker controllers and establishes a conservative lower bound exceeding \(10^{151851}\) face-color states. This exceeds an unconstrained upper bound for the solved \(4^{7}\) hypercube by more than 86,000 decimal orders of magnitude, without implying a universal ranking of human difficulty. Three archived synthetic solutions each represent approximately 353 million primitive turns; their compact execution is distinguished from manual solving and native animation. The native workbench subsequently passed full-state, rendering, interaction, recovery, and packaging checks on Windows. Its measured integrated-GPU performance supports adaptive motion, while a minimum GPU for continuous full-detail rotation at \(1920\times1080\) and 30 FPS remains unestablished. The resulting contribution is a reproducible computational framework and a usable research instrument, rather than a claimed human solving record.
-
+The full-cut 600-cell is a four-dimensional twisty puzzle with 177,120 surface pieces, 259,800 sticker slots, and 35 moving orbits. This report reconstructs the constructive method and software development documented in a 52-page design transcript, its accompanying algorithm reference, and subsequent C600 Studio 0.2.4 validation. The mathematical analysis formalizes piece/frame actions, abelian orientation invariants, guarded setup graphs, pure-star generation, and collateral-preserving stage correctness. Nine independently checked controllers yield more than \(10^{151851}\) face-color states, exceeding an upper bound for the documented solved \(4^7\) hypercube by over 86,000 decimal orders of magnitude. In a specified 1,800-symbol primitive alphabet, a word-counting argument also gives a worst-case distance of at least 46,648 turns and quantifies why 1,000-step scrambles are far from uniform random states. These results are distinguished from human difficulty, optimal solutions for particular scrambles, and an exact full-group order. Three synthetic compact histories restore every label while representing approximately 353 million primitives each. The engineering analysis explains native generator equivalence, transactional previews and journals, coherent snapshots, exact filtering and picking, bounded log interchange, process ownership, and graphics recovery. Recorded Windows validation supports the frozen native workbench; the expanded report adds explicit source contracts and reproducible arithmetic rather than new graphics benchmarks. Intel HD Graphics 620 measurements support adaptive interaction, while no minimum GPU has yet qualified for continuous full-detail rotation at \(1920\times1080\) and 30 FPS. The contribution is a reproducible computational framework and a detailed research instrument, without asserting a human solving record or universal difficulty ranking.
 \end{abstract}
 
 \textbf{Keywords:} 600-cell; permutation puzzles; computational group theory; nonabelian orientation; certified macros; reproducibility; human-computer interaction.
@@ -123,7 +123,7 @@ Words execute chronologically from left to right. Accordingly, \([U,V]\) means \
 
 \subsection{Census and local orientation}
 
-The 35 moving orbits contain 176,520 pieces. The 600 fixed centers are 600 singleton position orbits; counting them literally gives 635 position orbits, while grouping centers as one geometric family gives 36 families. The complete 35-row census and algorithm cards are retained in the accompanying reference rather than replaced with rank-based approximations \cite{algorithms}.
+The 35 moving orbits contain 176,520 pieces. The 600 fixed centers are 600 singleton position orbits; counting them literally gives 635 position orbits, while grouping centers as one geometric family gives 36 families. The complete 35-row census and controller-cost table are reproduced in Appendix~\ref{app:census}; the accompanying reference retains every algorithm card \cite{algorithms}.
 
 \begin{table}[htbp]
 \centering
@@ -148,6 +148,55 @@ Pairs O04/O05, O12/O13, O18/O19, and O26/O27 share rank and sticker count while 
 The invariant audit records even positional parity separately in every moving orbit. An odd permutation in one orbit cannot be canceled by an odd permutation in another. For O06, a reflection-type element of \(D_{5}\) exchanges two pairs of five stickers and is therefore even as a sticker permutation. Ordinary sticker-permutation sign consequently does not detect its reflection bit. Orientation must be analyzed in the correct local group \cite{transcript,algorithms}.
 
 These statements concern legally tracked labelled states. Assigning arbitrary identities to visually indistinguishable pieces can manufacture an apparent parity defect. Exact identities should be reconstructed from legal history, rather than guessed from the displayed colors.
+
+\subsection{Piece permutations, frames, and the ambient group}
+
+Write \(\mathcal S\) for the 259,800 sticker slots, \(\mathcal P\) for the physical piece positions, and \(\rho:\mathcal S\to\mathcal P\) for the sticker-to-piece map. A legal sticker permutation \(g\) induces a piece permutation \(\bar g\) because all stickers belonging to a piece travel together:
+\begin{equation}
+\rho(g(s))=\bar g(\rho(s))\qquad(s\in\mathcal S).
+\label{eq:piece-equivariance}
+\end{equation}
+This is stronger than asking that the color array contain the right number of each color. A bijective array can still split a piece or exchange pieces between distinct orbits. The implementation checks label bijectivity, agreement of the occupant identity across every sticker of a piece, and equality of source and destination orbit IDs. These checks establish structural consistency; arbitrary arrays passing them are not thereby proved reachable. Reachability evidence is supplied by replaying legal history \cite{sourcecode}.
+
+For an orbit \(o\), choose a reference ordering of the stickers at each position. Its \(N_o\) pieces have attainable local frame group \(H_o\). A transported action can then be described by a position permutation \(p\) and a frame increment \(a_i\in H_o\) at each source position \(i\). In a right-action convention, \((i,h)\) is sent to \((p(i),ha_i)\). Applying \((p,a)\) and then \((r,b)\) gives
+\begin{equation}
+(p,a)(r,b)=\bigl(r\circ p,c\bigr),\qquad c_i=a_i b_{p(i)}.
+\label{eq:wreath-law}
+\end{equation}
+The reindexing of \(b\) is essential: orientation increments belong to transported pieces, not to independent counters at fixed screen locations. Different choices of reference frames conjugate the coordinate description without changing the legal action. The full moving group embeds in a product of permutation wreath products,
+\begin{equation}
+G\ \hookrightarrow\ \prod_{o=0}^{34}\bigl(H_o^{N_o}\rtimes S_{N_o}\bigr).
+\label{eq:ambient-group}
+\end{equation}
+This inclusion is an upper description, not an assertion that arbitrary independent permutations and orientations are legal. All 600 center slots are fixed and contribute no multiplicative state factor. Appendix~\ref{app:census} supplies every orbit's size, rank, sticker multiplicity, orientation group, and controller cost.
+
+\subsection{Abelian invariants and an upper count}
+
+Let \(H_o^{\mathrm{ab}}=H_o/[H_o,H_o]\) and let \(\chi_o:H_o\to H_o^{\mathrm{ab}}\) be the quotient map. Written additively in this abelian quotient, the aggregate transported orientation is
+\begin{equation}
+\Phi_o(p,a)=\sum_{i=1}^{N_o}\chi_o(a_i),\qquad
+\Phi_o\bigl((p,a)(r,b)\bigr)=\Phi_o(p,a)+\Phi_o(r,b).
+\label{eq:abelian-invariant}
+\end{equation}
+The second identity follows from Equation~\eqref{eq:wreath-law}: a permutation merely reorders the terms contributed by \(b\). If every primitive has zero image, every legal word has zero image. This explains why the invariant is checked on generators rather than inferred from a few solved scrambles. The original transported-frame generator audit is retained evidence; the newer independent group checks verify the finite local groups and their commutator images, without claiming to rerun that entire geometric audit.
+
+For \(C_2\) and \(C_5\), the abelianization is the group itself, giving the separate flip and twist-sum constraints. For \(D_5\), with presentation \(R^5=F^2=1\) and \(FRF=R^{-1}\), its derived subgroup is \(\langle R\rangle\) and its abelianization is \(C_2\). Thus a final residual can be rotational even when its reflection bit must vanish. For \(A_5\), the abelianization is trivial. The word ``reflection'' here describes the abstract action on the five local stickers, not a claim that a legal move reflects the ambient four-dimensional space.
+
+Ignoring all constraints first gives the labelled structural count
+\begin{equation}
+U_{\mathrm{struct}}=\prod_o N_o!\,|H_o|^{N_o},\qquad
+\log_{10}U_{\mathrm{struct}}\simeq598075.039945.
+\label{eq:structural-upper}
+\end{equation}
+Within this ambient product, imposing even position parity independently in 35 orbits, seven \(C_2\) orientation sums, two \(C_5\) sums, and one \(D_5\) reflection parity gives
+\begin{equation}
+|G|\le U_{\mathrm{inv}}=
+\frac{U_{\mathrm{struct}}}{2^{35}\,2^8\,5^2},\qquad
+\log_{10}U_{\mathrm{inv}}\simeq598060.697715.
+\label{eq:invariant-upper}
+\end{equation}
+Each constraint has the stated index in the ambient product; imposing them does not establish their sufficiency for the actual legal subgroup. In particular, this labelled upper bound must not be substituted for the face-color lower bound in Section~\ref{sec:4}. Additional inter-orbit restrictions, if present, can only reduce the reachable group. The report's strong comparison with \(4^7\) requires neither equality in Equation~\eqref{eq:invariant-upper} nor an exact full-group order.
+
 
 \section{A conservative configuration lower bound}
 \label{sec:4}
@@ -176,7 +225,7 @@ B=\frac{3600!}{(6!)^{600}}\,\frac{2400!}{(4!)^{600}}\,\left[\frac{7200!}{(12!)^{
 \label{eq:lower-bound}
 \end{equation}
 
-distinct face-color states, with every unselected orbit held solved. Numerically, \(\log_{10}B\) is approximately 151851.164322. This is a lower bound derived from a specific verified subgroup, not an asserted exact order for the full puzzle group and not a count of individually labelled stickers.
+distinct face-color states, with every unselected orbit held solved. Numerically, \(\log_{10}B\) is approximately 151851.164322. This is a lower bound derived from a specific verified subgroup, not an asserted exact order for the full puzzle group and not a count of individually labelled stickers. The detailed generation and color-quotient arguments follow below.
 
 A side-length-four seven-dimensional hypercube has \(2d\,n^{d-1}=57{,}344\) stickers. With fourteen colors and 4,096 copies of each color, the number of all balanced face-color assignments is
 
@@ -187,7 +236,67 @@ U=\frac{57344!}{(4096!)^{14}},\qquad \log_{10}U\approx65695.470510.
 
 Every legal \(4^{7}\) state is among these assignments, so \(U\) is an upper bound regardless of its further permutation and orientation restrictions. Fixed-frame counting is used for both puzzles. Conservative outward rounding gives \(B>10^{151851}\) and \(U<10^{65696}\), hence \(B/U>10^{86155}\).
 
-This argument uses comparable face-color states on both sides; it does not compare a labelled upper bound for one puzzle against a colored lower bound for another. It is also intentionally limited to a named, documented solved high-dimensional comparator. A configuration-space gap does not by itself yield a move-count lower bound, a cognitive difficulty ratio, or a claim that no larger puzzle has been solved. The reproducible audit and numerical calculation accompany the report.
+This argument uses comparable face-color states on both sides; it does not compare a labelled upper bound for one puzzle against a colored lower bound for another. It is also intentionally limited to a named, documented solved high-dimensional comparator. A configuration-space gap does not by itself yield a cognitive difficulty ratio or a claim that no larger puzzle has been solved. A word-metric lower bound additionally requires a specified move alphabet; a conservative version is derived below. The reproducible audit and numerical calculation accompany the report.
+
+\subsection{Why the selected stars generate independent alternating actions}
+
+\begin{proposition}[Pure-star reachability]
+Suppose an orbit has \(N\ge4\) single-sticker positions and legal words realizing every pure cycle \(t_X=(A\ B\ X)\), for \(X\notin\{A,B\}\), while fixing every sticker outside that orbit. Then every even permutation of the orbit is realizable without net movement outside it.
+\end{proposition}
+\begin{proof}
+For distinct nonbuffer positions \(X,Y\), chronological composition gives
+\begin{equation}
+t_Y^{-1}t_X=(A\ Y\ X).
+\label{eq:star-generation}
+\end{equation}
+Together with the original stars and their inverses, these supply every three-cycle containing \(A\). For three distinct positions \(x,y,z\ne A\),
+\begin{equation}
+(A\ x\ y)(A\ z\ x)=(x\ y\ z).
+\label{eq:all-three-cycles}
+\end{equation}
+Every even permutation is a product of three-cycles. Conversely, each star is even, so the generated action is exactly \(A_N\). Purity is preserved by multiplication and inversion, proving the support claim. The two displayed identities are also checked independently on small permutation domains in the public arithmetic supplement.
+\end{proof}
+
+The nine audited pure families have disjoint supports. Actions on disjoint supports commute, and an element common to two such supported subgroups must be the identity. Their product therefore embeds as a direct product, which justifies multiplying the nine color-arrangement factors in Equation~\eqref{eq:lower-bound}. This independence is obtained from explicit full-support controllers, not from the fact that the pieces happen to have different orbit names.
+
+For completeness, the color quotient can be expressed by orbit--stabilizer. The stabilizer of the solved coloring inside \(S_N\) is \((S_m)^{600}\), where \(m=N/600\). Since \(m\ge2\), this stabilizer contains an odd same-color transposition. Hence its intersection with \(A_N\) has half its order, and
+\begin{equation}
+\frac{|A_N|}{|A_N\cap(S_m)^{600}|}
+=\frac{N!/2}{(m!)^{600}/2}
+=\frac{N!}{(m!)^{600}}.
+\label{eq:color-orbit-stabilizer}
+\end{equation}
+The cancellation is why the lower bound counts observable cell-color arrangements rather than artificial distinctions among identical colors. A display palette with repeated RGB values may visually identify further states; the mathematical alphabet remains the 600 distinct home-cell symbols.
+
+\subsection{Word-metric consequences and the limits of short scrambles}
+
+A move-count argument becomes possible only after fixing an alphabet. Here use the lab's 600 half-turns and 600 third-turns with their inverses: \(q=1800\) distinct elementary symbols. A half-turn is its own inverse. Native multi-cap commands and macro applications are different units and are not counted as single letters in this metric.
+
+Let \(\Omega\) be the reachable fixed-frame face-color states and let \(D\) be their maximum distance from solved in this alphabet. Since \(|\Omega|\ge B\), the elementary word-ball bound is
+\begin{equation}
+|\{x:d(1,x)\le d\}|\le\sum_{j=0}^d q^j
+=\frac{q^{d+1}-1}{q-1}.
+\label{eq:word-ball}
+\end{equation}
+Distinct words can produce the same state, so this deliberately overcounts. Exact integer comparisons in the supplement show that the right side at \(d=46647\) is smaller than \(B\). Therefore
+\begin{equation}
+D\ge46648\quad\text{lab primitive turns}.
+\label{eq:diameter-bound}
+\end{equation}
+This is an existence bound on worst-case distance, not a claim that every scramble requires 46,648 moves. It also does not establish that the full puzzle has a greater diameter than a different solved puzzle. A state produced by a known 1,000-turn scramble always has its inverse word as a solution of at most 1,000 turns, irrespective of how costly a general constructive method is.
+
+There is an even sharper distinction between a random walk and a uniform random state. The support of a 1,000-step scramble distribution \(\mu_{1000}\) has at most \(1800^{1000}\) states. If \(\nu\) is uniform on \(\Omega\), total variation distance, defined by \(\|\mu-\nu\|_{\mathrm{TV}}=\max_A|\mu(A)-\nu(A)|\), obeys
+\begin{equation}
+\|\mu_{1000}-\nu\|_{\mathrm{TV}}
+\ge1-\frac{1800^{1000}}{|\Omega|}
+\ge1-\frac{1800^{1000}}{B}
+>1-10^{-148595}.
+\label{eq:scramble-tv}
+\end{equation}
+The strict numerical inequality is verified with integers; \(1000\log_{10}1800\simeq3255.272505\) only explains its scale. This conclusion applies to a 1,000-step walk from the solved state and says nothing about whether its appearance is sufficiently disordered for a practical trial.
+
+For the idealized independent draws represented by the application's generator distribution, probabilities are symmetric under inversion: each half-turn has probability \(1/1200\), and each signed third-turn has probability \(1/2400\). The induced finite walk therefore has uniform stationary measure. It is irreducible on its reachable orbit by definition of the generating set, and return words of lengths two and three make it aperiodic. Thus asymptotic convergence of the idealized walk is compatible with Equation~\eqref{eq:scramble-tv}; no useful mixing-time estimate follows. A fixed seeded pseudorandom implementation is deterministic and is not itself a proof of exact independent sampling. The three archived trials test deterministic legal replay and controller behavior on their recorded walks, not typical behavior under the uniform distribution \cite{sourcecode}.
+
 
 \section{Constructive solving across all 35 orbits}
 \label{sec:5}
@@ -245,6 +354,58 @@ The safe raw-seed stage order is supplied with the data and follows the actual c
 
 Reduction, blockbuilding, and orbit-first solving differ primarily in preservation costs. Forgetting all but O00, O06, and O34 gives a legitimate simplified quotient. Solving that quotient leaves a kernel problem on the additional full-puzzle pieces; it does not justify treating omitted regions as permanently bandaged blocks. Graph-shell blockbuilding can use pure controllers to preserve completed pieces at macro boundaries, but does not promise that they remain motionless throughout each expanded word. Orbit-first solving with cell-local destination batching retains the tested dependency order while reducing navigation overhead. The retained evidence supports it as the practical baseline \cite[pp.~12--13]{transcript}.
 
+\subsection{Guarded setup search as a finite graph problem}
+
+The setup table is a graph certificate. A node records an ordered sticker frame \(f=(s_1,\ldots,s_{k_o})\) at a nonbuffer destination. Applying an allowed primitive sends it to \(g(f)=(g(s_1),\ldots,g(s_{k_o}))\). The allowed positive alphabet excludes every cap in \(M(A)\cup M(B)\), so both buffer locations and their sticker frames remain pointwise fixed. The source frame at \(C\) is the root. A breadth-first traversal stores one parent, one move, and one depth per discovered frame:
+
+\begin{quote}\small
+\textbf{Guarded-frame construction.}
+Initialize the queue with the ordered frame at \(C\), with parent \(-1\) and depth zero. Remove the next frame \(f\). For each allowed positive generator \(g\), compute \(g(f)\); if it has not been seen, record \(f\) as its parent, store \(g\), set its depth to \(\operatorname{depth}(f)+1\), and append it to the queue. Continue until the queue is exhausted. Accept coverage only if the distinct destination/frame count equals \((N_o-2)|H_o|\) and the recorded transitions and guards are valid.
+\end{quote}
+
+An inverse setup is reconstructed by reversing its parent path and inverting every move. Breadth-first depth is minimal within this particular guarded positive alphabet. It is not a shortest solution among arbitrary native moves, all inverse generators, alternative buffer choices, or setups that temporarily move the buffers. In particular, the word ``shortest'' should not be promoted from a graph-search property into a claim of globally optimal algorithms.
+
+If \(V_o=(N_o-2)|H_o|\) and \(b_o\) is the number of allowed generators, traversal takes at most \(O(V_o b_o k_o)\) elementary frame-coordinate transports when a move lookup is constant-time. Parent storage is \(O(V_o)\); explicitly storing every ordered frame uses \(O(V_o k_o)\). The implementation's sparse lookups add their own search costs. These expressions explain why the corner orbit, although containing only 120 pieces, still needs 7,080 oriented setup states. A table of destination IDs alone would discard the orientation information needed for insertion.
+
+\subsection{Stage correctness and the role of collateral}
+
+Let a directed edge \(o\to j\) mean that the raw seed for \(o\) has nontrivial net support on orbit \(j\ne o\). Since every legal setup preserves each move orbit as a set, conjugation changes positions within these support orbits but cannot create support on a previously untouched orbit. This observation connects the measured collateral graph to the solving order.
+
+\begin{proposition}[Triangular stage invariant]
+Assume each target orbit has the certified setup/frame coverage and orientation corrections described above, and the raw-seed collateral graph is acyclic. If targets are processed in an order placing every \(o\) before every \(j\) with \(o\to j\), then every completed orbit stays solved at subsequent macro boundaries.
+\end{proposition}
+\begin{proof}
+Suppose the first \(t\) target orbits are solved. The next raw seed fixes those entire orbits because all of its collateral targets occur later. Every conjugate of that seed fixes them as well, since the conjugating setup maps each such orbit to itself. The target placement step inserts a required home piece without moving completed nonbuffer targets; the final two-buffer swap is excluded by even positional parity. Orientation transfers fix positions and correct the nonbuffers, then buffer \(A\), then any admissible residual at \(B\). Thus the next orbit is solved and the previously completed ones remain solved. Induction establishes the claim.
+\end{proof}
+
+This is a constructive argument under explicit certificate hypotheses. The published compact trials exercise all 35 stages; the new arithmetic audit separately checks that the retained graph has every collateral target later in the stated order. Neither check should be confused with a theorem-prover verification of geometric clipping or every oriented transition. The full order is printed in Appendix~\ref{app:census} so that the preservation claim can be compared with the actual data.
+
+The proof is about \emph{macro-boundary} preservation. During \(S^{-1}\), \(W_o\), or \(S\), many previously completed pieces can move and return. A rule that bans any intermediate motion is stronger and would exclude legal witnessed macros used here. The workbench's protected-orbit check consequently tests the complete net support; it is not a physical bandaging mechanism.
+
+\subsection{Nonabelian orientation and finite residual correction}
+
+For \(D_5\), a residual with zero reflection bit lies in \(\langle R\rangle\). Since
+\begin{equation}
+[R^k,F]=R^{2k},\qquad 2^{-1}\equiv3\pmod5,
+\label{eq:d5-correction}
+\end{equation}
+any desired rotational correction \(R^a\) is obtained by choosing \(k\equiv3a\pmod5\). The twenty-sticker corner family requires a different treatment. Its group \(A_5\) has one identity, fifteen elements of order two, twenty of order three, and twenty-four of order five. Noncommuting elements cannot be represented by a single additive twist counter.
+
+Perfectness of \(A_5\) means that its elements are generated by commutators; that statement alone does not imply that one commutator suffices. The finite calculation used here checks the stronger fact: the set \(\{[q,r]:q,r\in A_5\}\) contains all 60 elements. Searching at most 3,600 ordered pairs therefore finds a single local commutator for any required residual. Expanding each transfer \(P_X\) into two stars makes the final-buffer correction eight stars. The public extended checker independently recomputes the \(D_5\) and \(A_5\) commutator images on explicit finite permutations.
+
+The implementation uses a three-star word for buffer \(A\)'s correction. A target-orbit identity relating this word to another construction is insufficient to replace its full-state effect: the two words can differ on unfinished collateral orbits. The engine always composes the actual stored legal recipe over all slots. This is a concrete example of why algebraic simplification must be checked in the full action, not merely in a quotient showing the target orbit \cite{sourcecode,algorithms}.
+
+\subsection{Sparse execution and certificate complexity}
+
+For a net permutation with moved support \(m\), store parallel integer arrays \(s,d\) with \(s_i\mapsto d_i\). Chronological composition of two supported operations is most safely defined by their full action before trimming the fixed points. If \(A\) is a destination-to-source workspace initialized to identity, the update \(A[d]\leftarrow A[s]\) yields the final inverse-map representation; extracting changed destinations and their occupants recovers the source-to-destination pairs. The right-hand side must be gathered before the write, since source and destination supports overlap in cycles.
+
+Conjugating a support by a setup does not require replaying a long word independently on every label. Under the report's convention, the support of \(S^{-1}WS\) is obtained by transporting both endpoints of \(W\) through \(S\). The implementation first replays and certifies the complete seed, then checks the transported target frames and the buffer guard for each requested star. Cached maps retain the same full collateral support as their finite legal witnesses.
+
+The application bounds its least-recently-used star cache at 96 entries. An entry uses approximately \(8m\) bytes for two 32-bit index arrays before object overhead; it does not store a multi-million-move expansion. Applying a sparse map costs \(O(m)\) assignments, but refreshing exact piece progress and computing the complete state hash still scans the full sticker array. Thus the end-to-end application cost is not simply \(O(m)\). The archived high-throughput verifier has a different execution path and should not be timed as though it were the interactive application's commit pipeline.
+
+The primitive length remains a witness cost even when the net effect is cheap to apply. A compact history with roughly 374,000 stars represents roughly 353 million primitives because the interpreter executes verified net permutations. This is semantic compression of a retained legal sequence, not a claim that the same number of elementary animations took only seconds. It also explains why an interactive importer can legitimately bound expanded work while a separate research verifier accepts the compact synthetic histories.
+
+
 \section{Workload, replay, and the meaning of a solve}
 \label{sec:6}
 
@@ -291,6 +452,27 @@ At 15--30 seconds per star this gives approximately 1,559--3,118 active hours, b
 
 The distinction between manual, macro-assisted, target-assisted, and automated solving must therefore be recorded explicitly. Assistance that chooses targets and frames changes the nature of an attempt even when every selected macro remains legal. Primitive counts, star counts, transactions, assistance labels, and active time should be retained separately. The framework demonstrates a complete computational route, while a human attempt remains an additional empirical undertaking.
 
+\subsection{A reproducible bound for the stated construction}
+
+Let \(a_o\) indicate a nontrivial local orientation group, and let \(b_o\) indicate one of the nonabelian groups \(D_5,A_5\). At most two stars insert each of the \(N_o-2\) nonbuffer positions. When orientation is nontrivial, at most two stars correct each nonbuffer, three correct the first buffer, and eight handle a possible nonabelian final-buffer residual. Hence the method-specific per-orbit bound is
+\begin{equation}
+Q_o=2(N_o-2)+a_o\bigl[2(N_o-2)+3+8b_o\bigr].
+\label{eq:work-bound}
+\end{equation}
+If \(d_o^{\max}\) is the retained maximum setup depth, a conservative primitive bound uses
+\begin{equation}
+C_o^{\max}=|W_o|+2|R_o|+2d_o^{\max},\qquad
+Q=\sum_o Q_o=405945,\quad
+\Lambda\le\sum_o Q_o C_o^{\max}=385797152.
+\label{eq:primitive-work-bound}
+\end{equation}
+This bound includes the chosen worst-case setup cost for every star and is consequently looser than summing the actual visited depths. The public arithmetic checker recomputes all 35 terms directly from the census and execution trees. Table~\ref{tab:orbit-census} makes the largest seed and setup costs visible instead of hiding them in one aggregate count.
+
+There are three separate complexity questions: finding the controller bank, selecting and applying a solution using that bank, and expanding or animating its witness. The finite setup trees address the first; the constructive placement/orientation procedure addresses the second; the primitive counts address the third. The costs should not be substituted for one another. Equation~\eqref{eq:diameter-bound} is a lower bound on a specified worst-case word metric, while Equation~\eqref{eq:primitive-work-bound} is an upper bound for a particular solving method under its certificate assumptions. Neither is an estimate of an optimal human algorithm.
+
+Fresh replay of seeds 600, 601, and 602 checked complete labelled identity at completion and preservation of all 35 stages. The recorded replay-only times in that publication audit were 13.19, 29.28, and 32.25 seconds; preparation and total process times are recorded separately inside the companion. These runs were validation observations, not controlled performance comparisons between scrambles. They are therefore not used to infer a statistical average solver speed or a native rendering rate.
+
+
 \section{From construction to a dependable workbench}
 \label{sec:7}
 
@@ -313,6 +495,114 @@ The frame defect illustrates why a display policy must apply at every draw entry
 The final 0.2.4 sources passed 68 comprehensive native checks and four fresh-process reopen checks using the actual MPUlt runtime, official installed Managed DirectX assemblies, native controls, viewport messages, and render-target pixels. Coverage includes twisting, 3D/4D rotation, colors, scrambling and undo/redo, filters and picking, keys, checkpoints, macros, buffer/insertion tools, reports, reset, log exchange, and controlled device-loss recovery. Three full-detail poses and a filtered selection view matched the comparison rendering path exactly \cite{validation}.
 
 Backend mechanics, independent generator maps, crash recovery, frame preferences, process lifecycle, frozen packaging, and a real isolated install/uninstall were checked separately. Normal executable startup preserves an existing session and does not run the developer WinForms fixture. These results close specific earlier native integration gaps. They do not retroactively turn the transcript's original container timings into native measurements, and they do not establish that hundreds of millions of primitives were individually animated to completion.
+
+\subsection{Component boundaries and the native equivalence contract}
+
+The executable is a composition of a 64-bit Python state engine and a 32-bit .NET native host. This split permits the inherited MPUlt/Managed DirectX viewport to retain its compatible process architecture while the authoritative state and research tools use a separate runtime. Packaging freezes the engine and launcher; the user does not need an external interpreter or compiler. Build-time layout fixtures remain developer checks and are excluded from ordinary startup \cite{sourcecode,validation}.
+
+\begin{figure}[htbp]
+\centering\small
+\begin{tabular}{@{}c@{\quad}c@{\quad}c@{\quad}c@{\quad}c@{}}
+\fbox{\parbox[c][15mm][c]{.24\linewidth}{\centering Native controls\\and captured turns}} & $\longrightarrow$ &
+\fbox{\parbox[c][15mm][c]{.24\linewidth}{\centering Authenticated\\loopback API}} & $\longrightarrow$ &
+\fbox{\parbox[c][15mm][c]{.24\linewidth}{\centering Serialized engine\\preview and commit}}\\[8pt]
+\fbox{\parbox[c][15mm][c]{.24\linewidth}{\centering Coherent viewport\\and tool state}} & $\longleftarrow$ &
+\fbox{\parbox[c][15mm][c]{.24\linewidth}{\centering State, colors, styles\\in one snapshot}} & $\longleftarrow$ &
+\fbox{\parbox[c][15mm][c]{.24\linewidth}{\centering Durable journal\\and exact labels}}
+\end{tabular}
+\caption{Logical request and response flow. The diagram shows data ownership and publication boundaries, not separate processes for every box.}
+\label{fig:architecture}
+\end{figure}
+
+The bridge is more than a color-index conversion. It first identifies all 600 cell normals and verifies the expected partition of 433 stickers per cell, the 300 antipodal axes, the cut values, and the fixed middle layer. Each native sticker is assigned its complete cap-membership signature and hosting cell. Matching these pairs to the lab enumeration constructs a bijection \(b:\mathcal S_{\mathrm{native}}\to\mathcal S_{\mathrm{lab}}\).
+
+For every matched native generator \(g_N\) and lab generator \(g_L\), the required commuting relation is
+\begin{equation}
+b\circ g_N=g_L\circ b.
+\label{eq:bridge-square}
+\end{equation}
+The check compares complete source-to-destination maps, not a sample of vertices or a solved screenshot. Once it holds for every generator, induction extends it to every translated finite word. All 1,200 lab generators must be accounted for before normal native input is enabled. Numerical normal matching is still part of the enumeration correspondence, so this is a certificate for the retained runtime/model pair rather than a general theorem about every possible MPUlt build.
+
+The bridge also enumerates the twelve local rotations of each tetrahedral cap from the lab generators, translating the native axis/twist/angle/layer tokens into finite words. The two outer antipodal caps are disjoint, permitting the combined outer-layer mask to be translated as a concatenation. A native turn request carries the expected pre-state hash; stale native input is rejected rather than silently applied to a newer engine state. The host treats inherited turn history as a temporary input record, then replaces its displayed fields from the committed engine snapshot.
+
+\subsection{Preview, validation, and the durable commit boundary}
+
+A preview is a prepared state transition, not a state mutation. Its data include the normalized legal recipe, complete supported map, expected next labels, full pre/post hashes, current journal head, process-local revision, and an unpredictable one-use token. The certificate digest binds its core model/recipe/map/count/state fields. Annotations and assistance labels provide interpretation; a checksum is not an authorship signature or a proof that the person naming an algorithm invented it.
+
+Let \(h\) be the current journal head, \(r\) its in-memory revision, and \(\mathcal P_{\mathrm{guard}}\) the currently protected orbits. Abstractly, commit accepts only when
+\begin{equation}
+\begin{aligned}
+\text{token}&=\text{pending token},\\
+(h,r,\operatorname{Hash}(L))&=(h_p,r_p,\operatorname{Hash}(L_p)),\\
+\operatorname{orbits}(\operatorname{supp}(g))\cap\mathcal P_{\mathrm{guard}}&=\varnothing.
+\end{aligned}
+\label{eq:commit-preconditions}
+\end{equation}
+The head distinguishes history branches; the revision detects an intervening undo/redo or checkout even if a previous label state is revisited; the hash binds the exact stickers. Protected-orbit preferences are re-read at commit. View-only changes need not invalidate a mathematically valid preview, but newly protected collateral must still reject it.
+
+\begin{quote}\small
+\textbf{Commit protocol.}
+Under the session lock, validate the pending token and Equation~\eqref{eq:commit-preconditions}. Construct the next exact state. In one SQLite transaction, append the event with its parent and pre/post hashes, write the new head and preferences, and write an automatic snapshot when required. Only after that transaction commits, publish the new in-memory head and labels, invalidate the preview, clear obsolete redo selection, and increment the revision. Return one coherent status snapshot.
+\end{quote}
+
+This ordering defines the durable boundary. A failure before database commit must not appear as a completed operation. A failure while preparing the response after commit must not revive the old preview or implicitly reverse the committed event. The scramble path specifically preserves an earlier pending operation on cancellation only if both the head and state hash are still unchanged. It otherwise respects the already durable result. This distinction addresses a common source of apparently inconsistent scramble colors: logical commit and view refresh are related stages, not one indivisible graphics call.
+
+The HTTP server uses a session lock around state work and a single-worker executor for long analysis operations. This serializes mechanics while allowing progress polling and cancellation through the service. It does not imply that a single SQLite connection can safely accept arbitrary concurrent writes without that application lock. Cancellation is checked during lengthy word/map work and detached import validation; a durable commit is recovered through journal operations, not by pretending that it never happened.
+
+\subsection{Branch history, checkpoints, and restart recovery}
+
+Each event has a parent pointer and records a finite recipe, before/after hashes, witness counts, assistance category, and note. Undo applies the inverse recipe and verifies the parent's expected hash. Redo checks both the selected child's parent and pre-state before replaying it. If history has multiple children, branch choice is explicit; creating a new child does not delete the abandoned continuation.
+
+Recovery follows the chosen head backward to an available ancestor snapshot, validates that snapshot's labels, and replays the remaining chain while checking every pre/post hash. Automatic snapshots are inserted at depths divisible by fifty; named snapshots add convenient restart points. Reset first creates a recovery snapshot, then moves the selected head to the immutable solved root while retaining view preferences. Checkpoint restore and history checkout are different operations: the former restores saved preferences with the snapshot, whereas branch checkout reconstructs the requested historical state under the current workflow's rules \cite{sourcecode}.
+
+The journal requests SQLite WAL mode with \texttt{synchronous=FULL}. SQLite documents that FULL synchronizes the WAL at each transaction commit. Its database-level WAL checkpoint, which transfers committed pages back into the main database, is distinct from a C600 puzzle checkpoint containing labels and preferences. A live WAL file is part of database state, so copying only the main file is not a general backup procedure. These are database guarantees and operational requirements; hardware durability still depends on the filesystem and storage stack \cite{sqlitewal,sqliteatomic}. The recorded hard-exit tests check post-commit recovery and rollback of an uncommitted head update. They do not constitute physical power-loss testing.
+
+\subsection{Exact filtering, color transport, and hidden-piece interaction}
+
+Filters act on physical piece positions, then lift their result through \(\rho\) to all associated stickers. An identity predicate follows the occupant as it moves; a position predicate remains attached to a location. Thus \texttt{piece(p)} and \texttt{position(p)} have deliberately different meanings, as do home-cell membership and current-cell membership. The parser evaluates a bounded Boolean grammar with recursive descent; it does not execute user expressions as Python code.
+
+If predicates \(F_1,\ldots,F_t\) have styles \(c_1,\ldots,c_t\), first-match semantics can be expressed as
+\begin{equation}
+j(p)=\min\{i:F_i(p)=1\},\qquad
+v(p)=\begin{cases}c_{j(p)},&\text{if a match exists},\\0,&\text{otherwise},\end{cases}
+\quad v_{\mathrm{sticker}}(s)=v(\rho(s)).
+\label{eq:filter-policy}
+\end{equation}
+An explicit context option may subsequently show buffers, selection, or preview support outside this result. Such context must not be mistaken for a failed filter. Ordinary committed scrambling avoids exposing its nearly whole-puzzle support as a transient pinned preview. The framework is controlled separately: hiding the 600-cell frame must not erase the clipping planes used to render visible stickers correctly.
+
+Mechanical updates are independent of Equation~\eqref{eq:filter-policy}. For a lab slot \(s\), its home-cell color symbol is \(\lfloor L[s]/433\rfloor\). If \(f\) maps native cell IDs to lab cell IDs, the native color for slot \(n\) is
+\begin{equation}
+C_N[n]=f^{-1}\!\left(\left\lfloor\frac{L[b(n)]}{433}\right\rfloor\right).
+\label{eq:native-colors}
+\end{equation}
+The engine computes status, this color array, and mapped styles under one lock in one native snapshot. Its payload contains 519,600 raw color bytes and 259,800 style bytes before Base64 and JSON overhead. The host validates the profile identity, exact lengths, color range, and style range before applying the result. Three independently fetched arrays could instead describe different committed revisions.
+
+Hidden geometry must also be unpickable. The native adapter removes hidden triangles from the picking path and tests only visible, nonclipped sticker meshes. It gates the viewport's actual release message before the inherited click handler can reuse a previous axis after an empty click. After a sampled motion frame, it first restores a current projection of every visible mesh; otherwise picking would use stale projected coordinates. Drag release, click dispatch, and nested messages during animated turns have separate guards. These measures explain why changing only a sticker's apparent transparency did not fully solve the original filter problem.
+
+\subsection{Macro tools, insertion analysis, reports, and keybindings}
+
+Macros are declarative words or stars with finite witnesses. The composition utility constructs inverse words, concatenations, commutators, and conjugates, then routes the result through the same preview and protected-support checks. In the utility API, \texttt{conjugate(a,b)} builds \(aba^{-1}\); the star construction uses its separately stated \(S^{-1}WS\) convention. These are compatible choices of parameter order, but silently interchanging them reverses setup meaning.
+
+The buffer analyser reports the fixed reference pair, the requested destination, every attainable frame node there, its setup word and depth, and the resulting primitive cost. It does not claim an implemented arbitrary-buffer relocation search. The insertion planner uses the inverse piece-location array to find the required home piece, finishes displaced positions before orientation-only targets, and rejects an isolated odd buffer swap or an unattainable frame rather than inventing a parity patch.
+
+Progress distinguishes correct position, wrong orientation at a correct position, exact labelled completion, and apparent color completion. The session report walks the selected head's ancestry, separating recorded scramble primitives, solution primitives, star count, transaction count, and assisted transactions. The explicit timer includes time spent thinking while it is running; it is not an inferred measure of keyboard or mouse activity. Checkpoints, key preferences, macro libraries, and saved identity/position sets are workflow state, not alterations to the retained puzzle geometry. Native key remapping must reach the same validated command path as its corresponding control, which is why the regression suite tests both the state result and the actual input dispatch.
+
+\subsection{Bounded interchange and process ownership}
+
+The interactive C600 log is a proof-oriented record rooted at labelled identity. Import first validates the entire structure and resource budget, normalizes every legal recipe, and replays all events into detached labels with exact pre/post hashes. Only a successful detached plan may replace the active journal state, with a recovery checkpoint. Imported preferences do not overwrite the current view settings; the current camera, when explicitly captured by the host, is validated separately. Original MPUlt v1 interchange passes through the independently verified native token translation.
+
+The interactive limits are 16 MiB of file data, 24 MiB of expanded JSON, 10,000 transactions, and 2,000,000 represented primitive moves. They are deliberate service limits, not limits of the mathematical puzzle. Bounded decompression prevents a small compressed attachment from expanding without limit. The much larger research-certificate histories are verified by the separate companion tool, not imported as ordinary application logs. Saving and exporting through the native file workflow also preserve an existing destination when validation fails \cite{sourcecode,validation}.
+
+Engine readiness is tied to a fresh launch identity and an authenticated loopback health response. A forwarding executable and its interpreter may have different process IDs, so PID equality alone is not a valid readiness criterion. Shutdown first requests termination of the owned engine and then closes the inherited parent pipe; EOF provides cleanup when a parent exits unexpectedly. Launch metadata and diagnostic encoding are explicitly UTF-8. Loopback binding, exact host/origin checks and launch tokens address this local control boundary; they do not turn the service into a remotely deployable multi-user server.
+
+\subsection{Verification layers and limits of assurance}
+
+The tests form several evidence layers rather than one undifferentiated pass count. Packed-map comparison uses a separate retained constructor but shares model geometry, so agreement cannot rule out a common clipping error. The actual native bridge compares a different enumeration and runtime action. Pixel comparison checks rendering equivalence for specified poses, while full-label comparison checks mechanical state independently of visibility. Restart and device-loss tests target failure recovery, and frozen-package tests target dependency and resource assumptions.
+
+For camera-only, filtering, frame visibility, and layout operations, the central metamorphic condition is \(\operatorname{Hash}(L_{\mathrm{after}})=\operatorname{Hash}(L_{\mathrm{before}})\). For a word \(w\), replaying \(ww^{-1}\) must restore every label; for primitives, \(H_c^2\) and \(T_c^3\) must act as identity. For rejected imports, protected moves, and stale previews, the selected head and labels must remain unchanged. These properties test semantic contracts rather than visual plausibility. Appendix~\ref{app:contracts} maps concrete components and regression files to the properties they establish.
+
+The recorded 68 native checks and four reopen checks remain evidence for the frozen 0.2.4 application. This expanded report adds mathematical arithmetic and source-level analysis; it does not invent a new native benchmark run or silently broaden those test claims. A test suite reduces identified failure modes, but cannot prove that every future driver, malformed external environment, or possible sequence of GUI events is crash-free.
+
 
 \section{Full-detail rotation and hardware requirements}
 \label{sec:8}
@@ -373,6 +663,51 @@ A qualifying hardware test should report the exact CPU, GPU, driver, operating s
 
 Cold construction, full-detail restoration, picking latency, and stationary redraws should be measured separately. All labels must remain identical across the camera-only workload, and sampled full-detail images must agree with the established rendering reference. Until such a configuration passes, the practical tested option remains exact filtered work or adaptive motion. The open optimization problem is to reduce the complete rendering pipeline's cost, potentially including batching or GPU-side projection, and then establish a hardware minimum by measurement.
 
+\subsection{Camera mathematics and display-state separation}
+
+A useful mathematical description of four-dimensional camera orientation is \(R\in SO(4)\), acting on a geometric point \(v\in\mathbb R^4\) before projection. There are six coordinate planes. A rotation in plane \((i,j)\) replaces the identity's corresponding block with
+\begin{equation}
+R_{ij}(\theta)\big|_{ij}=
+\begin{pmatrix}\cos\theta&-\sin\theta\\\sin\theta&\cos\theta\end{pmatrix},
+\qquad R_{ij}^{\mathsf T}R_{ij}=I,\quad\det R_{ij}=1.
+\label{eq:four-d-rotation}
+\end{equation}
+The three planes within \((x,y,z)\) describe ordinary 3D orientation changes; the three mixing \(w\) with a spatial coordinate provide the additional 4D rotations. Rotations sharing a coordinate generally do not commute. Consequently, camera history cannot in general be reduced to independent accumulated scalar angles without fixing a composition convention.
+
+The retained viewport supplies the actual projection, clipping, shrink parameters, lighting, and picking caches. This report does not replace its projection with an approximate formula. Instead, the display dependency is written abstractly as
+\begin{equation}
+I=\mathcal R\bigl(\Pi(RV;\eta),\,C(L),\,F(L,\theta_f),\,\theta_d\bigr),
+\label{eq:render-dependency}
+\end{equation}
+where \(V\) is immutable geometry, \(\eta\) holds projection settings, \(F\) is filtering, and \(\theta_d\) includes frame and motion-detail choices. Changing \(R,\eta,\theta_f,\theta_d\) does not itself apply a mechanical permutation to \(L\). Camera validation in the current source checks finite entries, a 4-by-4 matrix's orthogonality within tolerance, and scalar bounds; it does not separately certify positive determinant. Thus Equation~\eqref{eq:four-d-rotation} characterizes intended rotation operations, not a claim that every structurally accepted camera matrix has been proven to belong to \(SO(4)\).
+
+\subsection{Rendering lifecycle, detail restoration, and buffer reuse}
+
+The repaired lifecycle renders dirty work at most once per 16 ms UI timer tick instead of repeatedly invoking an idle renderer. It requires a live, visible, nonminimized control with positive dimensions. During camera motion, more than 6,000 visible meshes triggers deterministic sampling down to 1,500; a 180 ms quiet interval requests complete detail restoration. These are scheduling parameters, not a guarantee that a frame finishes within the nominal timer period.
+
+The temporary render subset preserves original sticker identities and installs only the renderer-facing arrays required for that synchronous draw. It restores the complete arrays on exit, including exception paths. The scene adapter applies frame policy at the inherited scene's draw boundary so direct and animated redraws cannot bypass it. Device reset occurs with complete native data before entering a compact drawing scope; presentation occurs after that scope has been restored. This order prevents a graphics reset from encountering arrays intended only for a temporary draw.
+
+On recognized device-lost or device-not-reset exceptions, the lifecycle clears the inherited recursion latch, marks the device unready, requests resize/rebuild, and retries after 250 ms. A stale recursion latch could otherwise suppress all later frames even after a successful reset. Other exceptions are not indiscriminately swallowed. The engineering aim is controlled recovery from known transient failures, rather than concealing arbitrary invalid state behind a blank viewport.
+
+The full-detail optimization is deliberately narrow. It validates the pinned MPUlt assembly and the render/upload instruction hashes, creates an in-memory adapter, and reuses the managed staging array associated with an existing DirectX vertex buffer. The expected vertex stride is 28 bytes. Native projection, vertex packing, colors, order, and pick caches remain in the retained path; runtime files are not rewritten. If the verified optimization cannot be installed, the adapter can retain the original render path while keeping the same visibility/frame policy. This fallback is part of compatibility handling, not evidence that an unknown binary has passed native equivalence tests.
+
+For a buffer containing \(n_v\) such vertices, one reusable staging array requires roughly \(28n_v\) payload bytes. Reuse removes repeated allocation and marshaling work around that payload, but it does not eliminate the cost of computing projected vertices or building triangle and line data. That distinction is consistent with the measured improvement and the remaining full-detail limitation.
+
+\subsection{A pipeline model for further optimization}
+
+The relevant performance quantity is complete frame latency, not GPU specification-sheet throughput. A useful idealized model separates a fraction \(f\) of the current cost that a proposed optimization cannot accelerate from a remaining fraction accelerated by \(r\):
+\begin{equation}
+\operatorname{Speedup}(r)=\frac{1}{f+(1-f)/r},\qquad
+\lim_{r\to\infty}\operatorname{Speedup}(r)=\frac1f.
+\label{eq:amdahl-model}
+\end{equation}
+This is the fixed-workload bottleneck reasoning associated with Amdahl's analysis \cite{amdahl}. Applied only as a diagnostic model to a 453.45 ms baseline and a 33.33 ms target, even unlimited acceleration of the chosen part requires the unaccelerated fraction to be below approximately 7.35 percent. No value of \(f\) is estimated here from aggregate CPU counters: overlapping CPU/GPU work and process-wide CPU time do not provide the needed serial critical-path measurement.
+
+The next useful experiments should therefore instrument projection, triangle/line packing, staging/upload, draw submission, presentation, and waiting separately. They should retain the exact full-detail workload and report both elapsed time and CPU/GPU measurements with their synchronization method. Candidate changes include batching fewer submission calls, reducing repeated packing, or moving mathematically equivalent projection work to the GPU. Each would require renewed image equivalence, picking, clipping, and camera tests; it is a research direction rather than a feature claimed for 0.2.4.
+
+Hardware qualification should follow such measurements. A nominally faster GPU cannot remedy a long unaccelerated stage by itself. Conversely, a CPU-side optimization that shortens one stage does not establish the performance of an untested GPU/driver combination. The 1080p/30 FPS requirement remains a complete-configuration acceptance test, with every sticker retained and the previously stated percentile and state-invariance conditions.
+
+
 \section{Limitations and research directions}
 \label{sec:9}
 
@@ -399,9 +734,117 @@ The report, its source, the unchanged 51-page algorithm reference, exact orbit w
 
 Primary credit for the original MPUlt simulator and renderer belongs to Andrey Astrelin. The C600 workbench is a mod and retains its upstream notices. Nan Ma's solving methods and ivan216's software projects are acknowledged as antecedents. The source corpus includes AI-assisted analysis and code generation; its assertions are evaluated through explicit arguments, retained certificates, and stated execution checks rather than by treating conversational output as an authority. This technical report is not presented as a peer-reviewed publication.
 
+
+\clearpage
+\appendix
+\section{Complete moving-orbit census and controller costs}
+\label{app:census}
+
+In Table~\ref{tab:orbit-census}, \(r=|M|-1\), \(k\) is stickers per piece, \(N\) is piece count, \(H\) is the local orientation group, \(w=|W|\) is the raw seed length, \(d_{\max}\) is the maximum retained guarded setup depth, and \(C_{\max}=|W|+2|R|+2d_{\max}\) is the maximum star length for that tree. A superscript \(*\) marks a raw seed with no collateral. Trivial \(H\) is denoted \(1\). Lengths count lab primitives and include the actual retained seed cancellation; they are not claimed globally minimal.
+
+\begingroup\small
+\begin{longtable}{@{}lrrrlrrr@{}}
+\caption{All 35 moving orbits and retained controller costs.}\label{tab:orbit-census}\\
+\toprule\textbf{Orbit} & \(r\) & \(k\) & \(N\) & \(H\) & \(w\) & \(d_{\max}\) & \(C_{\max}\)\\\midrule\endfirsthead
+\multicolumn{8}{l}{\small Table~\ref{tab:orbit-census}, continued.}\\
+\toprule\textbf{Orbit} & \(r\) & \(k\) & \(N\) & \(H\) & \(w\) & \(d_{\max}\) & \(C_{\max}\)\\\midrule\endhead
+\midrule\multicolumn{8}{r}{\small Continued on the next page.}\\\endfoot
+\bottomrule\endlastfoot
+O00 & 1 & 2 & 1,200 & \(C_{2}\) & 2,182 & 20 & 2,258 \\
+O01\(^{*}\) & 2 & 1 & 3,600 & \(1\) & 2,190 & 12 & 2,236 \\
+O02 & 3 & 1 & 2,400 & \(1\) & 9,214 & 10 & 9,250 \\
+O03 & 3 & 2 & 3,600 & \(C_{2}\) & 1,094 & 10 & 1,130 \\
+O04\(^{*}\) & 4 & 1 & 7,200 & \(1\) & 546 & 8 & 578 \\
+O05\(^{*}\) & 4 & 1 & 7,200 & \(1\) & 546 & 8 & 578 \\
+O06 & 4 & 5 & 720 & \(D_{5}\) & 382 & 9 & 416 \\
+O07\(^{*}\) & 5 & 1 & 7,200 & \(1\) & 286 & 8 & 314 \\
+O08 & 5 & 2 & 3,600 & \(C_{2}\) & 1,534 & 7 & 1,558 \\
+O09 & 6 & 2 & 7,200 & \(1\) & 382 & 7 & 408 \\
+O10 & 7 & 1 & 7,200 & \(1\) & 766 & 7 & 790 \\
+O11 & 7 & 2 & 3,600 & \(C_{2}\) & 766 & 7 & 790 \\
+O12 & 8 & 1 & 7,200 & \(1\) & 766 & 6 & 788 \\
+O13 & 8 & 1 & 7,200 & \(1\) & 142 & 6 & 164 \\
+O14 & 8 & 2 & 7,200 & \(1\) & 1,534 & 6 & 1,556 \\
+O15 & 9 & 1 & 2,400 & \(1\) & 11,564 & 6 & 11,586 \\
+O16 & 9 & 2 & 7,200 & \(1\) & 286 & 6 & 308 \\
+O17 & 9 & 5 & 1,440 & \(C_{5}\) & 1,534 & 6 & 1,558 \\
+O18\(^{*}\) & 10 & 1 & 7,200 & \(1\) & 1,534 & 6 & 1,558 \\
+O19\(^{*}\) & 10 & 1 & 7,200 & \(1\) & 142 & 6 & 164 \\
+O20\(^{*}\) & 10 & 2 & 7,200 & \(1\) & 142 & 6 & 164 \\
+O21 & 11 & 1 & 7,200 & \(1\) & 94 & 6 & 116 \\
+O22 & 11 & 2 & 3,600 & \(C_{2}\) & 766 & 6 & 788 \\
+O23 & 12 & 2 & 7,200 & \(1\) & 46 & 6 & 68 \\
+O24 & 13 & 1 & 7,200 & \(1\) & 46 & 6 & 68 \\
+O25 & 13 & 2 & 3,600 & \(C_{2}\) & 46 & 6 & 68 \\
+O26 & 14 & 1 & 7,200 & \(1\) & 46 & 6 & 68 \\
+O27\(^{*}\) & 14 & 1 & 7,200 & \(1\) & 94 & 6 & 116 \\
+O28 & 14 & 5 & 1,440 & \(C_{5}\) & 3,070 & 6 & 3,092 \\
+O29 & 15 & 1 & 2,400 & \(1\) & 9,214 & 5 & 9,230 \\
+O30\(^{*}\) & 15 & 2 & 7,200 & \(1\) & 94 & 5 & 114 \\
+O31\(^{*}\) & 16 & 1 & 7,200 & \(1\) & 142 & 6 & 164 \\
+O32\(^{*}\) & 17 & 2 & 3,600 & \(C_{2}\) & 94 & 6 & 118 \\
+O33\(^{*}\) & 18 & 1 & 2,400 & \(1\) & 46 & 5 & 66 \\
+O34 & 19 & 20 & 120 & \(A_{5}\) & 12,286 & 5 & 12,304 \\
+\end{longtable}\endgroup
+
+\begin{samepage}
+The counts sum to 176,520 moving pieces and 259,200 moving stickers; adding 600 fixed centers gives 177,120 pieces and 259,800 stickers. Twelve raw seeds are pure and twenty-three have collateral. The retained triangular order is
+\begin{quote}\small\ttfamily\raggedright
+O06 O00 O17 O15 O02 O22 O21 O08 O23 O09 O29 O25 O13 O11 O10 O34 O28 O26 O24 O16 O14 O12 O03 O33 O32 O31 O30 O27 O20 O19 O18 O07 O05 O04 O01.
+\end{quote}
+\end{samepage}
+Every listed collateral edge points forward in this order. The table is regenerated from the immutable model's census, seed atlas and execution trees by the extended arithmetic checker. It summarizes those retained certificates and does not independently prove all their geometric transitions.
+
+\section{Software contracts and reproducibility}
+\label{app:contracts}
+
+The source locations below identify the inspected implementation and the appropriate verification layer. A file name is a route to evidence, not a claim that every possible execution path is tested. The application source reference is pinned in the bibliography; the expanded report's arithmetic scripts and results are published alongside its LaTeX source.
+
+\begingroup\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.26\linewidth}>{\raggedright\arraybackslash}p{.36\linewidth}>{\raggedright\arraybackslash}p{.32\linewidth}@{}}
+\caption{Components, semantic contracts, and representative verification entry points.}\label{tab:contracts}\\
+\toprule\textbf{Component} & \textbf{Contract} & \textbf{Evidence / boundary}\\\midrule\endfirsthead
+\multicolumn{3}{l}{\small Table~\ref{tab:contracts}, continued.}\\
+\toprule\textbf{Component} & \textbf{Contract} & \textbf{Evidence / boundary}\\\midrule\endhead
+\midrule\multicolumn{3}{r}{\small Continued on the next page.}\\\endfoot
+\bottomrule\endlastfoot
+\path{core.py}: Model & Asset hashes bind geometry, enumerations and controllers. Full primitive maps use one source-to-destination convention. & \path{test_reference_maps.py}: all 1,200 packed maps compared with a separate constructor; geometry is shared.\\[5pt]
+\path{core.py}: PuzzleState & Labels are a bijection; pieces stay intact and within orbit; exact, positional and color progress are distinguished. & \path{test_core.py}; complete-label comparisons, not screenshots alone.\\[5pt]
+\path{core.py}: Planner & Targets are nonbuffer members of the selected orbit; legal frames and full collateral are retained. & All-orbit seed/local-completion checks; unavailable residual corrections are rejected.\\[5pt]
+\path{core.py}: Filters & First-match Boolean rules are evaluated per piece; identity and position sets have different semantics. & \path{test_piece_filters.py}; parser bounds and native visibility tests address different failure layers.\\[5pt]
+\path{session.py} & Preview does not mutate state. Commit binds head/revision/hash and current protection; journal writes precede publication. & \path{test_core.py}, \path{test_crash.py}; process exits test transaction recovery, not hardware power failure.\\[5pt]
+\path{enhanced.py} & Scrambles, compositions, saved macros, branch reports and explicit timing use the same authoritative session. & Workflow regressions and native tools checks; no arbitrary user scripts are evaluated.\\[5pt]
+\path{log_io.py} and \path{mpult_log.py} & Complete detached replay and bounded decoding precede import; native token meanings are preserved. & \path{test_log_workflow.py}, \path{test_mpult_log.py}; interactive formats differ from research archives.\\[5pt]
+\path{server.py} & Authenticated loopback requests serialize state work; snapshot arrays describe one locked state. & \path{test_http_boundary.py}, \path{test_native_snapshot.py}; this is a local application API.\\[5pt]
+\path{engine_process.py} & Launch identity and health bind ownership even when launcher and interpreter PIDs differ; parent EOF cleans up. & 24 lifecycle checks and three packaged-command checks in the retained validation.\\[5pt]
+\path{native_bridge.py} & A full slot bijection intertwines every translated generator; partial geometry cannot pass readiness. & \path{test_native_bridge.py} plus the actual runtime handshake; synthetic fixtures alone are insufficient.\\[5pt]
+\path{NativeSnapshot.cs} and \path{NativeHost.cs} & Validate one profile-bound snapshot before updating colors, styles, controls and history displays. & Native data, interaction and fresh-process reopen checks.\\[5pt]
+\path{NativePickingVisibility.cs} & Hidden meshes do not receive turns; a fresh visible projection precedes click hit-testing after sampled motion. & Native picking regression includes visible-frame and stale-axis cases.\\[5pt]
+\path{NativeRenderSubset.cs} & Temporary mesh scopes retain original identities and restore complete native arrays; frame policy is independent. & Native subset and frame-policy regressions, including direct and animated redraws.\\[5pt]
+\path{NativeRendererLifecycle.cs} & Dirty scheduling, handle/size guards and recognized device-reset recovery preserve control state. & Native device-recovery checks; no general proof over all graphics drivers.\\[5pt]
+\path{NativeFullRenderer.cs} & Only verified native instructions receive the reusable-buffer optimization; projection and order stay comparable. & Three full-detail poses and a selection/outline view match reference pixels; performance is workload-specific.\\[5pt]
+\path{packaging/} & Frozen engine, x86 host, resources and installer retain their tested identities; normal startup excludes developer fixtures. & Seven frozen-package checks and four isolated installer checks; external Managed DirectX remains a dependency.\\
+\end{longtable}\endgroup
+
+\subsection{Reproducing the report-specific arithmetic}
+
+The original \path{verify_color_bound.py} independently rebuilds the selected nine primitive actions, checks pure supports and relocations, reconstructs guarded position reachability, and evaluates the color bound. Its \path{results.json} records the specific input hashes and explicit omissions. The added \path{verify_extended_derivations.py} uses only declarative repository assets and the Python standard library. It recomputes the 35-row census/controller table, verifies the retained parent/depth structure and collateral order, checks the small-domain cycle and commutator identities, and calculates the structural upper count, word-ball lower bound, scramble-support inequality, and workload bound. Its \path{extended-results.json} records those results separately.
+
+From the repository root, the added calculation is reproduced with:
+\begin{quote}\small\ttfamily
+python research/audit/verify\_extended\_derivations.py
+\end{quote}
+No application session or native renderer is opened by this calculation. It does not independently regenerate clipping geometry, verify every oriented transition of all 35 setup trees, or replay the enormous primitive expansions. The three original synthetic replay commands remain documented inside the frozen companion ZIP. Their accepted endpoints and stage checks are preserved rather than replaced by newly generated solutions.
+
+\subsection{Audit trail and publication scope}
+
+The new report-specific bounds are developments of the retained model and are not attributed retroactively to the original conversation or to Nan Ma's simplified solve. The original algorithm paper and curated reference ZIP remain byte-identical. Only the report, its LaTeX source, explanatory documentation, and the new bounded arithmetic supplement are expanded. The application release continues to be 0.2.4.
+
+Checksums connect the PDF and archive to the published inventory, while source-control history identifies each documentation revision. This establishes byte identity and a reviewable lineage; it is not independent certification of authorship. The public materials retain no account-bearing conversation links, personal databases, original third-party histories, screenshots, raw local diagnostics, or credentials. Technical page ranges in the archival guide provide the necessary documentary connection without exposing those materials.
+
 \begingroup
 \small
-\begin{thebibliography}{10}
+\begin{thebibliography}{14}
 \setlength{\itemsep}{4pt}
 \setlength{\parskip}{0pt}
 
@@ -434,6 +877,19 @@ ivan216. \emph{mc7d-kb}. Source project. \url{https://github.com/ivan216/mc7d-kb
 
 \bibitem{directx}
 Microsoft. \emph{DirectX End-User Runtimes (June 2010)}. Official runtime distribution. \url{https://www.microsoft.com/en-us/download/details.aspx?id=8109}
+
+
+\bibitem{sourcecode}
+C600 Studio contributors. Inspected application source, revision \texttt{7f1e250571e3}, 2026. \url{https://github.com/KonomiYuzu01/C600-MPUlt/tree/7f1e250571e39c149434686641d1fbc6497c7905}.
+
+\bibitem{sqlitewal}
+SQLite project. \emph{Write-Ahead Logging} and \emph{PRAGMA synchronous}. Official documentation, accessed 7 September 2026. \url{https://www.sqlite.org/wal.html} and \url{https://www.sqlite.org/pragma.html#pragma_synchronous}.
+
+\bibitem{sqliteatomic}
+SQLite project. \emph{Atomic Commit in SQLite}. Official documentation, accessed 7 September 2026. \url{https://www.sqlite.org/atomiccommit.html}.
+
+\bibitem{amdahl}
+Amdahl, G. M. \emph{Validity of the single processor approach to achieving large scale computing capabilities}. AFIPS Spring Joint Computer Conference, 1967, pp. 483--485. \url{https://doi.org/10.1145/1465482.1465560}. Author's paper: \url{https://www.cs.cmu.edu/~18742/papers/Amdahl1967.pdf}.
 
 \end{thebibliography}
 \endgroup

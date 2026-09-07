@@ -10,7 +10,7 @@ Run the Windows setup executable, or extract the portable ZIP and open `C600Stud
 
 See [Usage](USAGE.md) and [Building](docs/DEVELOPMENT.md). Acknowledgements to ivan216 for source references and Nan Ma for historical solving material. [Credits](CREDITS.md) · [MIT license](LICENSE) · [Third-party notices](THIRD_PARTY_NOTICES.md).
 
-[Research materials](research/README.md) include a LaTeX technical report, the full 35-orbit algorithms paper, reproducible synthetic replays, an independent configuration-count audit, and Full Detail Rotation hardware requirements.
+[Research materials](research/README.md) include an expanded LaTeX report on the puzzle's mathematics and software architecture, the full 35-orbit algorithms paper, reproducible synthetic replays and arithmetic audits, and Full Detail Rotation hardware requirements.
 
 ## License
 

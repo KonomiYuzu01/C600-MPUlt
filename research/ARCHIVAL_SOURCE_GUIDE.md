@@ -20,6 +20,10 @@ The public algorithm PDF is unchanged. `Full_600cell_Curated_Reference_and_Repla
 
 The independent `verify_color_bound.py` and its `results.json` accompany the new report separately from the frozen reference ZIP. They verify the selected pure controllers, guarded reachability and conservative face-color lower bound; that new computation is not attributed to the original transcript.
 
+The expanded report adds explicit group-action and orientation formulas, pure-star and triangular-preservation proofs, word-metric and scramble-support bounds, a complete 35-orbit controller-cost table, and a detailed analysis of the published software. `verify_extended_derivations.py` and `extended-results.json` separately document the new arithmetic and finite-group checks. Structural tree checks do not replace the full geometric and oriented-transition certificates. The software analysis identifies inspected application revision `7f1e250571e39c149434686641d1fbc6497c7905` and distinguishes source contracts from recorded native tests.
+
+In particular, the 46,648-turn worst-case lower bound, the short-scramble total-variation bound, and the constrained ambient upper count are new report-specific developments. They are not claims taken from the original conversation, Nan Ma's historical solve, or ivan216's projects. The algorithm paper and curated ZIP remain unchanged.
+
 Likewise, Studio 0.2.4's native checks and measured adaptive/full-detail behavior are subsequent engineering evidence. No retained result certifies a minimum GPU for continuous full-detail 1080p/30 FPS, a human solving record, or a primitive-by-primitive native replay of the enormous archival histories.
 
 ## Source identities

@@ -1,4 +1,8 @@
-# Independent colour-state bound audit
+# Mathematical audits
+
+Two separate checkers accompany the expanded report. The original controller audit establishes the finite-model evidence used for the colour-state lower bound. The extended checker develops additional arithmetic and small-group consequences, retaining an explicit distinction between newly checked facts and assumptions inherited from the model.
+
+## Independent colour-state bound audit
 
 This supplement verifies the nine pure single-sticker orbit controllers used in *Certified Control of the Full 600-Cell*. It reads only declarative JSON and numeric NumPy arrays from the curated reference package. It never imports or executes that package's solver code.
 
@@ -28,3 +32,30 @@ Exact integer division and comparisons establish `L > 10^151851`, `U < 10^65696`
 The result concerns the retained finite model. It is not an exact order of the complete puzzle group, a universal difficulty ranking, a minimum move count, or a human solving record. The 4^7 sticker/color census is an explicit comparison assumption whose primary source is cited in the report. The checker does not independently regenerate clipping geometry, rerun the all-generator transported-frame invariant audit, verify every 35-orbit oriented setup tree, or animate the represented solutions in MPUlt. Its additional all-orbit counts and workload arithmetic are clearly labelled as conditional or derived from retained reports.
 
 `results.json` contains the completed audit result. A failed assertion exits unsuccessfully before writing a new result; callers should check the process exit code rather than treating an old result file as a new pass.
+
+## Extended derivations and complete controller table
+
+[verify_extended_derivations.py](verify_extended_derivations.py) uses Python 3.11 or later and the standard library only. From the repository root, run:
+
+```text
+python research/audit/verify_extended_derivations.py
+```
+
+It reads only `assets/census.json`, `assets/seed_atlas.json`, and `assets/execution_trees.json.gz`. It checks all 35 rows for census agreement, retained seed identity, parent/depth structure, expected frame-state count, and the direction of every recorded collateral edge. It also checks the displayed cycle identities on small permutation domains and enumerates the commutator images of D5 and A5. No application, solver, graphics runtime, private session, or network service is executed.
+
+The completed [extended-results.json](extended-results.json) includes the input hashes and full per-orbit controller-cost table. Its numerical results are:
+
+| Quantity | Checked result and scope |
+| --- | --- |
+| Moving census | 176,520 pieces and 259,200 stickers; add 600 fixed centers for the full totals. |
+| Retained raw seeds | 12 pure and 23 with collateral. |
+| Structural labelled upper count | Base-10 logarithm approximately 598075.039945. |
+| Invariant-constrained labelled upper count | Divide the structural count by `2^43 * 5^2`; logarithm approximately 598060.697715. This uses the retained generator-invariant audit and does not establish an exact legal-group order. |
+| Worst-case distance from solved | At least 46,648 turns in the report's 1,800-symbol lab alphabet, proved by an exact word-ball comparison with the independently supported colour lower bound. |
+| 1,000-step scramble support | Total variation distance from uniform reachable face-colour states is strictly greater than `1 - 10^-148595`. This does not measure visual disorder or typical human solving effort. |
+| Construction workload | At most 405,945 stars and 385,797,152 represented primitives under the stated controller and stage-correctness hypotheses. |
+| Finite commutator images | 5 elements for D5 and all 60 elements for A5. |
+
+The word-count bound is a worst-case existence statement. A state produced by a known 1,000-turn word always has a solution of at most 1,000 turns by inversion. Likewise, a constrained ambient upper count is not an exact reachable-state count, and the constructive workload is not an optimal solution bound for an individual scramble.
+
+The extended checker does not repeat the original nine-controller full-word audit, regenerate clipping geometry, or validate every oriented transition and generator invariant across all 35 orbits. Matching retained tree dimensions and parent depths alone would not establish those stronger properties. Both checkers refuse Python `-O`; check the exit status before accepting an existing results file as a new pass.
