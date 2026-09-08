@@ -15,11 +15,36 @@ internal static class NativeFullRendererRegression {
  static readonly List<object> checks=new List<object>();
  static void Assert(bool value,string message){if(!value)throw new InvalidOperationException(message);}
  static void Check(string name,Action action){action();checks.Add(LocalApi.D("name",name,"passed",true));Console.WriteLine("PASS "+name);}
+ static void CheckColors(Type type){
+  object cube=FormatterServices.GetUninitializedObject(type);Type puzzleType=Reflect.Field(type,"Cube").FieldType;object puzzle=FormatterServices.GetUninitializedObject(puzzleType);
+  Type stickerType=Reflect.Field(type,"Stks").FieldType.GetElementType();Array stickers=Array.CreateInstance(stickerType,600);
+  short[] field=new short[600];byte[] styles=new byte[600];int[] palette=new int[600];
+  for(int i=0;i<600;i++){stickers.SetValue(FormatterServices.GetUninitializedObject(stickerType),i);field[i]=unchecked((short)(i|((i%4)<<14)));styles[i]=2;palette[i]=unchecked((int)(0xAB000000u+(uint)(i*2796203)));}
+  Reflect.Set(cube,"Cube",puzzle);Reflect.Set(cube,"Stks",stickers);Reflect.Set(cube,"NStk",600);Reflect.Set(puzzle,"Field",field);
+  var colorsField=Reflect.Field(type,"Colors");object originalPalette=colorsField.GetValue(null);var col=Reflect.Field(stickerType,"Col");var access=new NativeStickerAccess(stickers);
+  try{
+   colorsField.SetValue(null,palette);
+   foreach(int white in new[]{-1,0,1,599,600}){
+    Reflect.Set(cube,"WhiteColor",white);type.GetMethod("SetStickerColors",Reflect.Flags).Invoke(cube,null);
+    var expected=new int[600];for(int i=0;i<600;i++){expected[i]=(int)col.GetValue(stickers.GetValue(i));col.SetValue(stickers.GetValue(i),0);}
+    access.ApplyColors(cube,field,styles,null,false);
+    for(int i=0;i<600;i++)Assert(expected[i]==(int)col.GetValue(stickers.GetValue(i)),"Selective palette math differs from original MPUlt at slot "+i+", WhiteColor "+white);
+   }
+   Reflect.Set(cube,"WhiteColor",-1);access.ApplyColors(cube,field,styles,null,false);
+   field[17]=599;field[299]=0;access.ApplyColors(cube,field,styles,new[]{17,299},false);
+   var actual=new int[600];for(int i=0;i<600;i++)actual[i]=(int)col.GetValue(stickers.GetValue(i));
+   type.GetMethod("SetStickerColors",Reflect.Flags).Invoke(cube,null);
+   for(int i=0;i<600;i++)Assert(actual[i]==(int)col.GetValue(stickers.GetValue(i)),"Sparse mesh colors differ from full native color recomputation");
+   Assert(Object.ReferenceEquals(field,Reflect.Get(puzzle,"Field"))&&Object.ReferenceEquals(stickers,Reflect.Get(cube,"Stks")),"Selective color update changed authoritative array ownership");
+  }finally{colorsField.SetValue(null,originalPalette);}
+ }
  [STAThread] static int Main(string[] args){
   try{
    string runtime=Path.GetFullPath(args[0]);AppDomain.CurrentDomain.AssemblyResolve+=delegate(object s,ResolveEventArgs e){string path=Path.Combine(runtime,new AssemblyName(e.Name).Name+".dll");return File.Exists(path)?Assembly.LoadFrom(path):null;};
    var type=Assembly.LoadFrom(Path.Combine(runtime,"MPUlt.exe")).GetType("_3dedit.CubeObj",true);object cube=FormatterServices.GetUninitializedObject(type);
    Check("pinned-original-render-and-upload-instructions",delegate{NativeFullRenderer.Validate(type,type.GetMethod("Render",Reflect.Flags),type.GetMethod("SendVBuf",Reflect.Flags));});
+   Check("selective-colors-match-original-all-600-colors-outline-bits-and-white-modes",delegate{CheckColors(type);});
+   Check("commit-hold-blocks-explicit-draw-and-picking-before-device-access",delegate{var lifecycle=(NativeRendererLifecycle)FormatterServices.GetUninitializedObject(typeof(NativeRendererLifecycle));lifecycle.HoldUpdates=true;Assert(!lifecycle.RenderFrame()&&!lifecycle.PreparePicking(),"Held renderer accessed or drew uncommitted state");});
    using(var viewport=new FullRendererFixtureViewport(cube)){
     var adapter=NativeFullRenderer.TryInstall(viewport,cube);Assert(adapter!=null,"Pinned native renderer adapter installation failed");var proxy=viewport.DXObjects[0];
     Check("adapter-installed-with-original-cube-retained",delegate{Assert(!Object.ReferenceEquals(proxy,cube)&&Object.ReferenceEquals(proxy.GetType().GetField("Target").GetValue(proxy),cube),"Adapter replaced native geometry ownership");Assert(adapter.Enabled,"Acceleration should start enabled");});

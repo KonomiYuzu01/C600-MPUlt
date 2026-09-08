@@ -13,7 +13,7 @@ internal sealed class NativeDockLayout : Panel {
  bool arranging;
  int preferred = 348;
  internal const int MinimumViewportWidth = 360;
- internal const int MinimumToolsWidth = 240;
+ internal const int MinimumToolsWidth = 320;
  internal const int DividerWidth = 5;
 
  internal NativeDockLayout() {

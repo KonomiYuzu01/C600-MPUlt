@@ -103,10 +103,16 @@ internal sealed class NativeFullRenderer : IDisposable {
  static DynamicMethod Clone(MethodInfo method,DynamicMethod upload){
   var body=method.GetMethodBody();if(body.ExceptionHandlingClauses.Count!=0)throw new NotSupportedException("Unexpected renderer exception clauses.");var parameters=new List<Type>{method.DeclaringType};foreach(var parameter in method.GetParameters())parameters.Add(parameter.ParameterType);
   var dm=new DynamicMethod("C600Reusable"+method.Name+(serial++),method.ReturnType,parameters.ToArray(),method.DeclaringType,true);dm.InitLocals=body.InitLocals;var il=dm.GetILGenerator();foreach(var local in body.LocalVariables)il.DeclareLocal(local.LocalType,local.IsPinned);
-  var instructions=Read(method);var labels=new Dictionary<int,Label>();foreach(var item in instructions)labels[item.Offset]=il.DefineLabel();labels[body.GetILAsByteArray().Length]=il.DefineLabel();int locks=0,unlocks=0,sends=0;
+  var instructions=Read(method);var labels=new Dictionary<int,Label>();foreach(var item in instructions)labels[item.Offset]=il.DefineLabel();labels[body.GetILAsByteArray().Length]=il.DefineLabel();int locks=0,unlocks=0,sends=0,frameworkColors=0;
   foreach(var item in instructions){
    il.MarkLabel(labels[item.Offset]);var op=item.Op;object value=item.Operand;var called=value as MethodInfo;
-   if(called!=null&&called.DeclaringType.FullName=="Microsoft.DirectX.Direct3D.VertexBuffer"&&called.Name=="Lock"){
+   if(upload!=null&&item.Offset==0x329&&op==OpCodes.Ldc_I4&&(int)value==-8355712){
+    // The hash-verified original passes a constant gray to framework lines;
+    // StkMesh.Col only affects fills. Read the renderer-owned focus mesh here.
+    // Geometry, clipping and the original sticker selection colors stay intact.
+    il.Emit(OpCodes.Ldarg_0);il.Emit(OpCodes.Ldfld,Reflect.Field(method.DeclaringType,"StFaces"));il.Emit(OpCodes.Ldloc,(short)11);il.Emit(OpCodes.Ldelem_Ref);
+    il.Emit(OpCodes.Call,typeof(NativeRenderSubset).GetMethod("FrameworkColor",BindingFlags.NonPublic|BindingFlags.Static));frameworkColors++;
+   }else if(called!=null&&called.DeclaringType.FullName=="Microsoft.DirectX.Direct3D.VertexBuffer"&&called.Name=="Lock"){
     if(called.ReturnType!=typeof(Array)||called.GetParameters().Length!=2)throw new NotSupportedException("Unrecognized native lock overload.");il.Emit(OpCodes.Call,typeof(NativeFullRenderer).GetMethod("ReuseLock",BindingFlags.NonPublic|BindingFlags.Static));locks++;
    }else if(called!=null&&called.DeclaringType.FullName=="Microsoft.DirectX.Direct3D.VertexBuffer"&&called.Name=="Unlock"){
     il.Emit(OpCodes.Call,typeof(NativeFullRenderer).GetMethod("ReuseUpload",BindingFlags.NonPublic|BindingFlags.Static));unlocks++;
@@ -128,7 +134,7 @@ internal sealed class NativeFullRenderer : IDisposable {
    }
   }
   il.MarkLabel(labels[body.GetILAsByteArray().Length]);
-  if(upload==null?(locks!=0||unlocks!=1||sends!=0):(locks!=5||unlocks!=0||sends!=5))throw new NotSupportedException("Native buffer call structure changed.");return dm;
+  if(upload==null?(locks!=0||unlocks!=1||sends!=0||frameworkColors!=0):(locks!=5||unlocks!=0||sends!=5||frameworkColors!=1))throw new NotSupportedException("Native buffer call structure changed.");return dm;
  }
  static object MakeProxy(object cube,Action<object,object> render){
   var iface=cube.GetType().GetInterface("_3dedit.IDXObject");var assembly=AppDomain.CurrentDomain.DefineDynamicAssembly(new AssemblyName("C600FullRenderAdapter"+(serial++)),AssemblyBuilderAccess.Run);var module=assembly.DefineDynamicModule("adapter");var type=module.DefineType("NativeRenderAdapter",TypeAttributes.Public|TypeAttributes.Sealed);type.AddInterfaceImplementation(iface);

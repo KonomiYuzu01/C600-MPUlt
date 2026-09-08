@@ -57,6 +57,38 @@ class Model:
    self.bypos.append(d)
   self.home_cell_cache={};self.cancel_event=None;self.cap_cell_cache={};self.shell_cache={}
   self.adj=[np.argsort(np.linalg.norm(self.normals-self.normals[c],axis=1))[1:5].tolist() for c in range(600)]
+  if any(c not in self.adj[n] for c,row in enumerate(self.adj) for n in row):raise ValueError('Cell adjacency is not symmetric')
+  self.distance_cache=OrderedDict();self.layer_mask_cache=OrderedDict()
+  self.center_piece=self.sp[np.arange(600,dtype=np.int32)*433]
+  if len(np.unique(self.center_piece))!=600 or np.any(self.oid[self.center_piece]!=-1) or np.any(self.k[self.center_piece]!=1):raise ValueError('Fixed cell-center mapping is invalid')
+  self.vertex_positions=np.flatnonzero(self.oid==34).astype(np.int32)
+  if len(self.vertex_positions)!=120:raise ValueError('Vertex orbit must contain 120 positions')
+  self.vertex_cells=[self.hosting(int(p)) for p in self.vertex_positions];self.cell_vertices=[[] for _ in range(600)]
+  for v,cells in enumerate(self.vertex_cells):
+   if len(cells)!=20 or len(set(cells))!=20:raise ValueError('Every vertex must meet 20 distinct cells')
+   for c in cells:self.cell_vertices[c].append(v)
+  if any(len(v)!=4 for v in self.cell_vertices):raise ValueError('Every cell must meet four vertices')
+  self.cell_positions=self.sp.reshape(600,433)
+  if np.any(np.diff(np.sort(self.cell_positions,axis=1),axis=1)==0):raise ValueError('A cell must contain one sticker per touching physical position')
+  # Face poles are face-center coordinates: each boundary plane is n.x=n.n.
+  # The mean of the twenty incident poles points along their common vertex.
+  # This derives only 120 coarse vertices, never copies detailed sticker meshes.
+  planes=np.sum(self.normals*self.normals,axis=1);vertices=[]
+  for cells in self.vertex_cells:
+   poles=self.normals[cells];direction=poles.mean(axis=0);denominator=float(np.mean(poles@direction))
+   if denominator<=0:raise ValueError('Invalid incident cell planes')
+   vertices.append(direction*float(np.mean(planes[cells]))/denominator)
+  self.vertices4=np.asarray(vertices,np.float64)
+  self.tetrahedra=np.asarray(self.cell_vertices,np.int16)
+  residual=self.normals@self.vertices4.T-planes[:,None]
+  if not np.isfinite(self.vertices4).all() or np.max(residual)>1e-9:raise ValueError('Derived vertex lies outside the retained cell planes')
+  for v,cells in enumerate(self.vertex_cells):
+   if set(np.flatnonzero(np.abs(residual[:,v])<1e-9))!=set(cells):raise ValueError('Vertex geometry disagrees with retained incidence')
+  if not np.allclose(self.vertices4[self.tetrahedra].mean(axis=1),self.normals,atol=1e-9,rtol=0):raise ValueError('Tetrahedral centers disagree with retained cell poles')
+  radius=np.linalg.norm(self.vertices4,axis=1)
+  if not np.allclose(radius,radius[0],atol=1e-9,rtol=0):raise ValueError('Vertex radii differ')
+  self.vertices4.setflags(write=False);self.tetrahedra.setflags(write=False)
+  self.cell_distances(0)
   self.load_seconds=time.perf_counter()-start
  def check_cancel(self):
   if self.cancel_event is not None and self.cancel_event.is_set():raise InterruptedError('Analysis cancelled; puzzle state unchanged')
@@ -188,6 +220,37 @@ class Model:
   if c not in self.home_cell_cache:
    a=np.zeros(self.np,bool);a[np.unique(self.sp[c*433:(c+1)*433])]=True;self.home_cell_cache[c]=a
   return self.home_cell_cache[c]
+ def cell_distances(self,c):
+  if type(c)!=int or not 0<=c<600:raise ValueError('Color must be C1..C600')
+  if c not in self.distance_cache:
+   distance=np.full(600,-1,np.int16);distance[c]=0;queue=[c]
+   for current in queue:
+    for neighbor in self.adj[current]:
+     if distance[neighbor]<0:distance[neighbor]=distance[current]+1;queue.append(neighbor)
+   if len(queue)!=600:raise ValueError('Cell adjacency graph is disconnected')
+   distance.setflags(write=False);self.distance_cache[c]=distance
+   while len(self.distance_cache)>32:self.distance_cache.popitem(last=False)
+  else:self.distance_cache.move_to_end(c)
+  return self.distance_cache[c]
+ def layer_mask(self,c,layer):
+  distances=self.cell_distances(c)
+  if type(layer)!=int or not 0<=layer<=int(distances.max()):raise ValueError('Layer must be L0..L'+str(int(distances.max()))+' for the chosen color')
+  key=(c,layer)
+  if key not in self.layer_mask_cache:
+   # Any hosting cell in the BFS shell includes the complete physical piece.
+   mask=np.logical_or.reduceat(distances[self.faces]==layer,self.fo[:-1]);mask.setflags(write=False)
+   self.layer_mask_cache[key]=mask
+   while len(self.layer_mask_cache)>48:self.layer_mask_cache.popitem(last=False)
+  else:self.layer_mask_cache.move_to_end(key)
+  return self.layer_mask_cache[key]
+ def structure(self):
+  return dict(format='C600-structure-v1',model_id=self.model_id,color_count=600,vertex_count=120,
+   numbering='Canonical C1..C600 correspond to lab cells 0..599; legacy home/current/cap/shell arguments remain zero-based.',
+   layer_semantics='Cell-adjacency BFS from the chosen color at L0; any hosting cell in the shell includes the whole piece. Different piece layers may overlap.',
+   geometry=dict(format='C600-cell-geometry-v1',coordinate_order=['W','X','Y','Z'],vertex_id_base=0,color_id_base=1,vertices4=self.vertices4.tolist(),cells=self.tetrahedra.tolist(),centers4=self.normals.tolist()),
+   adjacency=[[n+1 for n in row] for row in self.adj],vertex_incidence=[[c+1 for c in row] for row in self.vertex_cells],color_vertices=[[v+1 for v in row] for row in self.cell_vertices],
+   colors=[dict(number=c+1,lab_cell=c,neighbors=[n+1 for n in self.adj[c]],vertices=[v+1 for v in self.cell_vertices[c]],center_position=int(self.center_piece[c])) for c in range(600)],
+   vertices=[dict(number=v+1,position=int(p),incident_colors=[c+1 for c in self.vertex_cells[v]]) for v,p in enumerate(self.vertex_positions)])
 
 class PuzzleState:
  def __init__(self,m,labels=None,*,trusted=False):
@@ -336,6 +399,22 @@ class Filters:
     depth=int(self.pop())
    if self.pop()!=')':raise ValueError('Expected )')
    return m.cap_mask(c) if s=='cap' else m.shell_mask(c,depth)
+  if s in('color','cell','adjacent','layer','home_layer'):
+   if self.pop()!='(':raise ValueError('Expected (')
+   value=self.pop().lower()
+   if not value.startswith('c') or not value[1:].isdigit() or not 1<=int(value[1:])<=600:raise ValueError('Use canonical color IDs C1..C600')
+   c=int(value[1:])-1
+   if s in('layer','home_layer'):
+    if self.pop()!=',':raise ValueError('Layer predicate needs a comma')
+    value=self.pop().lower()
+    if not value.startswith('l') or not value[1:].isdigit():raise ValueError('Use a BFS layer ID such as L0')
+    base=m.layer_mask(c,int(value[1:]))
+   elif s=='adjacent':
+    base=np.zeros(m.np,bool)
+    for neighbor in m.adj[c]:base|=m.cell_mask(neighbor)
+   else:base=m.cell_mask(c)
+   if self.pop()!=')':raise ValueError('Expected )')
+   return base[st.at] if s in('color','home_layer') else base
   if s in('home','current','home_has','current_has','piece','position'):
    if self.pop()!='(':raise ValueError('Expected (')
    value=self.pop().lower();n=int(value[1:] if value.startswith(('c','p')) else value)

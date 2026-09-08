@@ -63,7 +63,7 @@ internal static class NativePickingRegression {
  static void ReleaseState(Form form){Assert(!Convert.ToBoolean(Reflect.Get(form,"qLeftDown"))&&!Convert.ToBoolean(Reflect.Get(form,"qRightDown")),"Native mouse button remained pressed");Assert(!Convert.ToBoolean(Reflect.Get(form,"qSkipClick")),"Rejected click left native skip flag set");}
  static double[,] CameraMatrix(Control viewport){return (double[,])Reflect.Get(Reflect.Get(Reflect.Property(Reflect.Property(viewport,"Scene"),"Camera"),"Trans"),"M");}
  static void Drag(Control viewport,bool right,Point start,Point end){int down=right?0x204:0x201,up=right?0x205:0x202,mask=right?2:1;SendMessage(viewport.Handle,0x200,IntPtr.Zero,Position(start));using(new ThreadKeys(Control.ModifierKeys,right?MouseButtons.Right:MouseButtons.Left)){SendMessage(viewport.Handle,down,(IntPtr)mask,Position(start));SendMessage(viewport.Handle,0x200,(IntPtr)mask,Position(end));SendMessage(viewport.Handle,up,IntPtr.Zero,Position(end));}}
- static string Selected(NativeWorkbench wb,LocalApi api){return api.Json(LocalApi.AsDict(State(wb)["prefs"])["selected"]);}
+ static string Selected(NativeWorkbench wb,LocalApi api){return api.Json(LocalApi.AsDict(State(wb)["prefs"])["inspection"]);}
  static bool SameMatrix(double[,] a,double[,] b){for(int i=0;i<4;i++)for(int j=0;j<4;j++)if(Math.Abs(a[i,j]-b[i,j])>1e-9)return false;return true;}
  static string LabelHash(byte[] labels){using(var sha=SHA256.Create())return BitConverter.ToString(sha.ComputeHash(labels)).Replace("-","").ToLowerInvariant();}
  static async Task FullRayBenchmark(NativeWorkbench wb,Control viewport,LocalApi api,string output,Action<string> check){
@@ -88,11 +88,42 @@ internal static class NativePickingRegression {
   Assert(responsive,"All-visible ray exceeded the provisional 100 ms response target: "+max.ToString("F3")+" ms; see native-full-picking-performance.json");
   check("Eight warmed production ray queries over all 259800 slots meet the 100 ms provisional response target with exact full-state and array ownership checks");
  }
+ static async Task CheckInitialButtonDown(NativeWorkbench wb,Form form,Control viewport,LocalApi api,Action<string> check){
+  var renderer=(NativeRendererLifecycle)Reflect.Get(wb,"renderer");object scene=Reflect.Property(viewport,"Scene"),camera=Reflect.Property(scene,"Camera"),puzzle=Reflect.Get(wb,"puz");
+  string before=Hash(wb);long head=Convert.ToInt64(State(wb)["head"]);var field=(short[])Reflect.Get(puzzle,"Field");var original=(short[])field.Clone();
+  byte[] labels=await Task.Run(delegate{return api.Bytes("labels");});Assert(labels.Length==259800*4&&LabelHash(labels)==before,"Button-down probe has an incomplete initial labelled state");
+  renderer.Pause();try{
+   foreach(bool right in new[]{false,true})foreach(bool alreadyDirty in new[]{false,true}){
+    Point point=new Point(40,40);int down=right?0x204:0x201,up=right?0x205:0x202,mask=right?2:1;
+    using(new ThreadKeys(Keys.None,MouseButtons.None))SendMessage(viewport.Handle,0x200,IntPtr.Zero,Position(point));
+    Assert(Convert.ToInt32(Reflect.Get(scene,"m_lastAction"))==-1,"No-button native move did not reset the previous mouse action");
+    Assert(renderer.PreparePicking(),"Initial button-down probe could not prepare the native projection");
+    Assert(!Convert.ToBoolean(Reflect.Property(scene,"SceneChanged")),"Initial button-down probe did not start from a clean rendered scene");
+    if(alreadyDirty)Reflect.Call(viewport,"SetSceneChanged");
+    var matrix=(double[,])CameraMatrix(viewport).Clone();double radius=Convert.ToDouble(Reflect.Get(camera,"R")),radius0=Convert.ToDouble(Reflect.Get(camera,"R0"));int frames=renderer.FramesRequested;
+    try{
+     using(new ThreadKeys(Keys.None,right?MouseButtons.Right:MouseButtons.Left))SendMessage(viewport.Handle,down,(IntPtr)mask,Position(point));
+     Assert(Convert.ToBoolean(Reflect.Property(scene,"SceneChanged"))==alreadyDirty,alreadyDirty?"Initial mouse-down discarded a pre-existing redraw request":"Initial mouse-down dirtied the scene without camera movement");
+     Assert(SameMatrix(matrix,CameraMatrix(viewport))&&radius==Convert.ToDouble(Reflect.Get(camera,"R"))&&radius0==Convert.ToDouble(Reflect.Get(camera,"R0")),"Initial mouse-down changed the native camera transform or radius");
+     Assert(renderer.FramesRequested==frames,"Initial mouse-down submitted an unexpected frame");
+    }finally{
+     // Release through the original HWND bookkeeping while explicitly skipping
+     // ProcessClick: this probe tests down transitions, not a synthetic twist.
+     Reflect.Set(form,"qSkipClick",true);using(new ThreadKeys(Keys.None,MouseButtons.None))SendMessage(viewport.Handle,up,IntPtr.Zero,Position(point));
+    }
+    ReleaseState(form);
+   }
+  }finally{renderer.Resume();}
+  await Idle(wb);Assert(Hash(wb)==before&&Convert.ToInt64(State(wb)["head"])==head,"Button-down probe changed the committed state or journal");
+  Assert(Object.ReferenceEquals(field,Reflect.Get(puzzle,"Field")),"Button-down probe replaced the native field");for(int i=0;i<field.Length;i++)Assert(field[i]==original[i],"Button-down probe changed a native label/selection flag at "+i);
+  byte[] after=await Task.Run(delegate{return api.Bytes("labels");});Assert(after.Length==259800*4&&LabelHash(after)==before,"Button-down probe changed complete authoritative labels");
+  check("Real initial left/right HWND button-down preserves clean projection and camera, retains pre-existing dirtiness, and leaves all 259800 native and authoritative labels unchanged");
+ }
  internal static async Task Run(NativeWorkbench wb,Form form,Control viewport,LocalApi api,string output,Action<string> check){
   var picking=(NativePickingVisibility)Reflect.Get(wb,"picking");Assert(picking!=null,"Native picking gate is not installed");var renderer=(NativeRendererLifecycle)Reflect.Get(wb,"renderer");object cube=Reflect.Get(wb,"cube"),puzzle=Reflect.Get(wb,"puz");object fullSlots=Reflect.Get(cube,"Stks"),fullFaces=Reflect.Get(cube,"StFaces"),fullField=Reflect.Get(puzzle,"Field");
   Assert(Control.ModifierKeys==Keys.None,"Picking regression requires released physical modifiers");form.Activate();viewport.Focus();await Idle(wb);string before=Hash(wb);long head=Convert.ToInt64(State(wb)["head"]);
   double cameraR0=Convert.ToDouble(Reflect.Get(Reflect.Property(Reflect.Property(viewport,"Scene"),"Camera"),"R0"));NativeDiagnostics.Write("Native picking actual camera.R0="+cameraR0.ToString("R",System.Globalization.CultureInfo.InvariantCulture));File.WriteAllText(Path.Combine(output,"native-camera-radius.json"),api.Json(LocalApi.D("R0",cameraR0,"radius",Reflect.Get(Reflect.Property(Reflect.Property(viewport,"Scene"),"Camera"),"R"))));
-  await Apply(wb,"O33");Assert(renderer.PreparePicking(),"Visible pick projection failed");Point pixel=FindPixel(wb,viewport,picking);int visibleHit=picking.FindVisibleSticker(pixel.X,pixel.Y,false);
+  await Apply(wb,"O33");await CheckInitialButtonDown(wb,form,viewport,api,check);Assert(renderer.PreparePicking(),"Visible pick projection failed");Point pixel=FindPixel(wb,viewport,picking);int visibleHit=picking.FindVisibleSticker(pixel.X,pixel.Y,false);
   Assert(SaveFrame(wb,viewport,Path.Combine(output,"filtered-no-framework.png"))>0,"Filtered native render has no visible geometry");
   lock(viewport)using(renderer.Subset.Enter()){
    Assert(Convert.ToInt32(Reflect.Get(cube,"NF"))==600,"Framework suppression changed clipping-plane count");foreach(object face in (Array)Reflect.Get(cube,"StFaces"))Assert(Convert.ToInt32(Reflect.Get(Reflect.Get(face,"Base"),"NE"))==0,"Filtered render retains framework edges");
@@ -143,9 +174,21 @@ internal static class NativePickingRegression {
   check("Native animation-status and reentrant message guards reject extra clicks before original button bookkeeping or twist mutation");
   await Apply(wb,"O33");Assert(renderer.PreparePicking(),"Modified click projection failed");pixel=FindPixel(wb,viewport,picking);
   using(new ThreadKeys(Keys.Shift,MouseButtons.Left)){Assert(Control.ModifierKeys==Keys.Shift,"Controlled Shift did not reach WinForms");Click(viewport,pixel);}await Idle(wb);ReleaseState(form);
-  Assert(Selected(wb,api)!="null","Visible original Shift-click did not select a piece");string selection=Selected(wb,api);await Apply(wb,"nothing");string prefs=api.Json(LocalApi.AsDict(State(wb)["prefs"]));blocked=picking.BlockedClicks;
+  Assert(Selected(wb,api)!="null","Visible Shift-left click did not create an inspection");
+  var home=LocalApi.AsDict(State(wb)["inspection"]);int homeHit=picking.LastHit;var map=(int[])Reflect.Get(wb,"nativeToLab");
+  Assert(Convert.ToString(home["kind"])=="home-centers"&&Convert.ToInt32(home["clicked_slot"])==map[homeHit],"Shift-left lost its exact clicked sticker");
+  Assert(LocalApi.Array(home["center_slots"]).Length==LocalApi.Array(home["home_colors"]).Length&&LocalApi.Array(home["home_colors"]).Length>0,"Home centers are incomplete");
+  string selection=Selected(wb,api);await Apply(wb,"nothing");string prefs=api.Json(LocalApi.AsDict(State(wb)["prefs"]));blocked=picking.BlockedClicks;
   using(new ThreadKeys(Keys.Shift,MouseButtons.Left))Click(viewport,pixel);await Idle(wb);ReleaseState(form);Assert(picking.BlockedClicks==blocked+1&&Selected(wb,api)==selection&&api.Json(LocalApi.AsDict(State(wb)["prefs"]))==prefs&&Hash(wb)==before,"Hidden Shift-click changed selection/preferences or full state");
-  check("Actual HWND with controlled per-thread Shift selects visible pieces; hidden Shift-click preserves existing selected piece and all preferences");
+  check("Actual HWND Shift-left resolves the exact sticker and home Cell Centers; hidden annotations cannot be inspected");
+  await Apply(wb,"O33");Assert(renderer.PreparePicking(),"Shift-right projection failed");pixel=FindPixel(wb,viewport,picking);
+  using(new ThreadKeys(Keys.Shift,MouseButtons.Right)){SendMessage(viewport.Handle,0x200,IntPtr.Zero,Position(pixel));SendMessage(viewport.Handle,0x204,(IntPtr)2,Position(pixel));SendMessage(viewport.Handle,0x205,IntPtr.Zero,Position(pixel));}await Idle(wb);ReleaseState(form);
+  var required=LocalApi.AsDict(State(wb)["inspection"]);int destination=Convert.ToInt32(required["target_position"]);
+  Assert(Convert.ToString(required["kind"])=="required-piece"&&Convert.ToInt32(required["clicked_slot"])==map[picking.LastHit],"Shift-right lost its exact hit");
+  Assert(Convert.ToInt32(required["target_identity"])==destination&&Convert.ToInt32(LocalApi.AsDict(required["required_piece"])["piece"])==destination,"Shift-right located the wrong identity");
+  Assert((int)((NumericUpDown)Reflect.Get(wb,"target")).Value==destination&&!((CheckBox)Reflect.Get(wb,"autoTarget")).Checked,"Buffer destination was replaced by the source");
+  Assert(Hash(wb)==before,"Inspection changed authoritative labels");selection=Selected(wb,api);
+  check("Actual HWND Shift-right locates the destination identity and keeps the clicked destination in the Buffer Analyzer");
   await Apply(wb,"O33");Assert(renderer.PreparePicking(),"Ctrl recenter projection failed");pixel=FindPixel(wb,viewport,picking);int hit=picking.FindVisibleSticker(pixel.X,pixel.Y,false);int faceId=Convert.ToInt32(Reflect.Get(((Array)fullSlots).GetValue(hit),"NFace"));var originalMatrix=(double[,])CameraMatrix(viewport).Clone();var nativeFaces=(Array)Reflect.Get(Reflect.Get(puzzle,"Str"),"Faces");
   Reflect.Call(camera,"Recenter",Reflect.Get(nativeFaces.GetValue(faceId),"Pole"));var expected=(double[,])CameraMatrix(viewport).Clone();Reflect.Set(Reflect.Get(camera,"Trans"),"M",originalMatrix);Reflect.Call(camera,"SetChanged");Assert(renderer.PreparePicking(),"Ctrl recenter baseline projection failed");
   using(new ThreadKeys(Keys.Control,MouseButtons.Left))Click(viewport,pixel);await Idle(wb);ReleaseState(form);Assert(picking.LastFace==faceId&&SameMatrix(CameraMatrix(viewport),expected)&&Hash(wb)==before,"Ctrl recenter chose hidden framework instead of the visible hit cell");

@@ -9,7 +9,8 @@ using System.Windows.Forms;
 
 internal sealed class NativePickingVisibility : NativeWindow,IDisposable {
  delegate bool ScreenRay(int x,int y,ref double rayX,ref double rayY);
- readonly Control viewport;readonly Form form;readonly object cube,puzzle,camera;
+ readonly Control viewport;readonly Form form;readonly object cube,puzzle,camera,scene;
+ readonly Func<bool> sceneDirty;readonly Action<bool> setSceneDirty;readonly Func<int> lastMouseAction;
  readonly Func<bool> preparePicking,allowed;
  readonly object[] stickers;readonly Array originalFaces,emptyFaces,restrictedFaces;
  readonly FieldInfo facesField;
@@ -17,7 +18,8 @@ internal sealed class NativePickingVisibility : NativeWindow,IDisposable {
  readonly Func<object,int> faceIndex,vertices,triangles;
  readonly Func<object,object> getBase;
  readonly ScreenRay screenRay;
- int[] visible=new int[0];int restrictedFace=-1;
+ int[] visible=new int[0];byte[] interactive;int restrictedFace=-1;
+ int inspectionHit=-1;MouseButtons inspectionButton;string inspectionGesture;
  bool disposed,dispatching,suppressCapture;
  internal bool IsDispatching {get{return dispatching;}}
  internal bool SuppressCapture {get{return suppressCapture;}}
@@ -25,6 +27,13 @@ internal sealed class NativePickingVisibility : NativeWindow,IDisposable {
  internal int LastFace {get;private set;}
  internal int BlockedClicks {get;private set;}
  internal int AcceptedClicks {get;private set;}
+ internal int InspectionClicks {get;private set;}
+ internal Action BeforeNativeClick;
+ internal bool TakeInspection(MouseButtons button,out int hit,out string gesture){
+  hit=inspectionHit;gesture=inspectionGesture;
+  if(hit<0||button!=inspectionButton)return false;
+  inspectionHit=-1;inspectionGesture=null;return true;
+ }
 
  internal NativePickingVisibility(Control viewport,Form form,object cube,object puzzle,Func<bool> preparePicking,Func<bool> allowed){
   this.viewport=viewport;this.form=form;this.cube=cube;this.puzzle=puzzle;
@@ -34,7 +43,12 @@ internal sealed class NativePickingVisibility : NativeWindow,IDisposable {
   stickers=new object[full.Length];for(int i=0;i<full.Length;i++)stickers[i]=full.GetValue(i);
   originalFaces=(Array)Reflect.Get(cube,"StFaces");emptyFaces=NativeRenderSubset.EmptyFaces(originalFaces);restrictedFaces=(Array)emptyFaces.Clone();
   facesField=Reflect.Field(cube.GetType(),"StFaces");
-  var scene=Reflect.Property(viewport,"Scene");camera=Reflect.Property(scene,"Camera");
+  scene=Reflect.Property(viewport,"Scene");camera=Reflect.Property(scene,"Camera");
+  var dirtyProperty=scene.GetType().GetProperty("SceneChanged",Reflect.Flags);
+  sceneDirty=(Func<bool>)Delegate.CreateDelegate(typeof(Func<bool>),scene,dirtyProperty.GetGetMethod(true));
+  setSceneDirty=(Action<bool>)Delegate.CreateDelegate(typeof(Action<bool>),scene,dirtyProperty.GetSetMethod(true));
+  var action=Expression.Field(Expression.Constant(scene),Reflect.Field(scene.GetType(),"m_lastAction"));
+  lastMouseAction=Expression.Lambda<Func<int>>(Expression.Convert(action,typeof(int))).Compile();
   screenRay=(ScreenRay)Delegate.CreateDelegate(typeof(ScreenRay),scene,scene.GetType().GetMethod("DirAndOrig",Reflect.Flags));
   Type type=full.GetType().GetElementType();var value=Expression.Parameter(typeof(object),"mesh");var item=Expression.Convert(value,type);
   var basis=Expression.Field(item,Reflect.Field(type,"Base"));
@@ -50,18 +64,19 @@ internal sealed class NativePickingVisibility : NativeWindow,IDisposable {
  void HandleCreated(object sender,EventArgs args){if(!disposed)AssignHandle(viewport.Handle);}
  void HandleDestroyed(object sender,EventArgs args){ReleaseHandle();}
 
- internal void Update(byte[] styles){
+ internal void Update(byte[] styles,byte[] interaction){
   if(dispatching)throw new InvalidOperationException("Cannot change visibility inside native picking.");
-  if(styles==null||styles.Length!=stickers.Length)throw new ArgumentException("Native picking style length mismatch.","styles");
+  if(styles==null||styles.Length!=stickers.Length||interaction==null||interaction.Length!=styles.Length)throw new ArgumentException("Native picking mask length mismatch.");
   var indices=new List<int>();
   for(int i=0;i<styles.Length;i++){
    if(styles[i]>6)throw new ArgumentException("Native style outside 0..6.","styles");
+   if(interaction[i]>1||(interaction[i]!=0&&styles[i]==0))throw new ArgumentException("Native interaction mask is inconsistent.");
    if(styles[i]!=0)indices.Add(i);
    // Original FindSticker ignores NV when searching selected pieces. Verify
    // the original callback cannot use a hidden mesh's old projected triangles.
    else if(triangles(getBase(stickers[i]))!=0)throw new InvalidOperationException("Hidden native sticker still has pickable triangles: "+i);
   }
-  visible=indices.ToArray();
+  visible=indices.ToArray();interactive=interaction;
  }
 
  // Coordinates are exactly those consumed by the original mkPickObject:
@@ -74,11 +89,13 @@ internal sealed class NativePickingVisibility : NativeWindow,IDisposable {
   double nearest=Double.MaxValue;int found=-1;
   foreach(int i in visible){
    object sticker=stickers[i],basis=getBase(sticker);
-   if(vertices(basis)<=0||triangles(basis)<=0||clipped[faceIndex(sticker)]||(selectedOnly&&(field[i]&0x8000)==0))continue;
+   if(vertices(basis)<=0||triangles(basis)<=0||clipped[faceIndex(sticker)])continue;
    double depth=checkRay(sticker,-rayX,rayY,nearest);
    if(!Double.IsNaN(depth)&&depth<nearest){nearest=depth;found=i;}
   }
-  return found;
+  // The closest rendered surface blocks farther hits even when it is context
+  // outside the filter, or not part of the current multi-click selection.
+  return found>=0&&interactive[found]!=0&&(!selectedOnly||(field[found]&0x8000)!=0)?found:-1;
  }
  bool IsClick(int x,int y){
   double dx=Convert.ToInt32(Reflect.Get(form,"ClickX"))-x,dy=Convert.ToInt32(Reflect.Get(form,"ClickY"))-y;
@@ -91,7 +108,16 @@ internal sealed class NativePickingVisibility : NativeWindow,IDisposable {
   // Reject nested button input before it changes the original press bookkeeping.
   if(dispatching&&ButtonMessage(message.Msg)){message.Result=IntPtr.Zero;return;}
   bool release=message.Msg==0x202||message.Msg==0x205||message.Msg==0x208;
-  if(!release){base.WndProc(ref message);return;}
+  if(!release){
+   // Pinned MPUlt ProcessMouseMove skips Camera.ProcessMouseMove when the
+   // previous action is -1, but its initial button-down still marks the scene
+   // dirty. Clear only that synchronous false transition on an already clean
+   // scene. Any later move, wheel, key, resize or existing dirty state survives.
+   bool firstCleanDown=(message.Msg==0x201||message.Msg==0x204)&&!sceneDirty()&&lastMouseAction()==-1;
+   base.WndProc(ref message);
+   if(firstCleanDown&&sceneDirty())setSceneDirty(false);
+   return;
+  }
   int x=(short)((long)message.LParam&65535),y=(short)(((long)message.LParam>>16)&65535);
   // Camera drags retain the complete original down/move/up handling.
   if(!IsClick(x,y)){
@@ -114,8 +140,16 @@ internal sealed class NativePickingVisibility : NativeWindow,IDisposable {
    try{base.WndProc(ref message);}finally{suppressCapture=false;Reflect.Set(form,"qSkipClick",false);}
    return;
   }
+  if(primary&&Control.ModifierKeys==Keys.Shift){
+   inspectionHit=hit;inspectionButton=message.Msg==0x202?MouseButtons.Left:MouseButtons.Right;
+   inspectionGesture=message.Msg==0x202?"home-centers":"required-piece";InspectionClicks++;
+   Reflect.Set(form,"qSkipClick",true);suppressCapture=true;
+   try{base.WndProc(ref message);}finally{suppressCapture=false;Reflect.Set(form,"qSkipClick",false);inspectionHit=-1;inspectionGesture=null;}
+   return;
+  }
   object priorFaces=facesField.GetValue(cube);dispatching=true;
   try{
+   if(BeforeNativeClick!=null)BeforeNativeClick();
    if(restrictedFace>=0)restrictedFaces.SetValue(emptyFaces.GetValue(restrictedFace),restrictedFace);
    restrictedFace=LastFace;
    object face=originalFaces.GetValue(restrictedFace);

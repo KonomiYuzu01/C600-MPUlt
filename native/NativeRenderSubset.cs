@@ -4,16 +4,20 @@
 // read outside Stks is Cube.Field[index], used for the selected outline bit.
 using System;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows.Forms;
 
 internal sealed class NativeRenderSubset {
+ static readonly ConditionalWeakTable<object,object> focusMeshes=new ConditionalWeakTable<object,object>();
+ internal static int FrameworkColor(object mesh){object marker;return focusMeshes.TryGetValue(mesh,out marker)?unchecked((int)0xFF29E3DE):-8355712;}
  readonly Control viewport;
  readonly object cube,puzzle,renderPuzzle;
  readonly Array fullStickers;
  readonly int fullCount,ownerThread;
  readonly FieldInfo stickersField,countField,puzzleField,colorsField,facesField;
- readonly Array fullFaces,emptyFaces;
+ readonly Array fullFaces,emptyFaces,focusFullFaces,focusOnlyFaces;
+ int focusedCell=-1;
  object savedFaces;
  byte[] visibility;
  Array drawStickers;
@@ -33,6 +37,19 @@ internal sealed class NativeRenderSubset {
  internal int FullCount { get { return fullCount; } }
  internal bool IsEntered { get { return entered; } }
  internal bool FrameworkVisible { get { return !hideFramework; } }
+ internal int FocusedCell {
+  get{return focusedCell;}
+  set{
+   CheckThread();if(entered||referenceDepth>0)throw new InvalidOperationException("Cannot change cell focus during a native draw.");
+   if(value< -1||value>=fullFaces.Length)throw new ArgumentOutOfRangeException("value");if(value==focusedCell)return;
+   object focused=null;
+   if(value>=0){focused=Reflect.Clone(fullFaces.GetValue(value));var projected=Reflect.Get(focused,"Coords3D") as Array;if(projected!=null)Reflect.Set(focused,"Coords3D",projected.Clone());focusMeshes.Add(focused,new object());}
+   if(focusedCell>=0){focusFullFaces.SetValue(fullFaces.GetValue(focusedCell),focusedCell);focusOnlyFaces.SetValue(emptyFaces.GetValue(focusedCell),focusedCell);}
+   focusedCell=value;
+   if(value>=0){focusFullFaces.SetValue(focused,value);focusOnlyFaces.SetValue(focused,value);}
+  }
+ }
+ Array DisplayFaces {get{return focusedCell<0?(hideFramework?emptyFaces:fullFaces):(hideFramework?focusOnlyFaces:focusFullFaces);}}
  internal bool HideFramework {
   get { return hideFramework; }
   set { CheckThread();if(entered||referenceDepth>0)throw new InvalidOperationException("Cannot change the framework policy during a native render.");hideFramework=value; }
@@ -45,6 +62,7 @@ internal sealed class NativeRenderSubset {
   puzzleField=RequireField(cube,"Cube");colorsField=RequireField(puzzle,"Field");
   facesField=RequireField(cube,"StFaces");
   fullFaces=(Array)facesField.GetValue(cube);emptyFaces=EmptyFaces(fullFaces);
+  focusFullFaces=(Array)fullFaces.Clone();focusOnlyFaces=(Array)emptyFaces.Clone();
   fullStickers=(Array)stickersField.GetValue(cube);
   fullCount=Convert.ToInt32(countField.GetValue(cube));
   if(fullStickers==null||fullStickers.Length!=fullCount||fullCount!=259800||
@@ -78,7 +96,7 @@ internal sealed class NativeRenderSubset {
  internal IDisposable EnterFramework() {
   CheckThread();
   if(!Monitor.IsEntered(viewport))throw new InvalidOperationException("Lock the native viewport before rendering.");
-  object previous=facesField.GetValue(cube);var desired=hideFramework?emptyFaces:fullFaces;
+  object previous=facesField.GetValue(cube);var desired=DisplayFaces;
   facesField.SetValue(cube,desired);
   referenceDepth++;
   return new FaceScope(this,previous);
@@ -175,7 +193,7 @@ internal sealed class NativeRenderSubset {
   entered=true;
   try {
    savedFaces=facesField.GetValue(cube);
-   facesField.SetValue(cube,hideFramework?emptyFaces:fullFaces);
+   facesField.SetValue(cube,DisplayFaces);
    if(indices!=null) {
     stickersField.SetValue(cube,stickers);
     countField.SetValue(cube,indices.Length);

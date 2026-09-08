@@ -15,7 +15,7 @@ from urllib.request import ProxyHandler, Request, build_opener
 from engine_process import EngineProcess, local_request, redact
 from directx_runtime import find_directx
 
-VERSION = '0.2.4'
+VERSION = '0.3'
 RESOURCES = Path(getattr(sys, '_MEIPASS', Path(__file__).resolve().parents[1])).resolve()
 BUNDLE = Path(sys.executable).resolve().parent if getattr(sys, 'frozen', False) else RESOURCES
 FAILURE_REPORT = None
@@ -72,7 +72,7 @@ def prepare_native(data, build, manifest):
     copy_if_changed(runtime_source/'MPUlt.exe', runtime/'MPUlt.exe')
     for name, installed in installed_directx.items():
         copy_if_changed(installed, runtime/name)
-    old_builds = [data/('native-host-'+v) for v in ('0.2.3','0.2.2','0.2.1','0.2')]
+    old_builds = [data/('native-host-'+v) for v in ('0.2.4','0.2.3','0.2.2','0.2.1','0.2')]
     for name in ('MPUlt_puzzles.txt', 'MPUlt_settings.txt'):
         if not (runtime/name).exists():
             prior = next((old/'runtime'/runtime.name/name for old in old_builds if (old/'runtime'/runtime.name/name).exists()), runtime_source/name)
@@ -138,7 +138,7 @@ def engine_test(args, data, build, manifest):
 
 def main():
     global FAILURE_REPORT
-    parser = argparse.ArgumentParser(description='C600 Studio 0.2.4 portable native Windows application.')
+    parser = argparse.ArgumentParser(description=f'C600 Studio {VERSION} portable native Windows application.')
     parser.add_argument('--data', type=Path, help='Alternate local session folder.')
     parser.add_argument('--startup-timeout', type=float, default=180)
     parser.add_argument('--verify-package', type=Path, metavar='REPORT', help=argparse.SUPPRESS)

@@ -4,17 +4,54 @@ Write requests require an unpredictable launch token and same-origin validation.
 from __future__ import annotations
 import argparse,base64,gzip,json,os,secrets,sys,threading,time,webbrowser,signal
 from concurrent.futures import ThreadPoolExecutor
+from collections import OrderedDict
 from http.server import ThreadingHTTPServer,BaseHTTPRequestHandler
 from pathlib import Path
 from urllib.parse import urlparse,parse_qs
 import numpy as np
-from core import Model,canonical
+from core import Model,canonical,digest
 from session import Session,NO_CAMERA
 from enhanced import Workflow
 from native_bridge import verify_native
 from grips import grips
 from engine_process import PROTOCOL, redact
 ROOT=Path(__file__).resolve().parent
+
+class NativeSnapshotCache:
+ """Bounded immutable native arrays; callers hold the session's shared lock."""
+ def __init__(self):self.entries=OrderedDict();self.profile_hash=None;self.mapping=None;self.inverse=None
+ def read(self,session,profile,since=None,protocol=2):
+  if profile is None:raise ValueError('Native bridge has not passed')
+  if since is not None and (not isinstance(since,str) or len(since)>128):raise ValueError('Invalid native snapshot revision')
+  profile_hash=profile['profile_sha256']
+  if profile_hash!=self.profile_hash:
+   # Only the verified bridge profile reaches this cache. Keep immutable owned
+   # mappings once per profile, rather than converting 259,800 Python integers
+   # for every frame. Replacement also invalidates all prior delta bases.
+   mapping=np.array(profile['native_to_lab'],dtype=np.int32,copy=True);inverse=np.argsort(profile['native_face_to_lab']).astype(np.int32)
+   mapping.setflags(write=False);inverse.setflags(write=False)
+   self.entries.clear();self.mapping=mapping;self.inverse=inverse;self.profile_hash=profile_hash
+  mapping=self.mapping;inverse=self.inverse
+  colors=inverse[session.st.labels[mapping]//433].astype('<u2')
+  styles=session.render_styles()[mapping].astype('u1');lab_interactive=session.interactive_styles()!=0;interactive=lab_interactive[mapping].astype('u1')
+  revisions=dict(state=session.st.hash,color=digest(colors.tobytes()),visibility=digest(styles.tobytes()),interaction=digest(interactive.tobytes()),annotation=digest(canonical(dict(inspection=session.prefs.get('inspection'),focus_color=session.prefs.get('focus_color'))).encode()))
+  state=json.loads(canonical(dict(session.status(),cell_status=session.cell_status(lab_interactive,revisions['interaction']))))
+  revision=digest(canonical(dict(profile=profile_hash,state=state,revisions=revisions)).encode())
+  base=self.entries.get(since) if since is not None else None
+  arrays=(colors,styles,interactive);indices=None
+  if protocol==2 and base is not None:
+   indices=np.flatnonzero((colors!=base[0])|(styles!=base[1])|(interactive!=base[2])).astype('<u4')
+   # A dense delta carries eight bytes per slot; the complete arrays need four.
+   if len(indices)*8>=session.m.n*4:indices=None
+  reply=dict(format='C600-native-snapshot-v2' if protocol==2 else 'C600-native-snapshot-v1',profile_sha256=profile_hash,state=state)
+  if protocol==2:
+   reply.update(revision=revision,revisions=revisions,mode='full' if indices is None else 'delta')
+   if indices is not None:reply.update(base_revision=since,indices=base64.b64encode(indices.tobytes()).decode('ascii'))
+  for name,values in zip(('colors','styles','interactive'),arrays):
+   reply[name]=base64.b64encode((values if indices is None else values[indices]).tobytes()).decode('ascii')
+  self.entries[revision]=arrays;self.entries.move_to_end(revision)
+  while len(self.entries)>4:self.entries.popitem(last=False)
+  return reply
 
 def atomic_json(path,payload,timeout=2.0):
  """Publish one complete UTF-8 JSON file despite brief Windows reader locks."""
@@ -74,9 +111,10 @@ def main():
     print('State engine: progress file update unavailable: '+redact(str(error)),flush=True)
  startup('loading_assets')
  model=Model()
+ topology_json=canonical(model.structure()).encode()
  startup('opening_session')
  session=Session(model,data)
- workflow=Workflow(session);cancel_event=threading.Event();native_profile=[None];lock=threading.RLock()
+ workflow=Workflow(session);cancel_event=threading.Event();native_profile=[None];lock=threading.RLock();native_snapshots=NativeSnapshotCache()
  token=secrets.token_urlsafe(32);pool=ThreadPoolExecutor(max_workers=1);jobs={};address=f'127.0.0.1:{args.port}'
  server=None;stopping=threading.Event();serving=threading.Event()
  def request_shutdown():
@@ -127,6 +165,7 @@ def main():
      if not self.authenticated():return self.js({'error':'Unauthorized'},403)
      if path=='/api/health':
       return self.js(dict(protocol=PROTOCOL,ready=not stopping.is_set(),pid=os.getpid(),launch_id=launch_id,model_id=model.model_id,python_prefix=sys.prefix,python_executable=sys.executable))
+     if path=='/api/structure':return self.send(200,topology_json)
      if path.startswith('/api/job/'):
       j=jobs.get(path.rsplit('/',1)[1])
       if j is None:return self.js({'error':'Unknown job'},404)
@@ -144,14 +183,11 @@ def main():
        if native_profile[0] is None:raise ValueError('Native bridge has not passed')
        p=native_profile[0];return self.js(dict(native_to_lab=p['native_to_lab'],native_face_to_lab=p['native_face_to_lab'],profile_sha256=p['profile_sha256'],matched_stickers=p['matched_stickers'],matched_generators=p['matched_generators']))
       if path=='/api/native/snapshot':
-       if native_profile[0] is None:raise ValueError('Native bridge has not passed')
-       # One lock and one response bind status, colors, and visibility to the same
-       # committed state. Three separate GETs could mix concurrent browser edits.
-       p=native_profile[0];mapping=np.asarray(p['native_to_lab'],np.int32)
-       inv=np.argsort(p['native_face_to_lab'])
-       colors=inv[session.st.labels[mapping]//433].astype('<i2').tobytes()
-       styles=session.render_styles()[mapping].tobytes()
-       return self.js(dict(format='C600-native-snapshot-v1',profile_sha256=p['profile_sha256'],state=session.status(),colors=base64.b64encode(colors).decode('ascii'),styles=base64.b64encode(styles).decode('ascii')))
+       query=parse_qs(u.query,keep_blank_values=True);protocol=query.get('protocol',['1'])
+       if len(protocol)!=1 or protocol[0] not in ('1','2'):raise ValueError('Unsupported native snapshot protocol')
+       since=query.get('since',[None])
+       if len(since)!=1:raise ValueError('Invalid native snapshot revision')
+       return self.js(native_snapshots.read(session,native_profile[0],since[0],int(protocol[0])))
       if path in ('/api/native/colors','/api/native/styles'):
        if native_profile[0] is None:raise ValueError('Native bridge has not passed')
        p=native_profile[0];mapping=np.asarray(p['native_to_lab'],np.int32)
@@ -183,16 +219,26 @@ def main():
      except RecursionError:raise ValueError('JSON request nesting is too deep')
      path=urlparse(self.path).path
      if not isinstance(body,dict):return self.js({'error':'Request body must be a JSON object'},400)
+     wants_snapshot='native_since' in body;native_since=body.pop('native_since',None)
+     if wants_snapshot and native_since is not None and (not isinstance(native_since,str) or len(native_since)>128):raise ValueError('Invalid native snapshot revision')
      if path=='/api/shutdown':
       if not isinstance(body,dict) or not secrets.compare_digest(str(body.get('launch_id','')),launch_id):return self.js({'error':'Wrong launch ID'},403)
       request_shutdown();return self.js({'stopping':True})
      if stopping.is_set():return self.js({'error':'State engine is stopping'},503)
      if path=='/api/stop-job':
       cancel_event.set();return self.js({'cancel_requested':True})
-     def work():
+     def dispatch():
       with lock:
        if stopping.is_set():raise ValueError('State engine is stopping')
        if path=='/api/prefs':return session.save_prefs(body)
+       if path=='/api/focus':
+        if set(body)!={'color'}:raise ValueError('Focus requires one canonical color or null')
+        return session.focus(body['color'])
+       if path=='/api/filter-preview':return session.filter_preview(body)
+       if path=='/api/filter-apply':
+        if set(body)!={'rules','context_hash'}:raise ValueError('Filter apply requires rules and context_hash')
+        return session.filter_apply(body['rules'],body['context_hash'])
+       if path=='/api/inspection/clear':return session.clear_inspection()
        if path=='/api/reset':return session.reset(body.get('camera',NO_CAMERA))
        if path=='/api/log/save':return session.save_log(body.get('format','c600'),native_profile[0],int(workflow.timer()['seconds']*1000))
        if path=='/api/log/import':return session.import_log(body['data_base64'],body.get('format','c600'),native_profile[0],body.get('camera',NO_CAMERA))
@@ -210,8 +256,17 @@ def main():
         ns=body.get('native_sticker')
         if type(ns)!=int or not 0<=ns<model.n:raise ValueError('Invalid native sticker')
         lab=native_profile[0]['native_to_lab'][ns]
-        if session.render_styles()[lab]==0:raise ValueError('Hidden stickers cannot be selected through the native viewport')
+        if session.interactive_styles()[lab]==0:raise ValueError('Hidden stickers cannot be selected through the native viewport')
         pos=int(model.sp[lab]);piece=session.st.piece(pos);session.save_prefs({'selected':piece['piece']});return piece
+       if path=='/api/native/inspect':
+        if native_profile[0] is None:raise ValueError('Native bridge has not passed')
+        if body.get('pre_state')!=session.st.hash:raise ValueError('Native view is stale; state resynchronization required')
+        if 'profile_sha256' in body and body['profile_sha256']!=native_profile[0]['profile_sha256']:raise ValueError('Native profile is stale; reconnect before inspecting')
+        ns=body.get('native_sticker')
+        if type(ns)!=int or not 0<=ns<model.n:raise ValueError('Invalid native sticker')
+        lab=int(native_profile[0]['native_to_lab'][ns])
+        if session.interactive_styles()[lab]==0:raise ValueError('Hidden stickers cannot be inspected through the native viewport')
+        return session.inspect(int(model.sp[lab]),lab,body.get('gesture'))
        if path=='/api/native/turn':
         if native_profile[0] is None:raise ValueError('Native bridge has not passed')
         if body.get('pre_state')!=session.st.hash:raise ValueError('Native view is stale; state resynchronization required')
@@ -233,7 +288,7 @@ def main():
        if path=='/api/checkpoint':return session.checkpoint(body.get('name'))
        if path=='/api/restore':return session.restore(body['name'])
        if path=='/api/backup':return session.backup()
-       if path=='/api/buffers':return session.planner.buffer_info(session.st,body['orbit'],body.get('target'))
+       if path=='/api/buffers':return session.buffer_info(body['orbit'],body.get('target'))
        if path=='/api/piece':return session.st.piece(body['position'])
        if path=='/api/track-piece':
         p=body['piece']
@@ -258,6 +313,12 @@ def main():
         w=json.loads((ROOT/'assets'/'demo_scramble.json').read_text());return session.preview([{'kind':'word','moves':w}],'Verified seed-600 1,000-move scramble','recorded-scramble')
        if path=='/api/import':return session.import_record(body['record'],body.get('camera',NO_CAMERA))
        raise ValueError('Unknown command')
+     def work():
+      with lock:
+       if wants_snapshot and path!='/api/native/handshake' and native_profile[0] is None:raise ValueError('Native bridge has not passed')
+       result=dispatch()
+       if wants_snapshot:result=dict(result,native_snapshot=native_snapshots.read(session,native_profile[0],native_since,2))
+       return result
      if path in('/api/preview','/api/suggest','/api/import','/api/log/import','/api/demo','/api/checkout','/api/compose','/api/scramble','/api/native/handshake'):
       # Long preview work runs away from the browser rendering/event loop.
       if any(not f.done() for f in jobs.values()):return self.js({'error':'An analysis job is already running'},409)

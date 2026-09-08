@@ -39,6 +39,9 @@ internal sealed class NativeRendererLifecycle : IDisposable {
  internal double LastFrameMilliseconds {get;private set;}
  bool paused=true,disposed,idleAttached;
  internal int FramesRequested { get; private set; }
+ // Hold authoritative input publication without changing device readiness or
+ // forcing a resize. Existing dirty state is rendered after commit/rollback.
+ internal bool HoldUpdates {get;set;}
  internal NativeRendererLifecycle(Control viewport){
   this.viewport=viewport;
   scene=Reflect.Get(viewport,"m_DDeviceX");
@@ -124,6 +127,7 @@ internal sealed class NativeRendererLifecycle : IDisposable {
  // A dirty frame is submitted at most once per UI timer tick. Idle callbacks are
  // not frames, and repeatedly invoking them needlessly consumes a CPU core.
  bool Draw(bool force,bool allowPaused){
+  if(HoldUpdates)return false;
   if(!CanRender(allowPaused)||elapsed.ElapsedMilliseconds<retryAt)return false;
   InstallResizeGuard();
   if(device==null)return false;
@@ -151,6 +155,7 @@ internal sealed class NativeRendererLifecycle : IDisposable {
  // MPUlt's picking uses projected coordinates cached by Render. Refresh all
  // visible meshes before dispatching a click after a sampled camera frame.
  internal bool PreparePicking(){
+  if(HoldUpdates)return false;
   bool needsFrame=restoreDetail||IsMotionActive||dirty()||resize();motionUntil=0;
   return !needsFrame||Draw(true,true);
  }
@@ -186,9 +191,12 @@ internal sealed class NativeRendererLifecycle : IDisposable {
  }
  internal void AssertReady(){
   InstallResizeGuard();
-  if(!CanRender()||!idleAttached||!Convert.ToBoolean(Reflect.Property(scene,"IsReady"))||Reflect.Property(scene,"Camera")==null)
+  if(!CanRender()||!idleAttached||Reflect.Property(scene,"Camera")==null)
    throw new InvalidOperationException("DirectX renderer is not ready or its viewport is not visible.");
-  RenderFrame();
+  // A reconnect may follow a failed device frame. Draw performs the validated
+  // reset/recovery path before testing readiness; a held or deferred frame must
+  // not be reported as a successful visible connection.
+  if(!RenderFrame())throw new InvalidOperationException("DirectX has not presented a frame yet. Reconnect after display recovery.");
   NativeDiagnostics.Write("Actual DirectX scene/camera/device and visible viewport verified");
  }
  public void Dispose(){

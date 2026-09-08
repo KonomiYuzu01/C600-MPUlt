@@ -26,6 +26,7 @@ internal static class NativeRendererRegression {
  static readonly bool keyRestartOnly=Environment.GetEnvironmentVariable("C600_RENDER_KEY_RESTART_TEST")=="1";
  static readonly bool displayKeysOnly=Environment.GetEnvironmentVariable("C600_RENDER_DISPLAY_TEST")=="1";
  static readonly bool pickingOnly=Environment.GetEnvironmentVariable("C600_RENDER_PICKING_TEST")=="1";
+ static readonly bool featuresOnly=Environment.GetEnvironmentVariable("C600_RENDER_FEATURE_TEST")=="1";
  static readonly bool frameOnly=Environment.GetEnvironmentVariable("C600_RENDER_FRAME_TEST")=="1";
  static readonly bool frameRestartOnly=Environment.GetEnvironmentVariable("C600_RENDER_FRAME_RESTART_TEST")=="1";
  static void Assert(bool condition,string message){if(!condition)throw new InvalidOperationException(message);}
@@ -231,7 +232,7 @@ internal static class NativeRendererRegression {
   object puzzle=Reflect.Get(wb,"puz");Reflect.Call(puzzle,"Twist",turn[0],turn[1],turn[2],turn[3]);Assert(Convert.ToInt32(Reflect.Get(puzzle,"Ptr"))>0,"Real native twist did not record a native move");
   checks.Add(LocalApi.D("name","Real mapped H0 StartAnimation and Puzzle.Twist execute with no UI pumping or residual ExtraTwist","passed",true,"axis",turn[0],"twist",turn[1],"angle",turn[2],"mask",turn[3],"instant_animation_ms",elapsed.Elapsed.TotalMilliseconds));
   Check("Host refuses operations while native animation status is active");
-  Reflect.Call(wb,"CaptureNativeTurns",false);
+  Reflect.Call(wb,"CaptureNativeTurns");
  }
  static Dictionary<string,object> State(){return LocalApi.AsDict(Reflect.Get(wb,"state"));}
  static Dictionary<string,object> Prefs(){return LocalApi.AsDict(State()["prefs"]);}
@@ -451,6 +452,7 @@ internal static class NativeRendererRegression {
  }
  static async void DisplayOnly(){try{initialHash=StateHash();await DisplayWorkflow();KeyPersistenceWorkflow();comprehensiveComplete=true;Capture("display-controls-final");await CloseThroughMessageWhenActive();}catch(Exception error){failures.Add(error.ToString());NativeDiagnostics.Write("DIRECTX DISPLAY REGRESSION FAILED",error);if(!form.IsDisposed)form.Close();}}
  static async void PickingOnly(){try{initialHash=StateHash();await NativePickingRegression.Run(wb,form,viewport,api,output,Check);Assert(StateHash()==initialHash,"Picking regression did not restore initial full state");comprehensiveComplete=true;Capture("picking-final");await CloseThroughMessageWhenActive();}catch(Exception error){failures.Add(error.ToString());NativeDiagnostics.Write("DIRECTX PICKING REGRESSION FAILED",error);if(!form.IsDisposed)form.Close();}}
+ static async void FeaturesOnly(){try{initialHash=StateHash();await NativeFeatureRegression.Run(wb,form,viewport,api,output,Check);comprehensiveComplete=true;Capture("features-final");await CloseThroughMessageWhenActive();}catch(Exception error){failures.Add(error.ToString());NativeDiagnostics.Write("DIRECTX FEATURE REGRESSION FAILED",error);if(!form.IsDisposed)form.Close();}}
  static async void FrameOnly(){try{initialHash=StateHash();if(frameRestartOnly)await NativeFramePolicyRegression.Reopen(wb,form,viewport,api,output,Check);else await NativeFramePolicyRegression.Run(wb,form,viewport,api,output,Check);Assert(StateHash()==initialHash,"Frame regression did not restore initial full state");comprehensiveComplete=true;Capture("frame-policy-final");await CloseThroughMessageWhenActive();}catch(Exception error){failures.Add(error.ToString());NativeDiagnostics.Write("DIRECTX FRAME POLICY REGRESSION FAILED",error);if(!form.IsDisposed)form.Close();}}
  static async Task CloseThroughMessageWhenActive(){var limit=DateTime.UtcNow.AddSeconds(2);do{form.Activate();await Task.Delay(30);if(Form.ActiveForm==form){CloseThroughMessage();return;}}while(DateTime.UtcNow<limit);throw new InvalidOperationException("Alt+F4 fixture precondition failed: the test window did not become the active form within two seconds");}
  static void CloseThroughMessage(){form.Activate();var close=Message.Create(form.Handle,0x104,(IntPtr)(int)Keys.F4,(IntPtr)(1L<<29));Assert(wb.PreFilterMessage(ref close),"Native Alt+F4 context message was not handled");Assert(form.IsDisposed||!form.Visible,"Native Alt+F4 did not close the actual window");Check("Native WM_SYSKEYDOWN Alt+F4 context closes the actual host through its production message filter");}
@@ -463,6 +465,7 @@ internal static class NativeRendererRegression {
    if(keyRestartOnly&&stage==0){var map=(Dictionary<Keys,string>)Reflect.Get(wb,"keymap");Assert(map.Count==3&&map.ContainsKey(Keys.P)&&map[Keys.P]=="grip:0"&&map[Keys.Enter]=="commit"&&map[Keys.Escape]=="cancel","Fresh actual native process did not load the saved keybindings");Check("Fresh actual native process reloads the three persisted custom keybindings before connecting the live geometry bridge");stage=29;comprehensiveComplete=true;CloseThroughMessage();return;}
    if(displayKeysOnly&&stage==0){stage=29;DisplayOnly();return;}
    if(pickingOnly&&stage==0){stage=29;PickingOnly();return;}
+   if(featuresOnly&&stage==0){stage=29;FeaturesOnly();return;}
    if((frameOnly||frameRestartOnly)&&stage==0){stage=29;FrameOnly();return;}
    switch(stage++){
     case 0:initialHash=StateHash();Capture("01-startup");Check("Actual 259800-slot / 1200-generator bridge connected");form.Size=new Size(1000,650);break;
@@ -526,7 +529,7 @@ internal static class NativeRendererRegression {
    form.Shown+=delegate{timer.Start();};Application.Run(form);timer.Dispose();
    Assert(stage==29&&comprehensiveComplete,"Renderer regression stopped early at stage "+stage);
   }catch(Exception e){failures.Add(e.ToString());NativeDiagnostics.Write("DIRECTX REGRESSION FAILED",e);}
-  var report=LocalApi.D("passed",failures.Count==0,"phase",keyRestartOnly?"saved-key-restart":displayKeysOnly?"display-key-controls":pickingOnly?"visible-picking":frameRestartOnly?"frame-policy-restart":frameOnly?"frame-policy":"all-components","scope","Actual Windows WinForms and MPUlt Managed DirectX render targets; isolated journal", "started_utc",started.ToString("o"),"finished_utc",DateTime.UtcNow.ToString("o"),"process_bits",IntPtr.Size*8,"clr",Environment.Version.ToString(),"checks",checks,"failures",failures);
+  var report=LocalApi.D("passed",failures.Count==0,"phase",featuresOnly?"focused-features":keyRestartOnly?"saved-key-restart":displayKeysOnly?"display-key-controls":pickingOnly?"visible-picking":frameRestartOnly?"frame-policy-restart":frameOnly?"frame-policy":"all-components","scope","Actual Windows WinForms and MPUlt Managed DirectX render targets; isolated journal", "started_utc",started.ToString("o"),"finished_utc",DateTime.UtcNow.ToString("o"),"process_bits",IntPtr.Size*8,"clr",Environment.Version.ToString(),"checks",checks,"failures",failures);
   File.WriteAllText(Path.Combine(output,"native-renderer-test.json"),new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(report));
   return failures.Count==0?0:1;
  }

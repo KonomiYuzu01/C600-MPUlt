@@ -1,4 +1,4 @@
-# C600 Studio 0.2.4 for Windows
+# C600 Studio 0.3 for Windows
 
 **Andrey Astrelin created Magic Puzzle Ultimate**, whose original puzzle engine,
 geometry conventions, and renderer underpin this application. See
@@ -14,6 +14,9 @@ The application uses the original MPUlt renderer and requires 64-bit Windows
 with .NET Framework 4.x and the legacy DirectX components needed by MPUlt.
 The supplied release was tested on Windows 10 with Intel HD Graphics 620.
 This is a portable folder application, not an installer.
+
+This 0.3 package includes the structure and auxiliary-view improvements.
+The older GitHub 0.2.4 download and its historical validation remain unchanged.
 
 Microsoft Managed DirectX DLLs are not redistributed in this package. The app
 uses the required version already installed on your computer, or an existing
@@ -33,6 +36,19 @@ Rendering filters affect only the displayed scene. All 259,800 labelled stickers
 remain in the puzzle state. During a dense scene's camera motion, the smooth
 motion option temporarily reduces drawn detail and restores full detail when
 motion stops.
+
+Use **Cell views** to open the **Global overview** and **Focused neighborhood**.
+Both windows can remain open; drag their title bars or resize them as needed.
+The local view has independent rotation/zoom, **Follow selection** and **Pin**,
+and an explicit **Center main** action. Narrow windows use the **Views** drawer.
+Press **F8** to show or hide the tools. The **Structure** tab provides C1–C600
+lookup, shared-face neighbors, cell-centered layers, and reviewed filters.
+
+Shift+left click inspects a piece's home Cell Centers; Shift+right click locates
+the piece required at the clicked destination. Shift+left drag retains 4D
+rotation. Hidden pieces remain noninteractive. See the project's
+[structure guide](https://github.com/KonomiYuzu01/C600-MPUlt/blob/main/docs/STRUCTURE_EXPLORER.md)
+and [measured performance limits](https://github.com/KonomiYuzu01/C600-MPUlt/blob/main/docs/DEVELOPMENT_PERFORMANCE.md).
 
 The C600 Studio MIT license is in `LICENSE`; the original MPUlt MIT notice is
 preserved in `licenses/MPUlt-MIT.txt`. Other bundled third-party license texts

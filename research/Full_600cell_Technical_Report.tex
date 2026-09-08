@@ -37,17 +37,20 @@
 \title{\LARGE\bfseries Certified Control of the Full 600-Cell\\[0.45em]
   \large\normalfont Orbit structure, constructive algorithms, and a validated native workbench}
 \author{C600 Studio project}
-\date{Expanded technical report, September 2026}
+\date{C600 Studio 0.3 technical report, September 2026}
 \begin{document}
 \maketitle
 
 
 \begin{abstract}
-The full-cut 600-cell is a four-dimensional twisty puzzle with 177,120 surface pieces, 259,800 sticker slots, and 35 moving orbits. This report reconstructs the constructive method and software development documented in a 52-page design transcript, its accompanying algorithm reference, and subsequent C600 Studio 0.2.4 validation. The mathematical analysis formalizes piece/frame actions, abelian orientation invariants, guarded setup graphs, pure-star generation, and collateral-preserving stage correctness. Nine independently checked controllers yield more than \(10^{151851}\) face-color states, exceeding an upper bound for the documented solved \(4^7\) hypercube by over 86,000 decimal orders of magnitude. In a specified 1,800-symbol primitive alphabet, a word-counting argument also gives a worst-case distance of at least 46,648 turns and quantifies why 1,000-step scrambles are far from uniform random states. These results are distinguished from human difficulty, optimal solutions for particular scrambles, and an exact full-group order. Three synthetic compact histories restore every label while representing approximately 353 million primitives each. The engineering analysis explains native generator equivalence, transactional previews and journals, coherent snapshots, exact filtering and picking, bounded log interchange, process ownership, and graphics recovery. Recorded Windows validation supports the frozen native workbench; the expanded report adds explicit source contracts and reproducible arithmetic rather than new graphics benchmarks. Intel HD Graphics 620 measurements support adaptive interaction, while no minimum GPU has yet qualified for continuous full-detail rotation at \(1920\times1080\) and 30 FPS. The contribution is a reproducible computational framework and a detailed research instrument, without asserting a human solving record or universal difficulty ranking.
+The full-cut 600-cell has 177,120 surface pieces, 259,800 sticker slots, and 35 moving orbits. This report relates a retained design transcript and algorithm reference to the C600 Studio 0.3 workbench. Its unchanged mathematical development formalizes piece/frame actions, guarded setups, pure-star generation, and collateral-preserving stage correctness. Nine checked controllers yield more than \(10^{151851}\) face-color states, exceeding a conservative upper bound for the documented solved \(4^7\) hypercube by over 86,000 decimal orders of magnitude. Word counting gives a worst-case distance of at least 46,648 turns in a specified 1,800-symbol alphabet; neither result ranks human difficulty or supplies an exact full-group order. The engineering update introduces canonical cell navigation, dual-graph layers, identity-aware inspection, two independent auxiliary geometry views, and atomic revision-based native updates. These views retain the complete mechanical state and separate geometric context from interaction permission. New Intel HD Graphics 620 observations verify a real \(1920\times1080\) render target: five complete changed-camera frames average 622.25 ms, whereas a short production drag using 1,500 sampled stickers submits 31.07 frames per second. The continuous full-detail 30 FPS target remains unmet, as do the 100 ms instant-turn target and one 50 ms navigation gate. Historical validation, current measurements, finite mathematical checks, and their limitations are reported separately. Andrey Astrelin's original MPUlt simulator and renderer remain the foundation; the contribution is a reproducible research workbench, without a human solving-record or historical-novelty claim.
 \end{abstract}
 
 \textbf{Keywords:} 600-cell; permutation puzzles; computational group theory; nonabelian orientation; certified macros; reproducibility; human-computer interaction.
 
+\clearpage
+\tableofcontents
+\clearpage
 \section{Scale and significance}
 \label{sec:1}
 
@@ -443,7 +446,7 @@ The timing column belongs to the original container experiment and excludes prep
 
 A successful compact replay establishes that the recorded legal macro history restores the complete labelled model. Checking a saved color field alone would be weaker. Conversely, checking a huge native-format archive's syntax, counters, nesting, and checksum would not constitute primitive-by-primitive geometric replay. The original transcript explicitly distinguishes these evidence levels \cite[pp.~25--30]{transcript}.
 
-The historical monolithic expansions are unsuitable as ordinary native-session files. Individual decompressed logs are approximately 2.9 GB, and the old 32-bit sequence allocator can require still more memory during growth. They are not included in the public companion. Compact certificates preserve the legal sequence without requiring such files to be loaded into the GUI. The 0.2.4 bounded log importer should likewise not be described as an importer for arbitrary multi-gigabyte histories.
+The historical monolithic expansions are unsuitable as ordinary native-session files. Individual decompressed logs are approximately 2.9 GB, and the old 32-bit sequence allocator can require still more memory during growth. They are not included in the public companion. Compact certificates preserve the legal sequence without requiring such files to be loaded into the GUI. The bounded interactive log importer, retained in 0.3, should likewise not be described as an importer for arbitrary multi-gigabyte histories.
 
 The reference also gives a conservative method-specific bound of 405,945 stars and 385,797,152 represented primitives. The independent audit recomputes this bound from the retained orbit sizes, orientation groups, and maximum setup depths. It bounds this construction, not the shortest possible solution \cite{algorithms}.
 
@@ -502,7 +505,7 @@ The frame defect illustrates why a display policy must apply at every draw entry
 
 \subsection{Subsequent native validation}
 
-The final 0.2.4 sources passed 68 comprehensive native checks and four fresh-process reopen checks using the actual MPUlt runtime, official installed Managed DirectX assemblies, native controls, viewport messages, and render-target pixels. Coverage includes twisting, 3D/4D rotation, colors, scrambling and undo/redo, filters and picking, keys, checkpoints, macros, buffer/insertion tools, reports, reset, log exchange, and controlled device-loss recovery. Three full-detail poses and a filtered selection view matched the comparison rendering path exactly \cite{validation}.
+The historical final 0.2.4 sources passed 68 comprehensive native checks and four fresh-process reopen checks using the actual MPUlt runtime, official installed Managed DirectX assemblies, native controls, viewport messages, and render-target pixels. Coverage includes twisting, 3D/4D rotation, colors, scrambling and undo/redo, filters and picking, keys, checkpoints, macros, buffer/insertion tools, reports, reset, log exchange, and controlled device-loss recovery. Three full-detail poses and a filtered selection view matched the comparison rendering path exactly \cite{validation}.
 
 Backend mechanics, independent generator maps, crash recovery, frame preferences, process lifecycle, frozen packaging, and a real isolated install/uninstall were checked separately. Normal executable startup preserves an existing session and does not run the developer WinForms fixture. These results close specific earlier native integration gaps. They do not retroactively turn the transcript's original container timings into native measurements, and they do not establish that hundreds of millions of primitives were individually animated to completion.
 
@@ -585,9 +588,61 @@ Mechanical updates are independent of Equation~\eqref{eq:filter-policy}. For a l
 C_N[n]=f^{-1}\!\left(\left\lfloor\frac{L[b(n)]}{433}\right\rfloor\right).
 \label{eq:native-colors}
 \end{equation}
-The engine computes status, this color array, and mapped styles under one lock in one native snapshot. Its payload contains 519,600 raw color bytes and 259,800 style bytes before Base64 and JSON overhead. The host validates the profile identity, exact lengths, color range, and style range before applying the result. Three independently fetched arrays could instead describe different committed revisions.
+The engine computes status, this color array, and mapped styles under one lock in one native snapshot. The legacy payload contains 519,600 raw color bytes and 259,800 style bytes before Base64 and JSON overhead; the 0.3 protocol also carries the independently defined interaction mask. The host validates the profile identity, exact lengths, color range, and style range before applying the result. Three independently fetched arrays could instead describe different committed revisions.
 
-Hidden geometry must also be unpickable. The native adapter removes hidden triangles from the picking path and tests only visible, nonclipped sticker meshes. It gates the viewport's actual release message before the inherited click handler can reuse a previous axis after an empty click. After a sampled motion frame, it first restores a current projection of every visible mesh; otherwise picking would use stale projected coordinates. Drag release, click dispatch, and nested messages during animated turns have separate guards. These measures explain why changing only a sticker's apparent transparency did not fully solve the original filter problem.
+Hidden geometry must also be unpickable. The native adapter removes hidden triangles from the picking path and tests only visible, nonclipped sticker meshes. It gates the viewport's actual release message before the inherited click handler can reuse a previous axis after an empty click. After a sampled motion frame, it first restores a current projection of every visible mesh; otherwise picking would use stale projected coordinates. Drag release and click dispatch retain separate guards; 0.3 also holds drawing while a captured turn awaits authoritative publication. These measures explain why changing only a sticker's apparent transparency did not fully solve the original filter problem.
+
+
+\subsection{Canonical cell navigation and exact graph layers}
+
+The 0.3 interface names solved cell-color symbols C1 through C600: C1 is immutable lab cell 0, not native palette entry 1. Written IDs remain authoritative because six hundred RGB swatches cannot be assumed perceptually distinct. Compatibility predicates retain their earlier numbering: \texttt{color(C1)} agrees with \texttt{home(C000)}, while \texttt{cell(C1)} agrees with \texttt{current(C000)}. Mixing the old and new conventions without translation would identify a different cell \cite{structure03}.
+
+Let \(D=(\mathcal C,E)\) be the dual adjacency graph of the retained regular polytope. Its 600 vertices represent tetrahedral cells; an edge joins two cells sharing a triangular face. Every cell has four neighbors, so \(D\) is 4-regular and has \(600\cdot4/2=1200\) edges. For a chosen cell \(c\), the implemented layer is the breadth-first-search shell
+\[
+\mathcal L_k(c)=\{d\in\mathcal C:\operatorname{dist}_D(c,d)=k\}.
+\]
+Thus L0 contains \(c\), L1 contains its four face-sharing neighbors, and the retained graph supplies layers L0 through L15. These are graph-distance shells, invariant under camera movement and scrambling. The Colors graph is deliberately schematic: its screen angles and edge lengths are not measurements of the polytope.
+
+The geometric vertex incidence is a separate navigation relation: V1 through V120 each meet twenty cells, and each cell meets four vertices. A vertex choice lists incident canonical colors; choosing a listed cell establishes the layer origin. Vertex-centered geometric bands are not silently substituted for cell-centered BFS layers. The exact geometry supplement supports these incidence and duality facts; the interface adds an explicit convention, not a new solving theorem \cite{puzzletheory,structure03}.
+
+Cell shells partition \(\mathcal C\), but their whole-piece selections need not partition positions. If \(H(p)\) is the set of cells hosting position \(p\), then
+\[
+\texttt{layer}(c,k)(p)=
+{\bf1}\{H(p)\cap\mathcal L_k(c)\ne\varnothing\}.
+\]
+A multi-cell piece may touch two shells and appear in both results. Every sticker of a matched piece is displayed. The \texttt{home\_layer} predicate applies the corresponding condition to the occupant's solved identity, so it follows that identity through turns. Consequently \texttt{layer(C17,L0)} equals \texttt{cell(C17)}, whereas \texttt{home\_layer(C17,L0)} equals \texttt{color(C17)}. Summing layer-piece counts without deduplication would overcount.
+
+The structure workflow separates navigation from filter publication. Color search, graph focus, comparison, and layer browsing are local operations. A preview evaluates replace, intersect, or union composition with the existing ordered rules, reports complete whole-piece/sticker counts, and binds the result to its state/filter context. Only a subsequent explicit Apply publishes exact rules. A stale context requires a new preview. Hover neither queries the engine nor changes the main viewport, and Center is an independent camera command.
+
+\subsection{Inspection separates destination, occupant, and required identity}
+
+For a clicked position \(p\), define \(q=\operatorname{occ}_L(p)\), the physical identity occupying it. Let \(r=\operatorname{pos}_L(p)\) be the current position of the identity whose home is \(p\); with this shared identity/home-position enumeration,
+\[
+\operatorname{occ}_L(r)=p.
+\]
+In a scramble, \(p\), \(q\), and \(r\) can all differ. This distinction is essential for insertion: a destination is a fixed location, the clicked occupant is a moving identity, and the required identity must be located elsewhere.
+
+Shift+left click inspects \(q\) and highlights that identity's solved home cell centers. Shift+right click retains \(p\) as the insertion destination and locates the required identity at \(r\). The backend updates the inspection and focused-cell context together after validating the clicked native slot and expected state. Annotations are derived from committed state, use a distinct style, and do not recolor authoritative labels. They may reveal context outside an exact filter while the interaction mask continues to reject those otherwise excluded pieces \cite{structure03}.
+
+Camera and twist gestures remain distinct from inspection. Shift+left drag remains 4D camera motion; empty or noninteractive regions do not initiate inspection. Multi-click native grips still pass through their original axis-selection logic before a complete legal word is submitted. A fixed center or fixed setup-buffer destination receives an explicit explanation rather than a fabricated insertion candidate. The buffer analyser exposes finite setup/frame candidates and complete collateral checks; a candidate star is not a claim that one click completes an arbitrary insertion.
+
+\subsection{Two auxiliary projections with shared committed status}
+
+The global overview and focused neighborhood share one validated immutable data object: 120 four-dimensional vertices, 600 rows of four vertex indices, 600 cell centers, the cell graph, and canonical colors. The supplied component order is \((W,X,Y,Z)\); cell centers must agree with the mean of their four vertices, and adjacent tetrahedra must share exactly three vertices. The geometry is obtained once from the retained model. It is not a copy of the 259,800-sticker state or a schematic replacement for the polytope.
+
+Both GDI controls project the actual 4D geometry through a fixed perspective and then an independent 3D view rotation and zoom. The local control uses a cell-relative orthonormal frame for readability while retaining its own user rotation. The global control shows all 600 cell markers; the local control displays the exact one- or two-hop tetrahedral neighborhood. These are auxiliary navigation projections, not additional MPUlt renderers or independent puzzle engines. The main native 4D camera is changed only by its own gestures or an explicit Center main command.
+
+Follow selection and Pin this origin separate the shared selected color from the local neighborhood origin. Hover has a third, transient role. Two owned windows are used when space permits; a narrow or short desktop uses a tabbed drawer. Reparenting, closing and reopening retain each control's camera. Hidden, minimized or inactive controls defer projection, and no auxiliary animation timer runs. Projection is recomputed on geometry, camera, focus, size or hop changes; status-only updates need only repaint.
+
+One committed status revision supplies per-cell counts for the active orbit, exact visible selection, and their eligible intersection. Solved counts use complete labelled correctness. A hollow marker means no active-orbit positions; a dark center dot means at least one exactly visible unsolved position. Buffer diamonds and selected-piece squares are contextual markers. Canonical palette colors and the teal selection/dashed hover outlines are not progress scales. Counts refer to physical positions touching a cell and therefore can overlap across cells. Both views consume the same status object, and their controls contain no HTTP client.
+
+\subsection{Atomic revision updates and instant native presentation}
+
+Version 0.3 returns a native update together with a successful mutation result under the same session lock. The v2 full response binds model/profile, state and native revision to packed colors, styles, and interaction flags. A full set of these arrays contains \(259800(2+1+1)=1039200\) raw bytes before Base64 and metadata. A delta identifies an exact base revision and a sorted, unique union of changed native indices; each index carries all three new values. An unchanged sticker state can use an empty delta, with metadata but no sticker-value bytes.
+
+The host validates profile identity, base revision, lengths, index order/range, color range and interaction invariants before materializing a new immutable snapshot. Missing or evicted bases use a validated full response. Separate state/color/visibility/interaction/annotation revision tokens describe dependencies; they are not permission to merge arrays from unrelated commits. A bounded cache and compiled sticker access avoid repeated mapping and per-slot reflection, while unchanged geometry and visibility can retain their caches \cite{performance03,source03}.
+
+The original native click handler can modify temporary native fields before the engine accepts its word. The host therefore holds rendering across this capture and commit interval and uses deterministic instant turns. Pre-commit twist animation is removed: a successful-looking intermediate turn must not be presented as committed state. On success, the exact committed snapshot supplies colors and styles; on failure, a validated recovery snapshot supplies the authoritative view. Camera gestures and multi-click grip semantics remain available. This is a publication-order guarantee within the tested integration, not a claim of zero latency or a changed move group.
 
 \subsection{Macro tools, insertion analysis, reports, and keybindings}
 
@@ -611,61 +666,107 @@ The tests form several evidence layers rather than one undifferentiated pass cou
 
 For camera-only, filtering, frame visibility, and layout operations, the central metamorphic condition is \(\operatorname{Hash}(L_{\mathrm{after}})=\operatorname{Hash}(L_{\mathrm{before}})\). For a word \(w\), replaying \(ww^{-1}\) must restore every label; for primitives, \(H_c^2\) and \(T_c^3\) must act as identity. For rejected imports, protected moves, and stale previews, the selected head and labels must remain unchanged. These properties test semantic contracts rather than visual plausibility. Appendix~\ref{app:contracts} maps concrete components and regression files to the properties they establish.
 
-The recorded 68 native checks and four reopen checks remain evidence for the frozen 0.2.4 application. This expanded report adds mathematical arithmetic and source-level analysis; it does not invent a new native benchmark run or silently broaden those test claims. A test suite reduces identified failure modes, but cannot prove that every future driver, malformed external environment, or possible sequence of GUI events is crash-free.
+The recorded 68 native checks and four reopen checks remain evidence for the frozen 0.2.4 application. The 0.3 work adds separate structure/inspection, auxiliary lifecycle, revision-protocol, and actual native-input checks; its new timing observations are reported in Section~\ref{sec:8} and the accompanying performance record \cite{performance03,structure03}. Earlier totals are not transferred to a different build merely because many components are retained. A test suite reduces identified failure modes, but cannot prove that every future driver, malformed external environment, or possible sequence of GUI events is crash-free.
 
 
 \section{Full-detail rotation and hardware requirements}
 \label{sec:8}
 
-\subsection{Measured behavior}
+\subsection{Evidence editions and measurement protocol}
 
-The final Intel HD Graphics 620 measurements distinguish exact filtered motion, adaptive dense-scene motion, and full-detail redraw. At a \(931\times604\) viewport, optimized full-detail frames averaged 453.45 ms, compared with 626.57 ms through the comparison path, a 27.63\% reduction in elapsed drawing time. The full-detail 95th percentile was 533.82 ms. The reciprocal of that mean is approximately 2.2 FPS; the eighteen fixed-pose redraw measurements are not a sustained rotation benchmark \cite{validation}.
+The historical 0.2.4 benchmark used eighteen fixed-pose full redraws at \(931\times604\): optimized mean 453.45 ms, comparison-path mean 626.57 ms, and optimized p95 533.82 ms. That 27.63\% reduction demonstrates the narrow buffer-reuse change for its recorded workload. Its approximately 58 FPS adaptive measurements are historical observations, not measurements of the 0.3 feature set \cite{validation}.
+
+The 0.3 observations use the final feature implementation, before release-version branding changes, on the actual Intel HD Graphics 620 Direct3D device, adapter 0, driver 31.0.101.2140. The x86 native renderer and separately owned authoritative engine remain in use. Source identifiers, failed observations, and method limitations are retained in the public performance record; raw machine diagnostics and personal data are excluded \cite{performance03}.
+
+Turn timing begins at the final committing native MouseUp and ends after committed UI synchronization and one correct full Render/Present. The automatic render timer is paused during each sample to avoid a duplicate frame; ordinary scheduler delay is excluded. All 259,800 labels, native colors and styles are checked outside timing. One warmup precedes six active-orbit turns or three all-piece turns. Before/after hashes match the baseline for all eleven transitions including warmups; active native turns expand to two primitives, all-piece turns to three. A click is therefore not equated with a single primitive.
 
 \begin{table}[htbp]
-\centering
-\small
-\caption{Measured interaction and redraw performance on the tested Intel HD Graphics 620 system.}
-\label{tab:performance}
-\begin{tabularx}{\linewidth}{@{}X>{\raggedleft\arraybackslash}p{.30\linewidth}@{}}
+\centering\small
+\caption{Instant native turns at \(931\times604\), milliseconds. p95 is the sample maximum for these small groups.}
+\label{tab:turn03}
+\begin{tabularx}{\linewidth}{@{}Xrr@{}}
 \toprule
-\textbf{Workload on the tested system} & \textbf{Measured result} \\
+\textbf{Visible detail} & \textbf{Baseline mean / p95} & \textbf{0.3 feature mean / p95}\\
 \midrule
-Exact active-orbit / work-cell motion & 56.63 / 58.38 FPS \\
-Dense-scene motion with 1,500 temporarily drawn meshes & 57.84 FPS \\
-Restore all 259,800 meshes & 429.01 ms \\
-Restore including the quiet delay after motion & 630.28 ms \\
-Optimized full-detail draw, mean / 95th percentile & 453.45 / 533.82 ms \\
+Active orbit, 2,400 stickers & 478.03 / 879.94 & 193.27 / 230.78\\
+All 259,800 stickers & 1669.53 / 1734.74 & 777.92 / 839.77\\
 \bottomrule
 \end{tabularx}
 \end{table}
 
-The approximately 58 FPS result is an adaptive-motion result; it is not full-detail rotation at 58 FPS. The complete mechanical state remains active in both modes. This distinction is necessary to evaluate the requested full-detail target rather than a visually reduced substitute.
+The active mean separates into 11.29 ms native handler, 175.73 ms commit/UI synchronization, and 6.22 ms final rendering. The all-piece values are 33.93, 139.35, and 604.62 ms. The 100 ms p95 instant-turn target is not achieved. Removing redundant pre-commit projection improves interaction, but does not multiply the throughput of a complete full-detail frame. A faster earlier candidate is retained as a separate observation rather than substituted for the later complete run.
+
+\subsection{Actual 1080p frames and production camera input}
+
+A separate run verified both viewport and Direct3D backbuffer at \(1920\times1080\). The oversized child window extended beyond the available \(1280\times720\) automation desktop and was physically clipped. This establishes the render-target workload, not a fully visible 1080p application session. Two warmups preceded five small changed-camera full-detail frames. The subsequent drag sent sixty owned-HWND input updates through the production message filter, with the production render timer active; a requested 16 ms input interval did not force the operating system's actual cadence.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Intel HD Graphics 620 at the verified \(1920\times1080\) backbuffer.}
+\label{tab:performance}
+\begin{tabularx}{\linewidth}{@{}X>{\raggedleft\arraybackslash}p{.35\linewidth}@{}}
+\toprule
+\textbf{Observation} & \textbf{Result}\\
+\midrule
+Full 259,800-sticker frame, mean & 622.25 ms; 1.61 render-only FPS\\
+Full-detail minimum / maximum & 570.21 / 690.72 ms\\
+Production adaptive drag & 60 frames in 1.931 s; 31.07 FPS\\
+Meshes during that adaptive drag & 1,500\\
+MouseUp full-detail restoration & 600.58 ms; all 259,800 restored\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The complete label hash and camera/input cleanup checks passed. Full detail was already present when release handling returned and remained present after the following idle interval. The adaptive drag meets the numerical 30 FPS level for this short interval only; it is not sustained full-detail rotation or physical display-scanout timing. Its approximately 601 ms full-detail release remains a noticeable pause. At \(931\times604\), separate short production-timer drags observed 30.07 FPS for the exact active orbit and 30.89 FPS for sampled all-piece motion.
+
+\subsection{Local navigation, auxiliary rendering, and failed gates}
+
+Reusing neighbor/vertex controls and unchanged layer choices removed repeated window-handle construction and autosize work. The complete native application then measured ten separate logical actions per operation, including synchronous GDI paint:
+
+\begin{table}[htbp]
+\centering\small
+\caption{Local Structure interactions; the unchanged p95 gate is 50 ms per logical action.}
+\label{tab:navigation03}
+\begin{tabularx}{\linewidth}{@{}Xrrl@{}}
+\toprule
+\textbf{Operation} & \textbf{Mean (ms)} & \textbf{p95 (ms)} & \textbf{Gate}\\
+\midrule
+Select a different color & 39.69 & 45.33 & Pass\\
+Move graph keyboard focus & 4.48 & 6.18 & Pass\\
+Activate a graph color with Enter & 38.80 & 50.04 & Miss\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+These operations added zero DirectX frames and preserved the puzzle hash. The 50.04 ms result is not rounded into a pass: the combined performance run failed this gate. Earlier combined Right-plus-Enter observations and failed layout candidates are preserved separately. They do not justify weakening the target or reporting only the fastest run.
+
+Both actual auxiliary views shared one geometry/status object. After five warmups, thirty paired actions at each size included projection/painting and \texttt{GdiFlush}. Paired camera/paint p95 was 49.79 ms at \(330\times420\) per view and 46.04 ms at \(480\times480\); paired hover/hit/forced-paint p95 was 48.79 and 45.56 ms. These p95 gates passed, although individual hover maxima approached 100 ms. Hover was deliberately forced to repaint both views even for an unchanged hit. The main DirectX timer was paused, so the results do not establish a combined concurrent GPU/GDI frame rate.
+
+Separate one-second open-idle, minimized, and closed observations recorded zero auxiliary paint events and zero added main frames. An additional warmed pair used about 0.67 MiB more managed memory in the sampled process. Closing retains camera/control state; process-wide GC, JIT and GDI caches prevented a reliable retained-memory or leak estimate. These are bounded observations, not a sustained idle-CPU or memory-soak certification.
 
 \subsection{Minimum configuration: what is established}
 
-The qualification target is continuous rotation at an actual \textbf{\(1920\times1080\) render target and at least 30 FPS, with every one of the 259,800 stickers submitted on every frame and motion detail reduction disabled}. The frame budget is 33.33 ms. No tested GPU configuration in the retained evidence satisfies that target, so a minimum GPU model cannot yet be certified. Intel HD Graphics 620 is a validated compatibility baseline, but it is not a qualifying full-detail performance configuration.
+The target remains continuous 3D and 4D rotation at an actual \textbf{\(1920\times1080\) render target and at least 30 FPS, submitting all 259,800 stickers on every frame with motion sampling disabled}. The budget is 33.33 ms. No measured configuration qualifies, so neither a minimum GPU model nor a guaranteed VRAM capacity is established. Intel HD Graphics 620 renders the complete model but does not meet this full-detail target.
 
-The current rendering path retains CPU-side projection and triangle/line packing. During the eighteen optimized full-detail frames, total native-process CPU consumption averaged approximately 329.86 ms per frame. Process CPU counters are not a clean separation of serialized CPU work from GPU time, but they corroborate the source-level finding that this is not a GPU-only workload. Naming a discrete GPU from specification-sheet throughput would therefore be unsupported. At the smaller tested viewport, reaching the 30 FPS budget already requires about 13.60 times less elapsed time per complete frame. Moving to 1080p also increases pixel area by about 3.69 times; frame time should not be assumed to scale by that factor because geometry and CPU costs remain.
+The current 622.25 ms mean is approximately 18.67 times the target budget. This ratio is a required reduction in complete-frame cost, not a GPU procurement multiplier. The inherited path still performs CPU projection and triangle/line packing; driver, runtime, visibility and presentation costs also matter. Historical aggregate process CPU counters are not an isolated critical-path CPU/GPU breakdown. At the same time, the new actual 1080p workload removes the need to extrapolate its frame cost merely from pixel-area ratios.
 
 \begin{table}[htbp]
-\centering
-\small
-\caption{Established compatibility and the limits of the full-detail hardware evidence.}
+\centering\small
+\caption{Compatibility is distinct from a qualified full-detail performance configuration.}
 \label{tab:hardware}
-\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{.31\linewidth}X@{}}
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{.32\linewidth}X@{}}
 \toprule
-\textbf{Requirement} & \textbf{Evidence-backed status} \\
+\textbf{Requirement} & \textbf{Evidence-backed status}\\
 \midrule
-Demonstrated native configuration & Windows 10 x64, x86 native host, installed .NET Framework 4.8, and official Managed DirectX 1.1 assemblies with a working Direct3D9 hardware driver \\
-GPU demonstrated to render the complete model & Intel HD Graphics 620, on the tested Windows system \\
-GPU demonstrated to sustain full-detail 1080p/30 FPS & None established \\
-Minimum VRAM guaranteeing the target & Not established; capacity alone does not certify throughput \\
-Minimum purchase specification & No defensible GPU-only minimum until the complete CPU/GPU/driver configuration is measured \\
+Demonstrated renderer & Windows x64, x86 native host, .NET Framework and installed official Managed DirectX 1.1, with a working Direct3D9 hardware driver\\
+Actual adapter in the new observations & Intel HD Graphics 620; driver 31.0.101.2140\\
+All-sticker full-detail 1080p/30 FPS & Not achieved by the tested system\\
+Minimum GPU / minimum VRAM for that target & Not established; measure the complete CPU/GPU/driver configuration\\
 \bottomrule
 \end{tabularx}
 \end{table}
 
-The legacy DirectX components remain an external dependency; Microsoft documents the June 2010 end-user runtime distribution \cite{directx}. A newer DirectX feature level or a larger VRAM figure alone does not demonstrate that the required legacy runtime is installed or that the CPU-bound portions meet the frame budget.
+The legacy DirectX components remain an external dependency \cite{directx}. A newer DirectX feature level or larger VRAM figure alone proves neither that the required legacy runtime is installed nor that the unaccelerated stages meet the budget.
 
 \subsection{Qualification protocol}
 
@@ -711,9 +812,9 @@ The relevant performance quantity is complete frame latency, not GPU specificati
 \lim_{r\to\infty}\operatorname{Speedup}(r)=\frac1f.
 \label{eq:amdahl-model}
 \end{equation}
-This is the fixed-workload bottleneck reasoning associated with Amdahl's analysis \cite{amdahl}. Applied only as a diagnostic model to a 453.45 ms baseline and a 33.33 ms target, even unlimited acceleration of the chosen part requires the unaccelerated fraction to be below approximately 7.35 percent. No value of \(f\) is estimated here from aggregate CPU counters: overlapping CPU/GPU work and process-wide CPU time do not provide the needed serial critical-path measurement.
+This is the fixed-workload bottleneck reasoning associated with Amdahl's analysis \cite{amdahl}. Applied only as a diagnostic model to the measured 622.25 ms full-detail mean and a 33.33 ms target, even unlimited acceleration of the chosen part requires the unaccelerated fraction to be below approximately 5.36 percent. No value of \(f\) is estimated here from aggregate CPU counters: overlapping CPU/GPU work and process-wide CPU time do not provide the needed serial critical-path measurement.
 
-The next useful experiments should therefore instrument projection, triangle/line packing, staging/upload, draw submission, presentation, and waiting separately. They should retain the exact full-detail workload and report both elapsed time and CPU/GPU measurements with their synchronization method. Candidate changes include batching fewer submission calls, reducing repeated packing, or moving mathematically equivalent projection work to the GPU. The theory supplement further describes cell instancing, complete permutation caches and incremental progress updates, each with explicit equivalence obligations \cite{puzzletheory}. Rendering changes require renewed image equivalence, picking, clipping, and camera tests; these remain research directions rather than features claimed for 0.2.4.
+The next useful experiments should therefore instrument projection, triangle/line packing, staging/upload, draw submission, presentation, and waiting separately. They should retain the exact full-detail workload and report both elapsed time and CPU/GPU measurements with their synchronization method. Candidate changes include batching fewer submission calls, reducing repeated packing, or moving mathematically equivalent projection work to the GPU. The theory supplement further describes cell instancing, complete permutation caches and incremental progress updates, each with explicit equivalence obligations \cite{puzzletheory}. Rendering changes require renewed image equivalence, picking, clipping, and camera tests; these remain research directions rather than features claimed for 0.3.
 
 Hardware qualification should follow such measurements. A nominally faster GPU cannot remedy a long unaccelerated stage by itself. Conversely, a CPU-side optimization that shortens one stage does not establish the performance of an untested GPU/driver combination. The 1080p/30 FPS requirement remains a complete-configuration acceptance test, with every sticker retained and the previously stated percentile and state-invariance conditions.
 
@@ -734,7 +835,7 @@ The native validation is hardware-specific. Controlled device-loss and process-t
 
 The full 600-cell becomes tractable as a computational control problem when its pieces are separated into actual move orbits, orientations are represented by their true groups, and every macro retains its legal witness and complete collateral action. The original design transcript develops that construction and the accompanying reference makes its thirty-five seeds and setup machinery explicit. The conservative color-state bound explains the extraordinary scale relative to a documented solved high-dimensional benchmark while avoiding a universal difficulty claim.
 
-The subsequent workbench turns those ideas into a tested native workflow with coherent state, recoverable operations, exact filtering, and measurable performance. Its present strength is verified macro-assisted control and responsive filtered or adaptive interaction. Economical human algorithms and continuous full-detail 1080p/30 FPS remain distinct research and engineering targets. The public report, original algorithm reference, synthetic replay companion, and bounded audit make these achievements and remaining questions independently inspectable.
+C600 Studio 0.3 turns those ideas into a native research workflow with coherent revision updates, recoverable operations, exact identity/position inspection, canonical cell layers, and two independent auxiliary views. The new interaction model reduces redundant work while preserving all labels and complete collateral. Its measured limits remain explicit: the 100 ms instant-turn goal, continuous full-detail 1080p/30 FPS, and one 50 ms navigation gate were not all achieved. Adaptive rendering and local navigation are useful capabilities, not substitutes for those unmet targets. The original algorithms, unchanged proof materials, source contracts, and edition-specific observations make both the construction and remaining questions independently inspectable.
 
 \section*{Data availability and attribution}
 
@@ -808,7 +909,7 @@ Every listed collateral edge points forward in this order. The table is regenera
 \section{Software contracts and reproducibility}
 \label{app:contracts}
 
-The source locations below identify the inspected implementation and the appropriate verification layer. A file name is a route to evidence, not a claim that every possible execution path is tested. The application source reference is pinned in the bibliography; the expanded report's arithmetic scripts and results are published alongside its LaTeX source.
+The source locations below identify the inspected implementation and the appropriate verification layer. A file name is a route to evidence, not a claim that every possible execution path is tested. The historical application source is pinned in the bibliography; the 0.3 source inventory records the updated interface and snapshot components. Numerical check totals and reference-pixel comparisons in this table belong to the retained 0.2.4 validation unless explicitly identified otherwise. Current observations and their failed gates are separated in Section~\ref{sec:8}. The arithmetic scripts and results are published alongside the LaTeX source.
 
 \begingroup\small
 \begin{longtable}{@{}>{\raggedright\arraybackslash}p{.26\linewidth}>{\raggedright\arraybackslash}p{.36\linewidth}>{\raggedright\arraybackslash}p{.32\linewidth}@{}}
@@ -828,11 +929,13 @@ The source locations below identify the inspected implementation and the appropr
 \path{server.py} & Authenticated loopback requests serialize state work; snapshot arrays describe one locked state. & \path{test_http_boundary.py}, \path{test_native_snapshot.py}; this is a local application API.\\[5pt]
 \path{engine_process.py} & Launch identity and health bind ownership even when launcher and interpreter PIDs differ; parent EOF cleans up. & 24 lifecycle checks and three packaged-command checks in the retained validation.\\[5pt]
 \path{native_bridge.py} & A full slot bijection intertwines every translated generator; partial geometry cannot pass readiness. & \path{test_native_bridge.py} plus the actual runtime handshake; synthetic fixtures alone are insufficient.\\[5pt]
-\path{NativeSnapshot.cs} and \path{NativeHost.cs} & Validate one profile-bound snapshot before updating colors, styles, controls and history displays. & Native data, interaction and fresh-process reopen checks.\\[5pt]
-\path{NativePickingVisibility.cs} & Hidden meshes do not receive turns; a fresh visible projection precedes click hit-testing after sampled motion. & Native picking regression includes visible-frame and stale-axis cases.\\[5pt]
-\path{NativeRenderSubset.cs} & Temporary mesh scopes retain original identities and restore complete native arrays; frame policy is independent. & Native subset and frame-policy regressions, including direct and animated redraws.\\[5pt]
-\path{NativeRendererLifecycle.cs} & Dirty scheduling, handle/size guards and recognized device-reset recovery preserve control state. & Native device-recovery checks; no general proof over all graphics drivers.\\[5pt]
-\path{NativeFullRenderer.cs} & Only verified native instructions receive the reusable-buffer optimization; projection and order stay comparable. & Three full-detail poses and a selection/outline view match reference pixels; performance is workload-specific.\\[5pt]
+{\scriptsize\path{NativeSnapshot.cs}} and {\scriptsize\path{NativeHost.cs}} & Validate one profile-bound snapshot before updating colors, styles, controls and history displays. & Native data, interaction and fresh-process reopen checks.\\[5pt]
+{\scriptsize\path{NativeCellView.cs}} and {\scriptsize\path{NativeAuxiliaryViews.cs}} & Shared immutable geometry/status; independent cameras; hidden controls defer drawing; selection and pinning have distinct meanings. & 0.3 control/lifecycle checks and bounded paired-view observations; no sustained combined-rendering guarantee.\\[5pt]
+{\scriptsize\path{NativeColorGraph.cs}} & Canonical cell IDs and exact graph topology remain separate from schematic screen layout and filter publication. & 0.3 structure/interaction checks; the 50 ms graph-activation target narrowly failed its measured p95.\\[5pt]
+{\scriptsize\path{NativePickingVisibility.cs}} & Hidden meshes do not receive turns; a fresh visible projection precedes click hit-testing after sampled motion. & Native picking regression includes visible-frame and stale-axis cases.\\[5pt]
+{\scriptsize\path{NativeRenderSubset.cs}} & Temporary mesh scopes retain original identities and restore complete native arrays; frame policy is independent. & Native subset and frame-policy regressions, including direct and animated redraws.\\[5pt]
+{\scriptsize\path{NativeRendererLifecycle.cs}} & Dirty scheduling, handle/size guards and recognized device-reset recovery preserve control state. & Native device-recovery checks; no general proof over all graphics drivers.\\[5pt]
+{\scriptsize\path{NativeFullRenderer.cs}} & Only verified native instructions receive the reusable-buffer optimization; projection and order stay comparable. & Three full-detail poses and a selection/outline view match reference pixels; performance is workload-specific.\\[5pt]
 \path{packaging/} & Frozen engine, x86 host, resources and installer retain their tested identities; normal startup excludes developer fixtures. & Seven frozen-package checks and four isolated installer checks; external Managed DirectX remains a dependency.\\
 \end{longtable}\endgroup
 
@@ -840,23 +943,25 @@ The source locations below identify the inspected implementation and the appropr
 
 The original \path{verify_color_bound.py} independently rebuilds the selected nine primitive actions, checks pure supports and relocations, reconstructs guarded position reachability, and evaluates the color bound. Its \path{results.json} records the specific input hashes and explicit omissions. The added \path{verify_extended_derivations.py} uses only declarative repository assets and the Python standard library. It recomputes the 35-row census/controller table, verifies the retained parent/depth structure and collateral order, checks the small-domain cycle and commutator identities, and calculates the structural upper count, word-ball lower bound, scramble-support inequality, and workload bound. Its \path{extended-results.json} records those results separately.
 
+\begin{samepage}
 From the repository root, the added calculation is reproduced with:
 \begin{quote}\small\ttfamily
 python research/audit/verify\_extended\_derivations.py
 \end{quote}
+\end{samepage}
 No application session or native renderer is opened by this calculation. It does not independently regenerate clipping geometry, verify every oriented transition of all 35 setup trees, or replay the enormous primitive expansions. The three original synthetic replay commands remain documented inside the frozen companion ZIP. Their accepted endpoints and stage checks are preserved rather than replaced by newly generated solutions.
 
 The separate command \path{python research/audit/verify_regular_geometry.py} records exact incidence, quaternion and mod-2 chain calculations in \path{regular-geometry-results.json}. Puzzle theory links the proof blueprint, strict verdict and review provenance \cite{puzzletheory}.
 
 \subsection{Audit trail and publication scope}
 
-The new report-specific bounds are developments of the retained model and are not attributed retroactively to the original conversation or to Nan Ma's simplified solve. The original algorithm paper and curated reference ZIP remain byte-identical. Only the report, its LaTeX source, explanatory documentation, and bounded research supplements are expanded. The application release continues to be 0.2.4.
+The report's mathematical bounds are developments of the retained model and are not attributed retroactively to the original conversation or to Nan Ma's simplified solve. The original algorithm paper, curated reference ZIP, Puzzle Theory PDF/source, and retained proof-review records remain byte-identical in this update. This edition accompanies C600 Studio 0.3, while historical 0.2.4 validation remains identified by its own build and workload. The new interface conventions and engineering measurements do not reclassify the mathematical blueprint as a software correctness proof.
 
 Checksums connect the PDF and archive to the published inventory, while source-control history identifies each documentation revision. This establishes byte identity and a reviewable lineage; it is not independent certification of authorship. The public materials retain no account-bearing conversation links, personal databases, original third-party histories, screenshots, raw local diagnostics, or credentials. Technical page ranges in the archival guide provide the necessary documentary connection without exposing those materials.
 
 \begingroup
 \small
-\begin{thebibliography}{15}
+\begin{thebibliography}{18}
 \setlength{\itemsep}{2pt}
 \setlength{\parskip}{0pt}
 
@@ -902,6 +1007,15 @@ SQLite project. \emph{Atomic Commit in SQLite}. Official documentation, accessed
 
 \bibitem{amdahl}
 Amdahl, G. M. \emph{Validity of the single processor approach to achieving large scale computing capabilities}. AFIPS Spring Joint Computer Conference, 1967, pp. 483--485. \url{https://doi.org/10.1145/1465482.1465560}. Author's paper: \url{https://www.cs.cmu.edu/~18742/papers/Amdahl1967.pdf}.
+
+\bibitem{performance03}
+C600 Studio contributors. \emph{Development Performance Observations: 0.3 feature implementation}. Methods, source identity, successful and failed Windows observations, 2026. \url{https://github.com/KonomiYuzu01/C600-MPUlt/blob/main/docs/DEVELOPMENT_PERFORMANCE.md}.
+
+\bibitem{structure03}
+C600 Studio contributors. \emph{Colors, Cell Layers, and the Structure Explorer}. Canonical IDs, exact filter and inspection semantics, shared auxiliary views, 2026. \url{https://github.com/KonomiYuzu01/C600-MPUlt/blob/main/docs/STRUCTURE_EXPLORER.md}.
+
+\bibitem{source03}
+C600 Studio contributors. \emph{C600 Studio 0.3 source and package manifests}. Release inventory and component contracts, 2026. \url{https://github.com/KonomiYuzu01/C600-MPUlt}.
 
 \bibitem{puzzletheory}
 C600 Studio project. \emph{Puzzle Theory of the Full 600-Cell: Geometry, Topology, Group Actions, and Sound Optimization}. LaTeX supplement with geometry audit and Rethlas review, 7 September 2026; revision \texttt{d5dabe2c896f}. \url{https://github.com/KonomiYuzu01/C600-MPUlt/blob/d5dabe2c896f1e39901f2cca707d4624004047d2/research/PUZZLE_THEORY.md}.

@@ -36,6 +36,7 @@ def main():
     output.mkdir(parents=True)
     app=bundle/'C600Studio.exe'
     manifest=json.loads((bundle/'_internal/package-manifest.json').read_text(encoding='utf-8'))
+    version=manifest['version']
     before={p.relative_to(bundle).as_posix():sha(p) for p in bundle.rglob('*') if p.is_file()}
     checks=[]
     names=set(before)
@@ -67,11 +68,13 @@ def main():
     verification=output/'resources.json'
     resource_result=run(['--verify-package',str(verification)],verification)
     assert resource_result['passed'] and resource_result['packaged'] and not resource_result['startup_fixture_run']
+    assert resource_result['version']==version
     checks.append({'name':'Frozen launcher verifies all packaged files without Python/compiler PATH or fixture windows','passed':True,'files':resource_result['files_verified']})
     data=output/'isolated session Unicode 测试'
     report=output/'frozen-engine.json'
     result=run(['--engine-test',str(report),'--data',str(data)],report)
     assert result['passed'] and result['packaged'] and result['labelled_slots']==259800
+    assert result['version']==version
     assert result['reopened_labels_byte_identical'] and not result['startup_fixture_run'] and not result['native_host_started']
     assert Path(result['engine_executable']).resolve()==(bundle/'C600Engine.exe').resolve()
     for cleanup in (result['cleanup'],result['reopen_cleanup']):
@@ -81,6 +84,7 @@ def main():
     eof_data=output/'parent-eof-session'
     eof_report=output/'parent-eof.json'
     eof=run(['--engine-test',str(eof_report),'--data',str(eof_data),'--parent-eof'],eof_report)
+    assert eof['version']==version
     kernel=ctypes.WinDLL('kernel32',use_last_error=True)
     kernel.OpenProcess.argtypes=[ctypes.c_uint32,ctypes.c_int,ctypes.c_uint32];kernel.OpenProcess.restype=ctypes.c_void_p
     kernel.WaitForSingleObject.argtypes=[ctypes.c_void_p,ctypes.c_uint32]
@@ -91,7 +95,7 @@ def main():
             exited=kernel.WaitForSingleObject(handle,30000)==0
             if not exited:
                 # Preserve failure but clean up this test's authenticated child.
-                launch=eof_data/'native-host-0.2.4/package-test-launch.json'
+                launch=eof_data/f'native-host-{version}'/'package-test-launch.json'
                 info=json.loads(launch.read_text(encoding='utf-8'))
                 assert info['pid']==eof['engine_pid']
                 local_request(info,'/api/shutdown',{'launch_id':info['launch_id']})
@@ -115,7 +119,7 @@ def main():
     after={p.relative_to(bundle).as_posix():sha(p) for p in bundle.rglob('*') if p.is_file()}
     assert before==after,'Portable runtime wrote into its distribution directory'
     checks.append({'name':'All packaged files remain byte-identical after isolated runs; session writes stay outside the distribution','passed':True})
-    summary={'passed':True,'checks':checks,'native_source_sha256':manifest['native_source_sha256'],
+    summary={'passed':True,'version':version,'checks':checks,'native_source_sha256':manifest['native_source_sha256'],
              'engine_process_sha256':manifest['backend_source_files']['engine_process.py'],
              'scope':'Real frozen Windows executable/resource/engine/parent-EOF verification with Python/compiler paths excluded; DirectX rendering is tested separately.'}
     (output/'summary.json').write_text(json.dumps(summary,indent=2),encoding='utf-8')

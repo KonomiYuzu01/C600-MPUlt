@@ -1,10 +1,12 @@
 {
-  "version": "0.2.4",
+  "version": "0.3",
+  "release_name": "C600 Studio 0.3",
   "profile": "600-cell-Full",
-  "native_source_combined_sha256": "a4eadfa999dae4487bac5d69fa22211fddbe2f87673920e2a87abe009598f0e9",
+  "native_source_combined_sha256": "f40a18efaa55d9f24fe17e3228c286054cce70e85bd9dfe61c437e89c0e26116",
   "asset_manifest_sha256": "b5db4469f3da9ba3cdbd93806a703f594153e61b08ce32d4fcce9de9c5cc60bc",
   "runtime_sha256": "228b3145460a399e2accc17cb5b891568ec8ddd33c011f1f2a32a00c59743327",
   "microsoft_directx_payload_included": false,
   "distribution": "Source repository; Windows installers are separate release artifacts",
-  "build_validation": "See the separately verified release artifacts; no raw local diagnostic metadata is included."
+  "build_validation": "See docs/RELEASE_0_3_VALIDATION.md for matching-source, packaged executable, and performance evidence boundaries. Raw local diagnostics are excluded.",
+  "historical_release": "The 0.2.4 tag, release assets, and tests/VALIDATION.md retain their original evidence."
 }

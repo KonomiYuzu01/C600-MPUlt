@@ -8,8 +8,8 @@
 [Setup]
 AppId={{6C24679C-714D-487A-95B1-8F0BC6C65D28}
 AppName=C600 Studio
-AppVersion=0.2.4
-AppVerName=C600 Studio 0.2.4
+AppVersion=0.3
+AppVerName=C600 Studio 0.3
 AppPublisher=C600 Studio contributors
 AppPublisherURL=https://github.com/KonomiYuzu01/C600-MPUlt
 AppSupportURL=https://github.com/KonomiYuzu01/C600-MPUlt/issues
@@ -21,7 +21,7 @@ ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 MinVersion=10.0
 OutputDir={#InstallerOutput}
-OutputBaseFilename=C600Studio-0.2.4-Setup
+OutputBaseFilename=C600Studio-0.3-Setup
 Compression=lzma2/fast
 SolidCompression=yes
 WizardStyle=modern

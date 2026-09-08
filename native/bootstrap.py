@@ -6,7 +6,7 @@ live bridge still verifies the actual MPUlt model at every connection.
 from __future__ import annotations
 import argparse, hashlib, json, locale, os, pathlib, shutil, struct, subprocess, sys, time
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-VERSION = '0.2.4'
+VERSION = '0.3'
 sys.path.insert(0, str(ROOT))
 from engine_process import EngineProcess, read_launch
 
@@ -53,7 +53,7 @@ def main():
     build = data / ('native-host-' + VERSION)
     diagnostics = build / 'diagnostics'
     diagnostics.mkdir(parents=True, exist_ok=True)
-    sources = [ROOT / 'native' / name for name in ('NativeHost.cs', 'NativeDockLayout.cs', 'NativeDiagnostics.cs', 'NativeRendererLifecycle.cs', 'NativeSnapshot.cs', 'NativeStickerAccess.cs', 'NativeRenderSubset.cs', 'NativePickingVisibility.cs', 'NativeFullRenderer.cs')]
+    sources = [ROOT / 'native' / name for name in ('NativeHost.cs', 'NativeDockLayout.cs', 'NativeDiagnostics.cs', 'NativeRendererLifecycle.cs', 'NativeSnapshot.cs', 'NativeStickerAccess.cs', 'NativeRenderSubset.cs', 'NativePickingVisibility.cs', 'NativeFullRenderer.cs', 'NativeColorGraph.cs', 'NativeStructureExplorer.cs', 'NativeCellView.cs', 'NativeAuxiliaryViews.cs')]
     sources_hash = hashlib.sha256(b''.join(p.read_bytes() for p in sources)).hexdigest()
     (diagnostics / 'build-info.json').write_text(json.dumps(dict(version=VERSION, source_sha256=sources_hash,
           python=sys.version, process_bits=64, native_bits=32), indent=2), encoding='utf-8')
@@ -91,22 +91,23 @@ def main():
     for name, found in find_directx(preferred=(source, source / 'v9.02.2904', runtime)).items():
         if found.resolve() != (runtime / name).resolve():
             shutil.copy2(found, runtime / name)
-    old_builds = [data / ('native-host-' + v) for v in ('0.2.3', '0.2.2', '0.2.1', '0.2')]
-    old_build = next((p for p in old_builds if p.is_dir()), old_builds[0])
-    old_runtime = old_build / 'runtime' / runtime.name
+    old_builds = [data / ('native-host-' + v) for v in ('0.2.4', '0.2.3', '0.2.2', '0.2.1', '0.2')]
     for name in ('MPUlt_puzzles.txt', 'MPUlt_settings.txt'):
         if not (runtime / name).exists():
-            prior = old_runtime / name
-            shutil.copy2(prior if prior.exists() else ROOT / 'native/runtime' / name, runtime / name)
-    if not (build / 'native_keys.json').exists() and (old_build / 'native_keys.json').exists():
-        shutil.copy2(old_build / 'native_keys.json', build / 'native_keys.json')
+            prior = next((old / 'runtime' / runtime.name / name for old in old_builds
+                          if (old / 'runtime' / runtime.name / name).exists()), ROOT / 'native/runtime' / name)
+            shutil.copy2(prior, runtime / name)
+    if not (build / 'native_keys.json').exists():
+        prior = next((old / 'native_keys.json' for old in old_builds if (old / 'native_keys.json').exists()), None)
+        if prior is not None:
+            shutil.copy2(prior, build / 'native_keys.json')
     launch = build / 'launch.json'
     launch.unlink(missing_ok=True)
     exe = runtime / 'MPUlt.exe'
     if test_mode:
         test_type = 'NativePerformanceRegression' if args.performance_test else 'NativeRendererRegression'
         host = build / (test_type + '.exe')
-        compile_program(csc, host, sources + [ROOT / 'tests/native' / (test_type + '.cs')] + ([] if args.performance_test else [ROOT / 'tests/native/NativePickingRegression.cs', ROOT / 'tests/native/NativeSessionLogRegression.cs', ROOT / 'tests/native/NativeFramePolicyRegression.cs']),
+        compile_program(csc, host, sources + [ROOT / 'tests/native' / (test_type + '.cs')] + ([] if args.performance_test else [ROOT / 'tests/native/NativePickingRegression.cs', ROOT / 'tests/native/NativeSessionLogRegression.cs', ROOT / 'tests/native/NativeFramePolicyRegression.cs', ROOT / 'tests/native/NativeFeatureRegression.cs', ROOT / 'tests/native/NativeAuxiliaryNativeRegression.cs']),
                         test_type, diagnostics / ('performance-test-build.log' if args.performance_test else 'renderer-test-build.log'),
                         [runtime / name for name in ('Microsoft.DirectX.dll', 'Microsoft.DirectX.Direct3D.dll', 'Microsoft.DirectX.Direct3DX.dll')])
     with EngineProcess(ROOT, data, launch, build / 'engine.log',

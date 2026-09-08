@@ -12,9 +12,9 @@ import sys
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '0.2.4'
+VERSION = '0.3'
 NATIVE = ('NativeHost.cs','NativeDockLayout.cs','NativeDiagnostics.cs','NativeRendererLifecycle.cs',
-          'NativeSnapshot.cs','NativeStickerAccess.cs','NativeRenderSubset.cs','NativePickingVisibility.cs','NativeFullRenderer.cs')
+          'NativeSnapshot.cs','NativeStickerAccess.cs','NativeRenderSubset.cs','NativePickingVisibility.cs','NativeFullRenderer.cs','NativeColorGraph.cs','NativeStructureExplorer.cs', 'NativeCellView.cs', 'NativeAuxiliaryViews.cs')
 BACKEND = ('core.py','session.py','enhanced.py','server.py','engine_process.py','native_bridge.py','log_io.py','mpult_log.py','grips.py','session_lock.py')
 PACKAGING = ('packaging/launcher.py','packaging/engine_entry.py','packaging/build_windows.py','packaging/C600Studio.spec',
              'packaging/README.md','packaging/requirements-build.txt','native/directx_runtime.py')
@@ -70,7 +70,7 @@ def main():
     if PyInstaller.__version__!='6.22.2':
         raise RuntimeError('Install packaging/requirements-build.txt before building.')
     output,work=args.output.resolve(),args.work.resolve()
-    bundle=output/'C600Studio-0.2.4-Windows-x64'
+    bundle=output/('C600Studio-'+VERSION+'-Windows-x64')
     if bundle.exists():
         raise RuntimeError('Choose a fresh output directory; existing distributions are preserved.')
     output.mkdir(parents=True,exist_ok=True)
@@ -96,7 +96,7 @@ def main():
     runtime_files=('MPUlt.exe','MPUlt_puzzles.txt','MPUlt_settings.txt')
     for name in runtime_files:
         shutil.copy2(ROOT/'native/runtime'/name,stage/'native/runtime'/name)
-    version="""VSVersionInfo(ffi=FixedFileInfo(filevers=(0,2,4,0),prodvers=(0,2,4,0),mask=0x3f,flags=0,OS=0x40004,fileType=0x1,subtype=0,date=(0,0)),kids=[StringFileInfo([StringTable('040904B0',[StringStruct('FileDescription','C600 Studio native Windows application'),StringStruct('FileVersion','0.2.4'),StringStruct('ProductName','C600 Studio'),StringStruct('ProductVersion','0.2.4')])]),VarFileInfo([VarStruct('Translation',[1033,1200])])])"""
+    version="""VSVersionInfo(ffi=FixedFileInfo(filevers=(0,3,0,0),prodvers=(0,3,0,0),mask=0x3f,flags=0,OS=0x40004,fileType=0x1,subtype=0,date=(0,0)),kids=[StringFileInfo([StringTable('040904B0',[StringStruct('FileDescription','C600 Studio native Windows application'),StringStruct('FileVersion','0.3'),StringStruct('ProductName','C600 Studio'),StringStruct('ProductVersion','0.3')])]),VarFileInfo([VarStruct('Translation',[1033,1200])])])"""
     (stage/'version.txt').write_text(version,encoding='utf-8')
     os.environ['C600_PACKAGING_STAGE']=str(stage)
     freeze(['--noconfirm','--clean','--distpath',str(output),'--workpath',str(work/'pyinstaller'),str(ROOT/'packaging/C600Studio.spec')])
@@ -104,12 +104,25 @@ def main():
     copy_license(Path(sys.base_prefix)/'LICENSE.txt',licenses/'Python-LICENSE.txt')
     for distribution,target in (('numpy','NumPy'),('pyinstaller','PyInstaller')):
         package=importlib.metadata.distribution(distribution)
-        license_files=[f for f in package.files if 'licenses' in f.parts and (f.name.lower().startswith(('license','copying','notice')) or distribution=='numpy')]
+        # Wheel layouts vary: NumPy 2.3 uses .dist-info/LICENSE.txt, while
+        # newer wheels use .dist-info/licenses/. Include recorded component
+        # notices as well; the main wheel notice contains bundled-library terms.
+        license_files=[f for f in (package.files or ()) if 'licenses' in f.parts or f.name.lower().startswith(('license','licence','copying','notice'))]
         if not license_files:
             raise RuntimeError('Missing complete license material for '+distribution)
         for item in license_files:
-            position=item.parts.index('licenses')
-            copy_license(Path(package.locate_file(item)),licenses/target/Path(*item.parts[position+1:]))
+            if 'licenses' in item.parts:
+                relative=Path(*item.parts[item.parts.index('licenses')+1:])
+            elif any(part.endswith('.dist-info') for part in item.parts):
+                position=next(i for i,part in enumerate(item.parts) if part.endswith('.dist-info'))
+                relative=Path(*item.parts[position+1:])
+            else:
+                relative=Path(*item.parts)
+            if relative.is_absolute() or '..' in relative.parts:
+                raise RuntimeError('Unsafe license path in '+distribution)
+            copy_license(Path(package.locate_file(item)),licenses/target/relative)
+        if not any(path.is_file() and path.name.lower().startswith(('license','licence','copying')) for path in (licenses/target).iterdir()):
+            raise RuntimeError('Missing main wheel license for '+distribution)
     copy_license(ROOT/'LICENSE',bundle/'LICENSE')
     copy_license(ROOT/'CREDITS.md',bundle/'CREDITS.md')
     copy_license(ROOT/'native/LICENSE.MPUlt.txt',licenses/'MPUlt-MIT.txt')
@@ -143,7 +156,7 @@ def main():
     build_report={'passed':True,'bundle':str(bundle),'native_source_sha256':combined,
                   'files':len(entries),'bytes':sum(item['bytes'] for item in entries),'build_time_fixture_report':str(fixture_report)}
     if not args.no_zip:
-        archive=output/'C600Studio-0.2.4-Windows-x64.zip'
+        archive=output/('C600Studio-'+VERSION+'-Windows-x64.zip')
         with zipfile.ZipFile(archive,'w',zipfile.ZIP_DEFLATED,compresslevel=6) as zip:
             for path in sorted(bundle.rglob('*')):
                 if path.is_file():zip.write(path,path.relative_to(output))

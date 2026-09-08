@@ -1,6 +1,6 @@
 {
   "format": "C600-public-source-inventory-v1",
-  "version": "0.2.4",
+  "version": "0.3",
   "files": [
     {
       "path": ".gitignore",
@@ -40,26 +40,26 @@
     },
     {
       "path": "README.md",
-      "bytes": 1507,
-      "sha256": "5762b4f08fa2ce38c629e1977273463957f895e9ce9971503e4d28343436664b",
+      "bytes": 2532,
+      "sha256": "32a2d9a5cb4c946090760f500741bfe9e330167d591b1882eae947ee77f282e5",
       "provenance": "reviewed-doc-or-license"
     },
     {
       "path": "RELEASE.json",
-      "bytes": 606,
-      "sha256": "0b41844f6724f0f4fcf95912334ea3fa1a32f09f0567d23c4acce49e1869f95d",
+      "bytes": 814,
+      "sha256": "9bb1f21d82dbf543ea349d4ef231504d4a681a7554f976dce8dd479813414aa3",
       "provenance": "public-release-metadata"
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",
-      "bytes": 2083,
-      "sha256": "e65e090e7070a0ed4a41880c69803147bec248ae01a7d943f4087fbd29925be5",
+      "bytes": 2385,
+      "sha256": "01bdf826fb3e6f6b39920cbe493cfdc18e1e350161a4e4be28cc0d4ae9e9a1ca",
       "provenance": "reviewed-doc-or-license"
     },
     {
       "path": "USAGE.md",
-      "bytes": 2455,
-      "sha256": "ffb50f433f4160657b6995524ff4b4a7092d752d0ac3dca5b981c50e87241b9b",
+      "bytes": 3560,
+      "sha256": "0ae95fec42f4ea68e369f1a039a6bb6abae7c1b312a9c7dd47d9eeb89194ff69",
       "provenance": "reviewed-doc-or-license"
     },
     {
@@ -184,8 +184,8 @@
     },
     {
       "path": "core.py",
-      "bytes": 22310,
-      "sha256": "a1786235028fb2f0479e71dbd5d8aeb7c65b71adb1ba495103891d5603f7f96b",
+      "bytes": 28304,
+      "sha256": "67839fc28bf4dd020b515330efcde43a2116474e9970a1d743de55c7deb2eea2",
       "provenance": "project-source"
     },
     {
@@ -196,14 +196,50 @@
     },
     {
       "path": "docs/DEVELOPMENT.md",
-      "bytes": 2674,
-      "sha256": "32f766e70e0476f9ecfe33f0ecefc25f209b38f75a47e499cbccdf7b727b038a",
+      "bytes": 4274,
+      "sha256": "a9f21ccabfc05db18975f092f7c72019342be465ce834bc7373795a9ee8889f0",
       "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/DEVELOPMENT_LOG.md",
+      "bytes": 27012,
+      "sha256": "fa9ddfcdb53789bbb5ce614f9addc609e8f78e2e384dc9a482d744542f73c41b",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/DEVELOPMENT_PERFORMANCE.md",
+      "bytes": 10207,
+      "sha256": "5af108313c93f45563f8d6f1d524e9e3d2886f6fe93b42a2a7b54d918cae2bb3",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/LIMITATIONS_AND_ROADMAP.md",
+      "bytes": 14982,
+      "sha256": "a4828507f0fce3bdfd1337ad6aa36d36ec99993a7c2395607f0430f281e97b79",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/NATIVE_UPDATE_PROTOCOL.md",
+      "bytes": 9981,
+      "sha256": "ff915e6c35d9f774fe69b650eb907b5f6fa655cf809b3c73e8c4872575f1c066",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/RELEASE_0_3_VALIDATION.md",
+      "bytes": 11021,
+      "sha256": "1f06f018f6ef0b7ae8f3bf5d2fe7eaf004f0a8a1e87414c234facfc4649ece5c",
+      "provenance": "root-reviewed-public-validation"
     },
     {
       "path": "docs/RUNTIME_PROVENANCE.md",
       "bytes": 2088,
       "sha256": "c3c58ff774b4c092239ba133dad6f530fd1213aa5662faf022ba667c0c58feca",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/STRUCTURE_EXPLORER.md",
+      "bytes": 13562,
+      "sha256": "5ace886bb71a06182f19904aabf6bbdc4bbf91ba8b8cd7bbe25af6501f1f6dc2",
       "provenance": "reviewed-doc-or-license"
     },
     {
@@ -369,6 +405,24 @@
       "provenance": "project-source"
     },
     {
+      "path": "native/NativeAuxiliaryViews.cs",
+      "bytes": 16638,
+      "sha256": "64af53ef5f39ed0d98b68fbd98a2d1e530acb06a0de4a1480c4503301f1d232a",
+      "provenance": "project-source"
+    },
+    {
+      "path": "native/NativeCellView.cs",
+      "bytes": 26517,
+      "sha256": "fb53559ad157f1fd2a6131875dd26484acfa430696431203eb2dfe8a4aa9d75b",
+      "provenance": "project-source"
+    },
+    {
+      "path": "native/NativeColorGraph.cs",
+      "bytes": 6275,
+      "sha256": "68f30dfaf72f72f24417742ebb8947df4a69e49969cddbafc6de346fa6400c3d",
+      "provenance": "project-source"
+    },
+    {
       "path": "native/NativeDiagnostics.cs",
       "bytes": 1151,
       "sha256": "8a58f76b918632f749a5bf068ba7a0cc3df543ad870a4be35315a1f2e60fd469",
@@ -377,19 +431,19 @@
     {
       "path": "native/NativeDockLayout.cs",
       "bytes": 2682,
-      "sha256": "76767f0a230800266c9dd3b06db6b76d1ce9bca14e48b9087d8d3a00424b27c8",
+      "sha256": "e284444b6e7dd7a5f2e97b661567bd3b928fb80ccdff096e4604c1582f4d549a",
       "provenance": "project-source"
     },
     {
       "path": "native/NativeFullRenderer.cs",
-      "bytes": 14090,
-      "sha256": "5e639b1ec59eb86fb2c0dfe91ccc825046452b9137365559382f9c292a9500cd",
+      "bytes": 14778,
+      "sha256": "0dab30ff25008932a7f75244e34f8ee0592778febc7fafa9f04bd17a716a812e",
       "provenance": "project-source"
     },
     {
       "path": "native/NativeHost.cs",
-      "bytes": 68201,
-      "sha256": "3fb9e8dd3df9209c8ef50c87efdd57dcd9b46a34bb7abdeb159469007f078aa3",
+      "bytes": 96215,
+      "sha256": "0d076c52fa2caf49d6d306ef85c1d232a811c26949edec8907c9086512918539",
       "provenance": "project-source"
     },
     {
@@ -400,38 +454,44 @@
     },
     {
       "path": "native/NativePickingVisibility.cs",
-      "bytes": 8532,
-      "sha256": "94c3ebdb72afe1f2509f2ab03d4d6552f19bbfe9ac113b93d2221da1fd2eec5c",
+      "bytes": 10969,
+      "sha256": "d12f6f5052792e237b99d95e524d16214a968614066b6c725de7af37d90a88a9",
       "provenance": "project-source"
     },
     {
       "path": "native/NativeRenderSubset.cs",
-      "bytes": 10711,
-      "sha256": "65f83f5eb68ec258e418104e633b78153ce014e60006011e38d00fa100d7aeb0",
+      "bytes": 12082,
+      "sha256": "012a9ed27e15cf9bdc62ed05e9920dc418920c9b6be7c4094d70b2afd8f77516",
       "provenance": "project-source"
     },
     {
       "path": "native/NativeRendererLifecycle.cs",
-      "bytes": 13014,
-      "sha256": "99266c233cc14ff27fae6ce053e6e70dba2bfea321a8d5aaec0b3983094587b8",
+      "bytes": 13548,
+      "sha256": "088d756bf40db3225687f4c3af036887ffca15e3f11d70614f5851defba780e8",
       "provenance": "project-source"
     },
     {
       "path": "native/NativeSnapshot.cs",
-      "bytes": 1268,
-      "sha256": "eb4c629ad11c3b89fb1c7fd239c3f33f6f9669cc74017c7455baf68838aeb8eb",
+      "bytes": 6257,
+      "sha256": "70a22fbe613bab6d677109ea6a6766fd2887c6794f68cfc1f746b0959aeeaa05",
       "provenance": "project-source"
     },
     {
       "path": "native/NativeStickerAccess.cs",
-      "bytes": 1920,
-      "sha256": "32a6f0743697b16a9066d6d204cff3c982e75161e7c0ad4b218295f7727141f5",
+      "bytes": 5210,
+      "sha256": "89f1036b6681a5b3de650afdf775df9c8920d03cb72a814fdcebea20b13ea34f",
+      "provenance": "project-source"
+    },
+    {
+      "path": "native/NativeStructureExplorer.cs",
+      "bytes": 21586,
+      "sha256": "28dbe384c25c27a52208cf137143deadbadb72fc77e99523a47aca76d1e97de9",
       "provenance": "project-source"
     },
     {
       "path": "native/bootstrap.py",
-      "bytes": 9095,
-      "sha256": "6aa2c8f2305298a66ad8f24a5972c565ab85b807b4b485a9a3efd684342f4d4d",
+      "bytes": 9352,
+      "sha256": "1b01ead24e16d3dfabef396e9f0ae68d12b4ece6f53cb7187c2d2cd051bd9747",
       "provenance": "project-source"
     },
     {
@@ -490,32 +550,32 @@
     },
     {
       "path": "packaging/C600Studio.iss",
-      "bytes": 1322,
-      "sha256": "d8ddb551149a25d1e2b6026258f94405a28155a6f46a6964246d6aeca3126d9b",
+      "bytes": 1316,
+      "sha256": "aab9f9b43892f71b2c09cff6be753e1fb1e4d6615b1cfec44f1c6744e4c192e3",
       "provenance": "project-source"
     },
     {
       "path": "packaging/C600Studio.spec",
-      "bytes": 1479,
-      "sha256": "7fc503aeee639ad87cf6ab6bbc75f00c3e9d9db8ba28ee1e76a3562ae57027f0",
+      "bytes": 1477,
+      "sha256": "db813e471f0e853c91d3b13d4892a9d1a6a3ad1e5a2e15bb0524555a1d3fd2a3",
       "provenance": "project-source"
     },
     {
       "path": "packaging/README.md",
-      "bytes": 2507,
-      "sha256": "280b016c183ec3faa77f03a53add6affa2770778ca24dbad12a46ba4b0db4357",
+      "bytes": 3577,
+      "sha256": "d1660266db141ff31922cacd081f9c3e144ebbbde588cfb380c2e505c59f1eb9",
       "provenance": "project-source"
     },
     {
       "path": "packaging/build_installer.py",
-      "bytes": 2207,
-      "sha256": "01855d9707965cd6af0409ce6c91d6e5beab641eb2824e121d76c58ab3921ac6",
+      "bytes": 2329,
+      "sha256": "ccf030741d1da3b81922351205213c3f7802a168c39c330a37488c2704336bff",
       "provenance": "project-source"
     },
     {
       "path": "packaging/build_windows.py",
-      "bytes": 10012,
-      "sha256": "612968982e0c4e144ee817f124f380b6e32b9d3980b610a30fba25eb311d03fb",
+      "bytes": 11040,
+      "sha256": "0f6f324695d4a1917df87ae57a0dc51fbd008f79fe39626271b46fc05712c865",
       "provenance": "project-source"
     },
     {
@@ -526,8 +586,8 @@
     },
     {
       "path": "packaging/launcher.py",
-      "bytes": 9713,
-      "sha256": "a50713b96854300ee7547d1cdd7b651a1160557376e2a72090e2b48b13d9fbcf",
+      "bytes": 9724,
+      "sha256": "531ee7fb7497a6209d82a0723129765e881662cdf4912c28495cf99fe1ff5520",
       "provenance": "project-source"
     },
     {
@@ -544,152 +604,152 @@
     },
     {
       "path": "research/ARCHIVAL_SOURCE_GUIDE.md",
-      "provenance": "reviewed-research-material",
       "bytes": 6765,
-      "sha256": "98171b048cb42c6b43bbc33bfb34d58588a1553fa09fe429d1a33d3196b978da"
+      "sha256": "98171b048cb42c6b43bbc33bfb34d58588a1553fa09fe429d1a33d3196b978da",
+      "provenance": "reviewed-research-material"
     },
     {
       "path": "research/FULL_DETAIL_ROTATION_REQUIREMENTS.md",
-      "provenance": "reviewed-research-material",
-      "bytes": 3801,
-      "sha256": "c3aeef46fcba31956313986ce88e6805b35dd093a9208ed1303b5cabe78839e1"
+      "bytes": 5052,
+      "sha256": "1f1145240beb45307b105af1f2ee2df13e99249a4d81c0d93e5d614c797a284b",
+      "provenance": "reviewed-research-material"
     },
     {
       "path": "research/Full_600cell_Curated_Reference_and_Replay.zip",
-      "provenance": "allowlisted-research-companion-with-member-provenance",
       "bytes": 23794249,
-      "sha256": "85d2d9a6b337442aae10b7c26056f518ce0d0a738e2f098d47d8a52678d0ec5a"
+      "sha256": "85d2d9a6b337442aae10b7c26056f518ce0d0a738e2f098d47d8a52678d0ec5a",
+      "provenance": "allowlisted-research-companion-with-member-provenance"
     },
     {
       "path": "research/Full_600cell_Puzzle_Theory.pdf",
-      "provenance": "reviewed-puzzle-theory-research",
       "bytes": 444303,
-      "sha256": "2634ce0aa5155a5418a33745ef283c18e867939ade0f346253a9fc705b957f0d"
+      "sha256": "2634ce0aa5155a5418a33745ef283c18e867939ade0f346253a9fc705b957f0d",
+      "provenance": "reviewed-puzzle-theory-research"
     },
     {
       "path": "research/Full_600cell_Puzzle_Theory.tex",
-      "provenance": "reviewed-puzzle-theory-research",
       "bytes": 94439,
-      "sha256": "b209326b272cb67e798a762c4a1ed1c0df058b49c6a1f9bcc1b6fd36ac415129"
+      "sha256": "b209326b272cb67e798a762c4a1ed1c0df058b49c6a1f9bcc1b6fd36ac415129",
+      "provenance": "reviewed-puzzle-theory-research"
     },
     {
       "path": "research/Full_600cell_Technical_Report.pdf",
-      "provenance": "reviewed-research-material",
-      "bytes": 424281,
-      "sha256": "6fcefa5c07527960a16b49f5d5cfd36181e36fdc3c72ce933c8f8ca81fd2ff41"
+      "bytes": 475540,
+      "sha256": "4467f030a75442a2173b7f6d7262a6af71b1cefaad967747f953d1297891a182",
+      "provenance": "reviewed-research-material"
     },
     {
       "path": "research/Full_600cell_Technical_Report.tex",
-      "provenance": "reviewed-research-material",
-      "bytes": 104728,
-      "sha256": "8f1600ec48e3437682f0496df6edfaaf46f72f21aef2b30a139dc41177f7d377"
+      "bytes": 121204,
+      "sha256": "484ff58e22f67775dad340c7a83fdee257c67128895b32172d83a13a3883746c",
+      "provenance": "reviewed-research-material"
     },
     {
       "path": "research/PUZZLE_THEORY.md",
-      "provenance": "reviewed-puzzle-theory-research",
-      "bytes": 5624,
-      "sha256": "a426a4435889abb57d7ef92857a217371f75682f1354e46a9af47e3b47135713"
+      "bytes": 6138,
+      "sha256": "90aae1c1a5bfabc630597391d7a552c51c56e226dc380abd2fbbf932e7ab93ff",
+      "provenance": "reviewed-puzzle-theory-research"
     },
     {
       "path": "research/README.md",
-      "provenance": "reviewed-research-material",
-      "bytes": 5985,
-      "sha256": "2ed98b382acd84d2420861c93639f107925690b58dfd91f032939be1e4deb209"
+      "bytes": 6877,
+      "sha256": "e05f16c32b1c3314dd81a96c12f55bbfe4b1284b111fe8ff22ebbb6df32ba36b",
+      "provenance": "reviewed-research-material"
     },
     {
       "path": "research/SHA256SUMS.txt",
-      "provenance": "reviewed-research-material",
       "bytes": 422,
-      "sha256": "27a5ac32f52e43e112eb9482e3345ae5b2657e9448be05d61299c196e48c2be6"
+      "sha256": "0aa5dab7d60742c7bcc06551b74bf1449cb0db7174e367463313ed4dcc03a4e8",
+      "provenance": "reviewed-research-material"
     },
     {
       "path": "research/audit/README.md",
-      "provenance": "reviewed-research-material",
       "bytes": 7454,
-      "sha256": "475e9f2d1428e58d339942daff79eee88a191cd93da012d341a5e33a8c648c82"
+      "sha256": "475e9f2d1428e58d339942daff79eee88a191cd93da012d341a5e33a8c648c82",
+      "provenance": "reviewed-research-material"
     },
     {
       "path": "research/audit/extended-results.json",
-      "provenance": "reviewed-research-material",
       "bytes": 19188,
-      "sha256": "7f4d9f17af2d5fa74159abda99321d030e7b5fcd1aec6d223647a45926f83471"
+      "sha256": "7f4d9f17af2d5fa74159abda99321d030e7b5fcd1aec6d223647a45926f83471",
+      "provenance": "reviewed-research-material"
     },
     {
       "path": "research/audit/regular-geometry-results.json",
-      "provenance": "reviewed-puzzle-theory-research",
       "bytes": 1491,
-      "sha256": "fa5b2cc80d19b6a057ec036e29561aa253631643322e7ee14bafb1519b0336d8"
+      "sha256": "fa5b2cc80d19b6a057ec036e29561aa253631643322e7ee14bafb1519b0336d8",
+      "provenance": "reviewed-puzzle-theory-research"
     },
     {
       "path": "research/audit/requirements.txt",
-      "provenance": "reviewed-research-material",
       "bytes": 12,
-      "sha256": "a83a2a4ed7ab2e022b9b8a83cfa2b8cf52cc243006c597e8b96f90a8365590ac"
+      "sha256": "a83a2a4ed7ab2e022b9b8a83cfa2b8cf52cc243006c597e8b96f90a8365590ac",
+      "provenance": "reviewed-research-material"
     },
     {
       "path": "research/audit/results.json",
-      "provenance": "reviewed-research-material",
       "bytes": 17247,
-      "sha256": "ff440bc7268303fc467ed3765338bbc5e61cd55897d807092f5d00013a8ba45b"
+      "sha256": "ff440bc7268303fc467ed3765338bbc5e61cd55897d807092f5d00013a8ba45b",
+      "provenance": "reviewed-research-material"
     },
     {
       "path": "research/audit/verify_color_bound.py",
-      "provenance": "reviewed-research-material",
       "bytes": 15179,
-      "sha256": "c9c7e695445ec0f3d2194b826d059b2bfa130f966dacc1fe898bca9cb0d51c6e"
+      "sha256": "c9c7e695445ec0f3d2194b826d059b2bfa130f966dacc1fe898bca9cb0d51c6e",
+      "provenance": "reviewed-research-material"
     },
     {
       "path": "research/audit/verify_extended_derivations.py",
-      "provenance": "reviewed-research-material",
       "bytes": 7709,
-      "sha256": "73084819dc37186277f52695d946828e761df50e5882b5b15e262888b4569aa7"
+      "sha256": "73084819dc37186277f52695d946828e761df50e5882b5b15e262888b4569aa7",
+      "provenance": "reviewed-research-material"
     },
     {
       "path": "research/audit/verify_regular_geometry.py",
-      "provenance": "reviewed-puzzle-theory-research",
       "bytes": 7726,
-      "sha256": "8d424f45dd3475e4fd80ee2f9f0965b822703ca69e8f98b35bf5d7099088e7db"
+      "sha256": "8d424f45dd3475e4fd80ee2f9f0965b822703ca69e8f98b35bf5d7099088e7db",
+      "provenance": "reviewed-puzzle-theory-research"
     },
     {
       "path": "research/reference/Full_600cell_35_Orbit_Algorithms.pdf",
-      "provenance": "unchanged-user-supplied-algorithm-reference",
       "bytes": 672733,
-      "sha256": "5b8761a38527451217b1eb6351b5cb8b4e81491ae8c248b392f1cc5f38d6d530"
+      "sha256": "5b8761a38527451217b1eb6351b5cb8b4e81491ae8c248b392f1cc5f38d6d530",
+      "provenance": "unchanged-user-supplied-algorithm-reference"
     },
     {
       "path": "research/theory/RETHLAS_BLUEPRINT.md",
-      "provenance": "reviewed-puzzle-theory-research",
       "bytes": 56892,
-      "sha256": "954b5241183fb7fc5554639f0e9359e6f8e0cb0cc2a1c3f64ac8d2b6216298e4"
+      "sha256": "954b5241183fb7fc5554639f0e9359e6f8e0cb0cc2a1c3f64ac8d2b6216298e4",
+      "provenance": "reviewed-puzzle-theory-research"
     },
     {
       "path": "research/theory/rethlas-verification.json",
-      "provenance": "reviewed-puzzle-theory-research",
       "bytes": 2406,
-      "sha256": "3869c42a48d28e6ccc533fff29f4ba9ce4dd885586c6f0ad03d2191cd90a4e24"
+      "sha256": "3869c42a48d28e6ccc533fff29f4ba9ce4dd885586c6f0ad03d2191cd90a4e24",
+      "provenance": "reviewed-puzzle-theory-research"
     },
     {
       "path": "research/theory/review-problem.md",
-      "provenance": "reviewed-puzzle-theory-research",
       "bytes": 6305,
-      "sha256": "abe47efbe0e3a4b3d6812a1f405b624c5c4bb795926651f05181222659a130ae"
+      "sha256": "abe47efbe0e3a4b3d6812a1f405b624c5c4bb795926651f05181222659a130ae",
+      "provenance": "reviewed-puzzle-theory-research"
     },
     {
       "path": "research/theory/review-provenance.json",
-      "provenance": "reviewed-puzzle-theory-research",
       "bytes": 3479,
-      "sha256": "2a20c58df6b7450332effdabcf7cc71f2966ff3f6f5a9ee67fb1bdcce788459d"
+      "sha256": "2a20c58df6b7450332effdabcf7cc71f2966ff3f6f5a9ee67fb1bdcce788459d",
+      "provenance": "reviewed-puzzle-theory-research"
     },
     {
       "path": "server.py",
-      "bytes": 20399,
-      "sha256": "cabe30d2f5baa6131202975d25684f3abc4c850a1c29935c36e43a58484172cd",
+      "bytes": 25153,
+      "sha256": "3f3e48f5cf7888e02d01aaf7a4b4153c5ec2e496bf0b455a8ab1efea8286a8c4",
       "provenance": "project-source"
     },
     {
       "path": "session.py",
-      "bytes": 18864,
-      "sha256": "6abbd20bc1a66169e48013f67215cc35282ce9fb60234a5bfbea4ab0560eff6a",
+      "bytes": 28722,
+      "sha256": "dcb979efa9a002c117cdcaf8782f219873d98fc6a2a1af6f769f395dfd410285",
       "provenance": "project-source"
     },
     {
@@ -735,15 +795,45 @@
       "provenance": "project-source"
     },
     {
+      "path": "tests/native/NativeAuxiliaryNativeRegression.cs",
+      "bytes": 27131,
+      "sha256": "7974a3d0207f375ad1c69aa41a103424741f7979742c253a3eacccf2bb9d2fbc",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/native/NativeAuxiliaryRegressionRunner.cs",
+      "bytes": 1980,
+      "sha256": "f2250157512eaf9903d6b7cac756c5824bf374054c4c649d4706a9d343d85107",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/native/NativeAuxiliaryViewsRegression.cs",
+      "bytes": 13546,
+      "sha256": "97c567103a16c579c7ba51cc57723b28877e7c0bfbf0abf94d66d7877eedf382",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/native/NativeCellViewRegression.cs",
+      "bytes": 10649,
+      "sha256": "5bbcc625a953ca53aed758f437dfcfa012dbc72f9f915a4e200ca222366f3449",
+      "provenance": "project-source"
+    },
+    {
       "path": "tests/native/NativeDataRegression.cs",
-      "bytes": 5618,
-      "sha256": "7a2772ff282c20a188a6b0a0de842e739daa36d5f4cc7e44b28042f049481f54",
+      "bytes": 12432,
+      "sha256": "45b8a1056a196342d673b4efe6e055aaa127832294b1f77b73485d62b1527efb",
       "provenance": "project-source"
     },
     {
       "path": "tests/native/NativeDeviceRecoveryRegression.cs",
       "bytes": 4666,
       "sha256": "d50ac0c00600372586fd81c510a4bcdaf815ca5ac14655f757ea7c43276e4b26",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/native/NativeFeatureRegression.cs",
+      "bytes": 13679,
+      "sha256": "35c62a779a0af7ea2d5319412972009a7f0b3f33c7164fd1087cba07c4bfcf79",
       "provenance": "project-source"
     },
     {
@@ -754,14 +844,14 @@
     },
     {
       "path": "tests/native/NativeFullRendererRegression.cs",
-      "bytes": 4132,
-      "sha256": "d22dbc98870c46488720443da512b7a50594113e115713b7c050cb6b4f4db9bd",
+      "bytes": 6886,
+      "sha256": "84f05f416e60f9949caaf1a99acac3fab9e1d7268d0710250823f1acbb4c8efd",
       "provenance": "project-source"
     },
     {
       "path": "tests/native/NativeHostRegression.cs",
-      "bytes": 10474,
-      "sha256": "d75b9014fda6f79fd0d2445b00a2d55b253579b19ce0e56faa16aab7dc8bf13d",
+      "bytes": 27770,
+      "sha256": "3d6501fae015b2d4d7767684d2edf1539c43039b1143ab584b8881a104126a89",
       "provenance": "project-source"
     },
     {
@@ -772,8 +862,8 @@
     },
     {
       "path": "tests/native/NativePickingRegression.cs",
-      "bytes": 23915,
-      "sha256": "d263b137ee25613253fbc038156841cbdcb36febb57a4880d73c400bbb9ec3a6",
+      "bytes": 29166,
+      "sha256": "9653bd1a886609003ee425fe74677dbd2a474f37dc21afeb48d4f86e934e20b6",
       "provenance": "project-source"
     },
     {
@@ -784,14 +874,20 @@
     },
     {
       "path": "tests/native/NativeRendererRegression.cs",
-      "bytes": 71092,
-      "sha256": "d36f80c5b605079c799a81bae934fbdb4b9b056ab4dfd8b8ab8a2aca90a2ec49",
+      "bytes": 71664,
+      "sha256": "b100d01f838c7aabc0b1c32acc083337bf0733a9cc08829e067eb5e4d317e1fa",
       "provenance": "project-source"
     },
     {
       "path": "tests/native/NativeSessionLogRegression.cs",
       "bytes": 9961,
       "sha256": "677f8c6fd22a1d7c14523d5ab5700e34c99ef2e3c3eef817c06eebb1480f9cd6",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/native/NativeStructureExplorerRegression.cs",
+      "bytes": 15148,
+      "sha256": "0b099839839fa52644d50d133d037ad9a10ac9a4b381c9c0930949bd23bc9bee",
       "provenance": "project-source"
     },
     {
@@ -822,6 +918,18 @@
       "path": "tests/test_browser_ui.py",
       "bytes": 4887,
       "sha256": "adeb17ec9c3ee1e6cf1591543f097ab33c4df9f1ee232b7804e57fd8488f4ad2",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/test_cell_views.py",
+      "bytes": 9207,
+      "sha256": "0adb49f6f717c2094bc7892157dbbb9ce179a7fb68d2da4c65ff55a46ccbca13",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/test_color_inspection.py",
+      "bytes": 24394,
+      "sha256": "799c0363132faacf69a52bdfc7610a158632e7a6cc6ffec0dc54d08851fc74e6",
       "provenance": "project-source"
     },
     {
@@ -867,6 +975,12 @@
       "provenance": "project-source"
     },
     {
+      "path": "tests/test_inspection_focus.py",
+      "bytes": 7622,
+      "sha256": "4a50893f5c6219e2f65020865606cdf3b2d108e4e676508178f6383c699eff98",
+      "provenance": "project-source"
+    },
+    {
       "path": "tests/test_log_workflow.py",
       "bytes": 12933,
       "sha256": "87bc530b716373d93de065afb8fdbe0879af4f27640d1b35734f672914a5962a",
@@ -876,6 +990,12 @@
       "path": "tests/test_mpult_log.py",
       "bytes": 8712,
       "sha256": "6e72e3d2385332d50415ceb919b627e18ef36173bfa51f075aed6bd44ae5ddbe",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/test_native_auxiliary_controls.py",
+      "bytes": 4232,
+      "sha256": "c7aed3836b692810e4ba75a264f736046f10cca798d8610f7edd15cb7e94c02c",
       "provenance": "project-source"
     },
     {
@@ -894,6 +1014,12 @@
       "path": "tests/test_native_snapshot.py",
       "bytes": 4663,
       "sha256": "63e28dfdd924303324067cdcf37c54d3e83991f470334341ab684a626a3ad6b9",
+      "provenance": "project-source"
+    },
+    {
+      "path": "tests/test_native_snapshot_cache.py",
+      "bytes": 4645,
+      "sha256": "a05f419d6cc22c57ff86db213c312e1527fe5ee43430189b4329fb8613054da6",
       "provenance": "project-source"
     },
     {
@@ -916,8 +1042,8 @@
     },
     {
       "path": "tests/test_portable_package.py",
-      "bytes": 8037,
-      "sha256": "5dcba6257d241bb4d4a470801ff1e5814ce81f56fb58502fe298986fcaef46b3",
+      "bytes": 8214,
+      "sha256": "d5474a1cc974baf32cfc12892a3e8871a64c67d034f9785824433d0a18e7188a",
       "provenance": "project-source"
     },
     {
@@ -1002,9 +1128,13 @@
     "NativeStickerAccess.cs",
     "NativeRenderSubset.cs",
     "NativePickingVisibility.cs",
-    "NativeFullRenderer.cs"
+    "NativeFullRenderer.cs",
+    "NativeColorGraph.cs",
+    "NativeStructureExplorer.cs",
+    "NativeCellView.cs",
+    "NativeAuxiliaryViews.cs"
   ],
-  "native_production_combined_sha256": "a4eadfa999dae4487bac5d69fa22211fddbe2f87673920e2a87abe009598f0e9",
+  "native_production_combined_sha256": "f40a18efaa55d9f24fe17e3228c286054cce70e85bd9dfe61c437e89c0e26116",
   "private_data_included": false,
   "microsoft_directx_payload_included": false
 }

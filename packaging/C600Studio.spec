@@ -21,4 +21,4 @@ engine_exe = EXE(PYZ(engine.pure), engine.scripts, [], exclude_binaries=True,
     upx=False, console=True, version=str(stage/'version.txt'), contents_directory='_internal')
 distribution = COLLECT(launcher_exe, engine_exe,
     launcher.binaries, launcher.datas, engine.binaries, engine.datas,
-    strip=False, upx=False, name='C600Studio-0.2.4-Windows-x64')
+    strip=False, upx=False, name='C600Studio-0.3-Windows-x64')
