@@ -1,5 +1,7 @@
 # C600 Studio
 
+This development branch includes an **unreleased preparation foundation** for the next update. Read [Next-update architecture and handoff](docs/NEXT_UPDATE.md) for its callable inspection/review service, verified boundaries, and remaining integration work. The published 0.3 application is unchanged.
+
 A Windows workbench for the full 600-cell puzzle, built around **[Magic Puzzle Ultimate by Andrey Astrelin](https://superliminal.com/andrey/mpu/)**. Primary credit for the original puzzle simulator and renderer belongs to Andrey.
 
 It adds recoverable reset, exact piece filters, checkpoints, macros, buffer and insertion tools, and verified C600 / MPUlt v1 log exchange while preserving the full puzzle state.

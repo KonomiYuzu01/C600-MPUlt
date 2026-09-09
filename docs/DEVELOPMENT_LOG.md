@@ -1,5 +1,15 @@
 # Development decisions and evidence
 
+## Next-update preparation foundation
+
+The development direction is now centered on reducing human effort before each orbit-first macro: finding and preparing buffer occupants/frames, preserving completed orbits, and verifying the complete preparation/macro/cleanup effect. Functional power and practical human solving feasibility are primary; approachable controls remain important without restricting expert capability.
+
+An isolated, unreleased branch adds a read-only PreparationService over the existing Model, Session and lock. It captures explicit target/required identity, buffer occupants, frame candidates and current stage/protection facts; reviews complete witnessed operations; detects protected-orbit and finished-nonbuffer losses; and preserves unrelated pending work. It does not select subsequent targets, write preferences or history, create a preview, or bypass existing commit checks. One serialized inspection is cached by complete mechanical context and explicit intent.
+
+Eight full-model Windows/SQLite contract groups passed, including independent primitive replay, stale/cancel rejection, pending-preview preservation, exact hidden collateral, shared-lock serialization, and all-label reopen. A short private O34 cache comparison measured 2.383 ms uncached versus 0.789 ms cached mean for equivalent output; this does not measure human savings or native UI latency. No runtime, mechanics, persistence, GPU or executable changes were made.
+
+The [next-update contract](NEXT_UPDATE.md) records product priorities, available interfaces, future authenticated/native integration, unified keybind actions, protection semantics, human-cost measurement and focused completion gates. Native UI, durable stage management and execution integration remain future work. Production promotion requires their matching validation; 0.3 release evidence remains frozen.
+
 This log describes the current development work. It is not a release announcement or a claim that older test results certify newer source.
 
 The published 0.2.4 release validation and its recorded source identity remain frozen. The structure, inspection, update-protocol, and auxiliary-view changes below form version 0.3. Its separate package validation must be read alongside these functional observations; the older download and its checksums do not certify this version.

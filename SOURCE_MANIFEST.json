@@ -1,6 +1,6 @@
 {
   "format": "C600-public-source-inventory-v1",
-  "version": "0.3",
+  "version": "next-update-foundation",
   "files": [
     {
       "path": ".gitignore",
@@ -10,8 +10,8 @@
     },
     {
       "path": "AGENTS.md",
-      "bytes": 1942,
-      "sha256": "2275388b33bd3be7da53e2c565e6a18383081f922c193794ddbe8c00ae111562",
+      "bytes": 2527,
+      "sha256": "04ec4aeb5d6b1db4402a89534e064b2482a779e3f44ae8fe27e07a80127ad5a6",
       "provenance": "reviewed-doc-or-license"
     },
     {
@@ -40,8 +40,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 2532,
-      "sha256": "32a2d9a5cb4c946090760f500741bfe9e330167d591b1882eae947ee77f282e5",
+      "bytes": 2834,
+      "sha256": "8d69648f998d65faad198798c753ac830bfa5be71d9a59c20a8d63a04522d286",
       "provenance": "reviewed-doc-or-license"
     },
     {
@@ -202,8 +202,8 @@
     },
     {
       "path": "docs/DEVELOPMENT_LOG.md",
-      "bytes": 27012,
-      "sha256": "fa9ddfcdb53789bbb5ce614f9addc609e8f78e2e384dc9a482d744542f73c41b",
+      "bytes": 28887,
+      "sha256": "cd2c9896fc63a46a742691a5601308826a37811069fbf5db12f435a3eaf1454d",
       "provenance": "reviewed-doc-or-license"
     },
     {
@@ -222,6 +222,12 @@
       "path": "docs/NATIVE_UPDATE_PROTOCOL.md",
       "bytes": 9981,
       "sha256": "ff915e6c35d9f774fe69b650eb907b5f6fa655cf809b3c73e8c4872575f1c066",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/NEXT_UPDATE.md",
+      "bytes": 17455,
+      "sha256": "3cec7c1cee20748e617efe34e7768f991b28a374d484bf9f3c131a6744c8fa85",
       "provenance": "reviewed-doc-or-license"
     },
     {
@@ -594,6 +600,12 @@
       "path": "packaging/requirements-build.txt",
       "bytes": 20,
       "sha256": "f9d0679767cea835d1adcab8bf9d076b049354ce62f7e387b354579ef1e13728",
+      "provenance": "project-source"
+    },
+    {
+      "path": "preparation.py",
+      "bytes": 12174,
+      "sha256": "8d34150bba8d94f2e07601c419c1aa0bd000460f1fbf25a5e33d93c787d1d676",
       "provenance": "project-source"
     },
     {
@@ -1047,6 +1059,12 @@
       "provenance": "project-source"
     },
     {
+      "path": "tests/test_preparation.py",
+      "bytes": 12558,
+      "sha256": "b6de51b21da97ee85deb5e0d150e050d0fc6000ece6de476b602cc20eb9ec173",
+      "provenance": "project-source"
+    },
+    {
       "path": "tests/test_recovery_camera.py",
       "bytes": 9597,
       "sha256": "cfc7e0fad758d28b71253e7d977da218251638be140714bed54d9d3b01e00001",
@@ -1136,5 +1154,8 @@
   ],
   "native_production_combined_sha256": "f40a18efaa55d9f24fe17e3228c286054cce70e85bd9dfe61c437e89c0e26116",
   "private_data_included": false,
-  "microsoft_directx_payload_included": false
+  "microsoft_directx_payload_included": false,
+  "release_base": "0.3",
+  "base_commit": "85b1fe6626f1276aac29bbe2d51d7a973eb63934",
+  "distribution_status": "unreleased-isolated-source-foundation"
 }

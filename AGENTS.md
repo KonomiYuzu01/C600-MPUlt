@@ -15,3 +15,7 @@ Work only on the full `600-cell-Full` profile. Keep all 259,800 labelled sticker
 - Keep public UI and documentation in English. Never publish user databases, personal logs, credentials, private paths, screenshots or raw machine diagnostics.
 
 See `docs/DEVELOPMENT.md`, `docs/RUNTIME_PROVENANCE.md` and `DIRECTX.md` for build, provenance and dependency details.
+
+## Next-update preparation work
+
+Read `docs/NEXT_UPDATE.md` before extending this branch. The primary objective is to reduce human buffer preparation and completed-orbit protection work in orbit-first solving. Human strategy and explicit execution decisions remain central; convenience and learnability support full capability. The new `preparation.py` service is read-only and isolated from the released runtime. Preserve its shared-lock, stale-context, full-effect and existing-preview boundaries when integrating it. Do not treat a preparation review hash as permission to commit.
