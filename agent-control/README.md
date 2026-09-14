@@ -14,7 +14,7 @@ From the actual source repository's `agent-control` directory outside OneDrive:
 node src/configure-key.mjs
 ```
 
-On Windows, double-click `configure-key.cmd` to launch the same Node program. This entry does not run a PowerShell script or change execution policy. Only paste after the secure program displays its hidden-input prompt. It refuses a non-interactive terminal and OneDrive directory, writes a non-secret readiness status under `.state`, and saves the key to the local Git-ignored `.env` while preserving model settings. It does not verify account access. Git ignore alone does not prevent cloud-folder synchronization.
+On Windows, double-click `configure-key.cmd` to launch the same Node program. This entry does not run a PowerShell script or change execution policy. Only paste after the secure program displays its hidden-input prompt. In a Windows console, use right-click Paste or Shift+Insert; if Ctrl+V arrives as a control key, the program gives paste guidance without displaying clipboard content. It refuses a non-interactive terminal and OneDrive directory, writes a non-secret readiness status under `.state`, and saves the key to the local Git-ignored `.env` while preserving model settings. It does not verify account access. Git ignore alone does not prevent cloud-folder synchronization.
 
 Never paste a key into a normal shell prompt. If a previous key appeared in a screenshot, command text or chat, revoke it on Platform and configure a new one. For an external environment file, copy `.env.example` to a local location outside cloud synchronization, such as `$env:LOCALAPPDATA\Magic600\agent-control.env`. Replace its empty key locally with the real value:
 
@@ -80,7 +80,7 @@ Use `node src/cli.mjs help` for the command list. Configuration, context and `.s
 
 ## Verification and boundaries
 
-The dependency is locked to `openai@7.15.0`. All **22 offline tests passed**, including 11 secure key-input/status tests and: actual SDK request serialization for agent creation, `none` sessions, continuation headers and read queries; missing-input rejection; real CLI processes covering secret-containing SDK errors, malformed state, pending/reused state, missing keys and relative environment paths. The tests intercept transport and make no network requests.
+The dependency is locked to `openai@7.15.0`. Offline tests cover secure key input/status, paste shortcuts and boundaries, plus: actual SDK request serialization for agent creation, `none` sessions, continuation headers and read queries; missing-input rejection; real CLI processes covering secret-containing SDK errors, malformed state, pending/reused state, missing keys and relative environment paths. The tests intercept transport and make no network requests.
 
 No live API request has been verified: a real user key is still required to establish account permissions, model access and inference results. API analysis and automated checks cannot approve the project's G1/G2 native deliverables.
 

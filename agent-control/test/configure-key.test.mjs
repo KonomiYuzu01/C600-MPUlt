@@ -8,6 +8,15 @@ import { acceptInput, assertLocalDirectory, configureKey, saveKey, updatedEnviro
 
 const fakeKey = 'sk-proj-FAKE_TEST_ONLY_123';
 
+test('terminal paste shortcuts and wrappers do not reject a single key', () => {
+  assert.deepEqual(acceptInput('', '\x16'), { value: '', action: 'paste-help' });
+  assert.equal(acceptInput('', '\x16' + fakeKey).value, fakeKey);
+  assert.equal(acceptInput('', '\x1b[200~' + fakeKey + '\x1b[201~').value, fakeKey);
+  assert.equal(acceptInput('', ' ' + fakeKey + ' ').value, fakeKey);
+  assert.equal(acceptInput('', fakeKey + '\r\n').action, 'save');
+  assert.equal(acceptInput('', fakeKey + '\n' + fakeKey).action, 'retry');
+});
+
 test('accepts a single key only after Enter and handles CRLF', () => {
   assert.deepEqual(acceptInput('', fakeKey), { value: fakeKey, action: 'continue' });
   assert.deepEqual(acceptInput(fakeKey, '\r'), { value: fakeKey, action: 'save' });
@@ -66,6 +75,19 @@ function terminal(options = {}) {
   const output = { isTTY: true, text: '', write(text) { this.text += text; } };
   return { input, output, directory: 'C:/local/agent-control' };
 }
+
+test('Ctrl+V control key gives paste guidance then accepts hidden terminal paste', async () => {
+  const io = terminal();
+  let saved;
+  const result = configureKey({ ...io, save: (directory, key) => { saved = key; } });
+  io.input.emit('data', '\x16');
+  assert.match(io.output.text, /RIGHT-CLICK/);
+  assert.doesNotMatch(io.output.text, /Invalid input/);
+  io.input.emit('data', fakeKey + '\r');
+  assert.equal(await result, 0);
+  assert.equal(saved, fakeKey);
+  assert.equal(io.output.text.includes(fakeKey), false);
+});
 
 test('interactive save hides input and cleans up raw mode', async () => {
   const io = terminal();

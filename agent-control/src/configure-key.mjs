@@ -2,6 +2,7 @@ import { mkdirSync, readFileSync, realpathSync, renameSync, unlinkSync, writeFil
 import { randomUUID } from 'node:crypto';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import process from 'node:process';
 
 const invalid = () => ({ value: '', action: 'retry' });
 
@@ -11,7 +12,15 @@ export function validKey(value) {
 
 // Terminal input is never echoed, included in an exception, or sent to a shell.
 export function acceptInput(value, chunk) {
+  // Console paste shortcuts can arrive as control keys instead of pasted text.
+  // Do not read the system clipboard; let the user choose the terminal's Paste action.
+  chunk = chunk.replace(/\x1b\[200~/g, '').replace(/\x1b\[201~/g, '');
+  if (chunk === '\x16') return { value, action: 'paste-help' };
+  chunk = chunk.replace(/^\x16(?=sk-)/, '');
   if (/[\x03\x1b]/.test(chunk)) return { value: '', action: 'cancel' };
+  if (chunk.trim().startsWith('sk-') && validKey(chunk.trim())) {
+    chunk = chunk.trim() + (/[\r\n]$/.test(chunk) ? '\n' : '');
+  }
   const characters = [...chunk.replace(/\r\n/g, '\n')];
   for (let index = 0; index < characters.length; index += 1) {
     const character = characters[index];
@@ -91,7 +100,8 @@ export function configureKey({ input = process.stdin, output = process.stdout, d
     const onData = chunk => {
       const state = acceptInput(value, String(chunk));
       value = state.value;
-      if (state.action === 'cancel') finish(2, 'Cancelled. No key was saved.');
+      if (state.action === 'paste-help') output.write('\nThis console sent Ctrl+V as a shortcut, not text. Use RIGHT-CLICK > Paste or Shift+Insert, then Enter (hidden): ');
+      else if (state.action === 'cancel') finish(2, 'Cancelled. No key was saved.');
       else if (state.action === 'retry') output.write('\nInvalid input cleared. Paste ONE new key, then press Enter (hidden): ');
       else if (state.action === 'save') {
         try {
@@ -113,7 +123,7 @@ export function configureKey({ input = process.stdin, output = process.stdout, d
       input.on('error', onError);
       input.on('end', onEnd);
       input.resume();
-      output.write('READY: secure key input is active. Characters will remain invisible.\nPaste ONE newly created key, then press Enter. Ctrl+C or Escape cancels: ');
+      output.write('READY: secure key input is active. Characters will remain invisible.\nUse RIGHT-CLICK Paste or Shift+Insert for ONE new key, then Enter. Ctrl+C or Escape cancels: ');
       status('ready');
     } catch { finish(1, 'Secure input could not start. No key was saved. Close this window; do not paste a key.'); }
   });
