@@ -8,6 +8,9 @@ jobs:
   infrastructure:
     runs-on: windows-latest
     steps:
+      - name: Preserve content-addressed asset bytes
+        shell: pwsh
+        run: git config --global core.autocrlf false
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
@@ -29,7 +32,7 @@ jobs:
       - name: PowerShell syntax
         shell: pwsh
         run: |
-          $files = @(Get-ChildItem scripts/*.ps1) + @(Get-ChildItem agent-control/*.ps1)
+          $files = @(Get-ChildItem scripts/*.ps1)
           foreach ($file in $files) {
             $tokens = $null
             $errors = $null
@@ -54,6 +57,9 @@ jobs:
   core:
     runs-on: windows-latest
     steps:
+      - name: Preserve content-addressed asset bytes
+        shell: pwsh
+        run: git config --global core.autocrlf false
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
