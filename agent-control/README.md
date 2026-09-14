@@ -6,6 +6,8 @@ This controller applies the Staff workflow, six specialist roles, full-model and
 
 Create one application API key in the project's [OpenAI Platform](https://platform.openai.com/) account with `api.agents.read`, `api.agents.write` and `api.responses.write`, as specified in the [official quickstart](https://developers.openai.com/api/docs/guides/agents-api/quickstart). These are three permissions on one key. If these capabilities are unavailable, ask the project administrator to enable access. Local configuration cannot grant account permissions.
 
+In Restricted permissions, also enable **Models / List models: Read**. This deployment required that setting: Agent creation returned HTTP 403 before it was enabled, then Agent and Session creation succeeded. This is the observed Platform permission label; no additional scope string is assumed.
+
 The only secret to supply is the actual issued key, assigned to `OPENAI_API_KEY`. Do not send it in chat. The default model is `gpt-6-astra` with high reasoning effort. Agent and Session IDs are saved automatically after successful creation; do not invent them. The seven roles run in batches with at most three API subagents concurrently. API and local Codex concurrency limits are separate.
 
 From the actual source repository's `agent-control` directory outside OneDrive:
@@ -82,6 +84,6 @@ Use `node src/cli.mjs help` for the command list. Configuration, context and `.s
 
 The dependency is locked to `openai@7.15.0`. Offline tests cover secure key input/status, paste shortcuts and boundaries, plus: actual SDK request serialization for agent creation, `none` sessions, continuation headers and read queries; missing-input rejection; real CLI processes covering secret-containing SDK errors, malformed state, pending/reused state, missing keys and relative environment paths. The tests intercept transport and make no network requests.
 
-No live API request has been verified: a real user key is still required to establish account permissions, model access and inference results. API analysis and automated checks cannot approve the project's G1/G2 native deliverables.
+Live API access requires a real user key with the account permissions and model access described above; successful resource creation alone does not prove completed inference. API analysis and automated checks cannot approve the project's G1/G2 native deliverables.
 
 Implementation references, checked 2026-09-15: [Agents API quickstart](https://developers.openai.com/api/docs/guides/agents-api/quickstart), [create agent](https://developers.openai.com/api/reference/typescript/resources/beta/subresources/agents/methods/create), and [session input events](https://developers.openai.com/api/reference/typescript/resources/beta/subresources/agents/subresources/sessions/subresources/events/methods/create). The installed SDK uses the literal `'Idempotency-Key'` parameter for the header; the serialization test verifies that behavior.
