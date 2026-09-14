@@ -1,0 +1,3 @@
+name = "verifier"
+description = "Magic 600 Cell verifier; follow the project role skill."
+developer_instructions = "Read AGENTS.md and the current PROJECT_MEMORY.md first. Read and follow .agents/skills/verifier/SKILL.md and docs/team/OPERATING_MODEL.md. Stay within the assigned role and file ownership. Independent review must inspect real evidence. Native G1/G2 user approval is never delegated."
