@@ -1,0 +1,60 @@
+name: Publish MPUlt runtime prerequisites
+on:
+  push:
+    branches: [codex/runtime-dependencies]
+    paths:
+      - runtime-prerequisites/**
+      - .github/workflows/runtime-prerequisites.yml
+permissions:
+  contents: read
+concurrency:
+  group: runtime-prerequisites-2026.09.16
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    env:
+      RELEASE_TAG: runtime-prerequisites-2026.09.16
+      BUNDLE_NAME: Magic600Cell-Runtime-Prerequisites-2026.09.16.zip
+    steps:
+      - name: Preserve reviewed file bytes
+        shell: pwsh
+        run: git config --global core.autocrlf false
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Build and verify exact runtime bundle
+        shell: pwsh
+        run: |
+          ./runtime-prerequisites/build.ps1 -OutputDirectory ./runtime-release-output
+      - name: Publish separate runtime dependency release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          gh --version
+          if ($LASTEXITCODE -ne 0) { throw 'GitHub CLI is unavailable.' }
+          $zip = Join-Path 'runtime-release-output' $env:BUNDLE_NAME
+          $sums = Join-Path 'runtime-release-output' 'SHA256SUMS.txt'
+          gh release create $env:RELEASE_TAG $zip $sums --repo $env:GITHUB_REPOSITORY --target $env:GITHUB_SHA --draft --latest=false --title 'Magic 600 Cell MPUlt runtime prerequisites (2026-09-16)' --notes-file runtime-prerequisites/RELEASE_NOTES.md
+          if ($LASTEXITCODE -ne 0) { throw 'Draft release creation/upload failed; inspect any existing draft before retrying.' }
+          $releaseJson = gh api "repos/$env:GITHUB_REPOSITORY/releases?per_page=100"
+          if ($LASTEXITCODE -ne 0) { throw 'Cannot inspect the uploaded draft release.' }
+          $matchingReleases = @($releaseJson | ConvertFrom-Json | Where-Object { $_.tag_name -ceq $env:RELEASE_TAG })
+          if ($matchingReleases.Count -ne 1) { throw 'Cannot uniquely identify the uploaded draft release.' }
+          $release = $matchingReleases[0]
+          if (-not $release.draft -or $release.assets.Count -ne 2 -or $release.target_commitish -ne $env:GITHUB_SHA) { throw 'Unexpected draft release identity or asset count.' }
+          foreach ($path in @($zip, $sums)) {
+            $name = [System.IO.Path]::GetFileName($path)
+            $matching = @($release.assets | Where-Object { $_.name -ceq $name })
+            $digest = 'sha256:' + (Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash.ToLowerInvariant()
+            if ($matching.Count -ne 1 -or $matching[0].size -ne (Get-Item -LiteralPath $path).Length -or $matching[0].digest -cne $digest) { throw "Uploaded asset verification failed: $name" }
+          }
+          gh release edit $env:RELEASE_TAG --repo $env:GITHUB_REPOSITORY --draft=false --latest=false
+          if ($LASTEXITCODE -ne 0) { throw 'Publishing the verified runtime draft failed.' }
+          $latestJson = gh api "repos/$env:GITHUB_REPOSITORY/releases/latest"
+          if ($LASTEXITCODE -ne 0) { throw 'Cannot confirm the product latest release.' }
+          if (($latestJson | ConvertFrom-Json).tag_name -ne '0.3') { throw 'Product Latest changed unexpectedly; review release metadata.' }

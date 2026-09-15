@@ -1,0 +1,7 @@
+This separate runtime package helps prepare Windows for the MPUlt-based Magic 600 Cell application. It contains the original Microsoft DirectX End-User Runtimes (June 2010) redistributable, installation helpers, a read-only runtime checker and source, third-party notices, and a file manifest. The download SHA-256 and Microsoft signature are checked before packaging; the uploaded release assets are verified before publication.
+
+Read the included README before installation. Windows 10 and Windows 11 through 25H2 use the NetFx3 Windows feature for .NET Framework 3.5; newer applicable Windows versions use the official installer route described there. Windows component-store CAB files are not a generic offline installer and are not included. The current NativeHost also requires .NET Framework 4 and x86 compatibility; this package does not claim that .NET 3.5 alone is sufficient.
+
+The original Microsoft installer is included unchanged. Installation may require an administrator, network access or matching Windows installation media. No installation is performed by downloading or extracting this ZIP. This packaging check does not demonstrate installation or DirectX rendering on your computer.
+
+This is a runtime-prerequisite release, not Magic 600 Cell 0.4. It leaves the existing product release and the separate G1/G2 native approval gates unchanged. Primary credit for Magic Puzzle Ultimate belongs to Andrey Astrelin.
