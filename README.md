@@ -1,5 +1,7 @@
 # Magic 600 Cell (formerly C600 Studio)
 
+**1.0 architecture (proposed):** [Integrated architecture, PDF and editable source](docs/architecture/1.0/README.md). Revision 1.0-A3 schedules the deferred B4-12 performance workstream without lowering its thresholds or claiming hardware causality. Documentation only.
+
 **0.4 development — stopped, unreleased:** [Latest progress, handoff and complete document archive](docs/progress/0.4/README.md) (published 2026-09-18; evidence through 2026-09-17). G1/G2 samples are approved; final acceptance is incomplete. This is a documentation update, not a 0.4 application release.
 
 A Windows workbench for the full 600-cell puzzle, built around **[Magic Puzzle Ultimate by Andrey Astrelin](https://superliminal.com/andrey/mpu/)**. Primary credit for the original puzzle simulator and renderer belongs to Andrey.

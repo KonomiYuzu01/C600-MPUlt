@@ -1,0 +1,1317 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[margin=20mm,top=22mm,bottom=22mm,headheight=15pt]{geometry}
+\usepackage{fontspec}
+\setmainfont{Cambria}
+\setsansfont{Calibri}
+\newfontfamily\codefont{Consolas}[Scale=0.86]
+\newfontfamily\cjkfont{Microsoft YaHei}[Scale=0.9,AutoFakeSlant=0.15]
+\usepackage{amsmath,amssymb,array,longtable,booktabs,calc,graphicx,xcolor}
+\usepackage{fancyhdr}
+\usepackage[unicode,hidelinks,pdfusetitle]{hyperref}
+\definecolor{ink}{HTML}{17313D}
+\definecolor{accent}{HTML}{147D83}
+\definecolor{muted}{HTML}{5B6970}
+\definecolor{rulegray}{HTML}{D4DDE0}
+\hypersetup{pdftitle={Magic 600 Cell - 1.0 Architecture and Migration Contract},pdfauthor={Magic 600 Cell},pdfsubject={Integrated architecture revision 1.0-A3, with the current release priority}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+\linespread{1.07}
+\setlength{\emergencystretch}{5em}
+\hyphenpenalty=350
+\widowpenalty=10000\clubpenalty=10000
+\setcounter{secnumdepth}{-1}
+\setcounter{tocdepth}{1}
+\newcounter{none}
+\newcommand{\tightlist}{\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}}
+\newcommand{\passthrough}[1]{#1}
+\makeatletter
+\def\section{\@startsection{section}{1}{0pt}{-17pt plus -3pt minus -2pt}{8pt}{\sffamily\Large\bfseries\color{ink}}}
+\def\subsection{\@startsection{subsection}{2}{0pt}{-12pt plus -2pt minus -1pt}{5pt}{\sffamily\large\bfseries\color{ink}}}
+\def\subsubsection{\@startsection{subsubsection}{3}{0pt}{-9pt}{4pt}{\sffamily\normalsize\bfseries\color{ink}}}
+\makeatother
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\sffamily\small\color{muted}MAGIC 600 CELL}
+\fancyhead[R]{\sffamily\small\color{muted}1.0 / ARCHITECTURE}
+\fancyfoot[L]{\sffamily\scriptsize\color{muted}1.0-A3 / Proposed architecture / 18 September 2026}
+\fancyfoot[R]{\sffamily\small\color{ink}\thepage}
+\renewcommand{\headrulewidth}{0.35pt}
+\renewcommand{\footrulewidth}{0pt}
+\begin{document}
+\begin{titlepage}
+\color{ink}\sffamily
+{\small\bfseries ENGINEERING / ARCHITECTURE / MIGRATION}\par
+\vspace{27mm}
+{\fontsize{38}{43}\selectfont\bfseries Magic 600 Cell}\par
+\vspace{6mm}
+{\fontsize{25}{30}\selectfont 1.0 Architecture\\and Migration Contract}\par
+\vspace{10mm}
+{\color{accent}\rule{\linewidth}{1.2pt}}\par
+\vspace{8mm}
+{\large Orbit First Block Building Solving}\par
+\vspace{4mm}
+{\large One authoritative state. A new interactive frontend.}\par
+\vfill
+\begin{tabular}{@{}ll}
+\textbf{Source revision} & 2026-09-18 / 1.0-A3\\[6pt]
+\textbf{Source status} & Proposed architecture for review\\[6pt]
+\textbf{Reading edition} & 18 September 2026\\[6pt]
+\textbf{Scope} & Integrated contract, release priority and review amendments
+\end{tabular}\par
+\vspace{10mm}
+{\normalsize\color{muted}This edition integrates the reviewed architecture and the latest release priority. Proposed implementation choices remain proposals; no application or GPU validation is claimed.}\par
+\end{titlepage}
+\pagenumbering{roman}
+\section*{Architecture at a glance}
+\addcontentsline{toc}{section}{Architecture at a glance}
+\textbf{Purpose.} Make a human-led solution more achievable by reducing buffer preparation, protection checks and repeated verification. The user chooses the solving actions; the application exposes exact state, evaluates effects and preserves recoverability.
+
+\subsection*{One authority, a new frontend}
+Keep the Python engine, immutable mathematical model and Session journal as the only authority. A Rust shell with egui and dedicated wgpu rendering presents revision-bound snapshots and sends validated commands. Independent windows share the same puzzle state and may retain independent cameras.
+
+\subsection*{Prove one complete solving operation first}
+Select a real Local object; choose an explicit reference and macro; inspect the actual emitted cost and full protection; commit explicitly; update every view consistently; then undo or recover. This vertical slice is the first useful deliverable. A drawing demonstration alone does not establish it.
+
+\subsection*{What this integrated edition improves}
+\begin{itemize}
+\item Durable command receipts resolve uncertain delivery; equal state hashes alone cannot identify a transaction.
+\item Cancellation distinguishes a request from an actual pre-commit cancellation. A committed operation stays committed.
+\item Snapshots, labels and styles are published coherently; picking is bound to the correct view and relevant revisions.
+\item Recorded provenance is distinct from execution permission; incompatible drafts are retained and rollback restores a compatible engine as well as a shell.
+\item B4-12 stays not passed and deferred into the 1.0 workstream; original thresholds, correctness, protection and recovery remain intact.
+\end{itemize}
+
+\subsection*{Current release comes first}
+The user accepts deferred closure of the still-unpassed B4-12 performance item for the current release. R00 preserves all other release requirements and the original thresholds. V11.1 schedules optimization and validation after the planned device change; hardware causality is not established. At most one low-risk closeout candidate has a total 90-minute cap; this document does not restart that allowance. The 1.0 migration is not required for today's release.
+
+\subsection*{How to read the contract}
+\textbf{[C]} is a confirmed constraint; \textbf{[P]} a proposed design; \textbf{[D]} a pending user decision. \textbf{[F]} preserves observations from the original A1 investigation, not a fresh audit. The supplied original is retained; amendments are mapped in Appendix C. Document compilation and visual checks are not native application or performance evidence.
+\clearpage
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+Revision: 2026-09-18 / 1.0-A3 (integrated architecture with deferred B4-12) Method: \textbf{Orbit First Block Building Solving} (unchanged) Status: \textbf{Proposed architecture for review.} No migration is started, no 0.4 product code is modified, no model asset or personal session is touched, and nothing here is a release commitment.
+
+\section{R00. Current release priority and deferred B4-12}\label{r00.-current-release-priority-and-deferred-b4-12}
+
+\subsection{R00.1 User-confirmed release decision}\label{r00.1-user-confirmed-release-decision}
+
+\textbf{{[}C{]} Latest instruction, 18 September 2026:} prioritize completion of the current release. B4-12 performance acceptance remains \textbf{not passed and deferred}. The user accepts that open item for this release and places its optimization and verification in the integrated 1.0 Architecture workstream, to resume after the planned device change. Deferral is not a passing result, a lower threshold or proof of a hardware cause. No statement here guarantees that changing equipment will resolve the shortfall.
+
+\textbf{{[}C{]} All existing performance metrics, timing boundaries, correctness requirements and failed observations remain intact.} This replaces A2's conditional hardware-exception wording. Mathematical correctness, protection, permissions, truthful commit/cancel outcomes, persistence, recovery, independent desktop checks and package/source consistency remain release requirements. Other hard blockers must be reported specifically.
+
+\textbf{{[}C{]} Scope boundary:} finish the current release without expanding performance attribution, features, unrelated refactoring, visual polishing or protocol redesign. This document does not start the 1.0 migration or a new optimization run. Proposed 1.0 architecture decisions remain proposals and retain their existing approval boundaries.
+
+\subsection{R00.2 One bounded optional candidate; no restarted allowance}\label{r00.2-one-bounded-optional-candidate-no-restarted-allowance}
+
+\textbf{{[}C{]} The current release permits at most one low-risk candidate addressing established duplicate UI work.} Optimization, review and targeted verification together have a 90-minute ceiling. Record its hypothesis, owned files and benefit criterion before editing. Preserve protection, permission, commit and durability semantics. If there is no clear local benefit, a correctness regression, or no completed validation within the limit, withdraw only that candidate and retain the previously verified version. Preserve other existing modifications. This revision does not restart the clock or authorize a second candidate.
+
+\textbf{{[}C{]} Use small, fixed samples and retain every attempt.} Stop an obviously over-budget candidate's long test; do not repeat runs to select a favorable result. Do not start the three 100-sample campaigns during this deferred closeout. Evidence remains reusable only where the relevant source, dependencies and environment are unchanged; changes require affected checks and necessary regression only.
+
+\subsection{R00.3 Remaining release obligations}\label{r00.3-remaining-release-obligations}
+
+\textbf{{[}C{]} Performance deferral does not waive any other release requirement.} Complete remaining correctness and independent native desktop acceptance, real packaged operations and recovery, dependency checks and packaging. The final artifact must match its frozen, appropriately verified source. Combine equivalent checks on the same actual packaged workflow where their evidence satisfies both requirements; do not substitute internal fixtures for independent interaction.
+
+\textbf{{[}C{]} Recording and publication retain their agreed requirements.} The user performs the real key combinations in a concentrated recording session; the assistant organizes the material and edits it. Subtitles remain English only. The current release must not be delayed by starting the proposed 1.0 performance workstream.
+
+\subsection{R00.4 Public wording and private handoff}\label{r00.4-public-wording-and-private-handoff}
+
+\textbf{{[}C{]} The current application's public release notes use only this performance statement: ``Performance optimization is scheduled for the next iteration.''} Do not expand those release notes into the current diagnostic investigation, promise target compliance or assert hardware causality. The architecture below is a future engineering plan, not an application release note or a performance certificate.
+
+\textbf{{[}C{]} The internal handoff must preserve} the actual failed measurements, original targets, timing boundaries, build and environment identity, all failed attempts, evidence paths, reproduction steps, remaining acceptance items and next-device validation plan. Do not upload raw private logs, tokens, personal sessions, local usernames or absolute machine paths. B4-12 remains separately tracked as not passed/deferred until V11.1's closure evidence exists.
+
+\section{V00. Authority and reading contract}\label{v00.-authority-and-reading-contract}
+
+This is the \textbf{single authoritative 1.0 architecture entry}. Before it existed, 1.0 material was split across {\codefont outputs/\allowbreak{}magic600-\allowbreak{}v1-\allowbreak{}gui-\allowbreak{}study/\allowbreak{}README.\allowbreak{}md} (candidate study), {\codefont LEGION\_\allowbreak{}SPIKE.\allowbreak{}md} (spike plan) and the public {\codefont docs/\allowbreak{}V1\_\allowbreak{}0\_\allowbreak{}OUTLOOK.\allowbreak{}md}. Those remain valid in their own scope; this file now owns the detailed contracts, and the public outlook carries only a summary pointer. Do not copy full contracts into a second file.
+
+0.4 remains governed by {\codefont 03\_\allowbreak{}ARCHITECTURE.\allowbreak{}md}, {\codefont 07\_\allowbreak{}NAMING\_\allowbreak{}AND\_\allowbreak{}RECOMMENDATION.\allowbreak{}md} and {\codefont 08\_\allowbreak{}INTEGRATION\_\allowbreak{}AND\_\allowbreak{}ENDGAME.\allowbreak{}md}. Where 1.0 says nothing, 0.4 contracts still apply. R00 records the latest user-confirmed B4-12 deferral and release priority; V11.1 owns its follow-up workstream. No section relaxes a mathematical or protection rule.
+
+Every statement below is tagged:
+
+{\def\LTcaptype{none} % do not increment counter
+\begingroup\small\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.22}\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.3000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.7000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Tag
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Meaning
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{{[}C{]}} & Confirmed constraint --- already decided by the user or by an existing authoritative document \\
+\textbf{{[}F{]}} & Source observation at the recorded A1 revision; not a fresh implementation or test claim \\
+\textbf{{[}P{]}} & Proposed this round --- reviewable engineering decision, not yet approved \\
+\textbf{{[}D{]}} & Needs a user decision --- do not implement past this point \\
+\end{longtable}\endgroup
+}
+
+\textbf{{[}C{]} Reading code is not a passing test.} Every \textbf{{[}F{]}} below was established by reading source at the revision recorded in V01. A2 integrates review proposals without re-auditing those sources. None of it asserts that any test currently passes, that any build is current, or that any candidate is integrated.
+
+\section{V01. Investigation basis and evidence boundary}\label{v01.-investigation-basis-and-evidence-boundary}
+
+\textbf{{[}F{]}} Source of record resolved through {\codefont team-\allowbreak{}project.\allowbreak{}json} ({\codefont \{"project\_\allowbreak{}name":\allowbreak{}"Magic 600 Cell\allowbreak{}",\allowbreak{}"source\_\allowbreak{}root":\allowbreak{}".\allowbreak{}"\}}) to the active local source checkout, experiment area {\codefont work/\allowbreak{}experiments/\allowbreak{}magic600-\allowbreak{}04}. Files read this round, with device mtime:
+
+{\def\LTcaptype{none} % do not increment counter
+\begingroup\small\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.22}\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4400}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2300}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3300}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+File
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+mtime (ms)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Used for
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+{\codefont reference\_\allowbreak{}variants.\allowbreak{}py} & 1789568955221 & N1, N2, N3, N4 \\
+{\codefont mathematical\_\allowbreak{}names.\allowbreak{}py} & 1789560633580 & N7 \\
+{\codefont macro\_\allowbreak{}library.\allowbreak{}py} & 1789570591862 & N1, N6 \\
+{\codefont adapter.\allowbreak{}py} & 1789586142705 & N1, N5, selection roles, transport \\
+{\codefont session.\allowbreak{}py} & 1789576381074 & transactions, preview/commit \\
+{\codefont core.\allowbreak{}py} & 1788912607795 & cancel protocol \\
+{\codefont server.\allowbreak{}py}, {\codefont native\_\allowbreak{}bridge.\allowbreak{}py} & 1788912608707 / 1788912608243 & transport, MPUlt handshake \\
+{\codefont tests/\allowbreak{}test\_\allowbreak{}reference\_\allowbreak{}variants.\allowbreak{}py} & 1789569065049 & N2, N3 coverage \\
+{\codefont tests/\allowbreak{}test\_\allowbreak{}mathematical\_\allowbreak{}names.\allowbreak{}py} & 1789554970400 & N6, N7 coverage \\
+{\codefont tests/\allowbreak{}test\_\allowbreak{}mathematical\_\allowbreak{}name\_\allowbreak{}inputs.\allowbreak{}py} & 1789555373895 & N7 coverage \\
+\end{longtable}\endgroup
+}
+
+\textbf{{[}F{]} The public GitHub repository is a documentation archive for 0.4, not a source mirror.} {\codefont docs/\allowbreak{}progress/\allowbreak{}0.\allowbreak{}4/\allowbreak{}README.\allowbreak{}md} states application code, binaries and raw evidence are excluded. The repository root is the 0.3-era published tree. {\codefont reference\_\allowbreak{}variants.\allowbreak{}py}, {\codefont mathematical\_\allowbreak{}names.\allowbreak{}py}, {\codefont adapter.\allowbreak{}py} and the 0.4 tests exist \textbf{only in the local checkout}. Any 1.0 work that assumes the public repo is the code baseline is wrong.
+
+\textbf{{[}F{]} There is uncommitted local work.} {\codefont session.\allowbreak{}py} is 31,217 bytes locally against 28,722 in the published 0.3 tree; {\codefont preparation.\allowbreak{}py} and {\codefont grips.\allowbreak{}py} changes exist locally with no published counterpart. HEAD is not a complete workspace identity --- this matches the GUI study's own note.
+
+\textbf{{[}F{]} The {\codefont reference\_\allowbreak{}variants.\allowbreak{}py} reviewed in the previous round is byte-identical to current source} (245 lines; the apparent size difference was CRLF). The earlier review conclusions stand against current source.
+
+\section{V02. Process and ownership boundaries}\label{v02.-process-and-ownership-boundaries}
+
+\subsection{V02.1 Processes}\label{v02.1-processes}
+
+\textbf{{[}C{]}} One authoritative puzzle state, one transaction/journal owner. The renderer presents state; it never decides legality and never commits a mathematical change.
+
+\textbf{{[}P{]}} 1.0 runs \textbf{two processes}, not one:
+
+{\def\LTcaptype{none} % do not increment counter
+\begingroup\small\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.22}\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3400}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4100}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Process
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Owns
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Never owns
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{Engine} (Python, existing) & {\codefont Model} (immutable assets), {\codefont PuzzleState}, {\codefont Session} (SQLite journal, preview/commit, undo/redo, checkpoints), {\codefont Workbench} workspace {\codefont w}, macro library, naming, reference variants, endgame library, protection evaluation, scoring & Windows, cameras, hover, GPU resources, layout \\
+\textbf{Shell} (Rust, new) & Windows and viewports, docking, input routing and keymap state, cameras per view, hover, GPU device/queue/pipelines, meshes, picking buffers, draft \emph{text} being typed & Puzzle state, legality, protection verdicts, canonical identity assignment, execution permission \\
+\end{longtable}\endgroup
+}
+
+\textbf{{[}P{]} The shell keeps no second copy of puzzle state that it can mutate.} It holds an immutable snapshot plus a revision token. Anything that would change state is a command to the engine.
+
+\textbf{{[}F{]}} This split already exists in 0.4 and is load-bearing: {\codefont server.\allowbreak{}py} owns {\codefont Session}; {\codefont adapter.\allowbreak{}py} {\codefont Workbench} owns the workspace; the WinForms/MPUlt native host holds only windows, input and drawing. 1.0 replaces the third element, not the first two --- consistent with the confirmed constraint that a GUI change is not a reason to rewrite the backend.
+
+\subsection{V02.2 Renderer submodule boundaries}\label{v02.2-renderer-submodule-boundaries}
+
+\textbf{{[}C{]}} egui for widgets, text and 2-D interactive graphics. eframe/native viewport for the application and real system windows. egui\_dock for \textbf{in-workbench docking only} --- a floating egui window is not a system window and must never be presented as one. A custom wgpu module for real puzzle/Local/Global projection, transparency, animation, picking and compositing.
+
+\textbf{{[}C{]}} 259,800 stickers are never GUI controls. Adopting wgpu does not by itself constitute a dedicated renderer.
+
+\textbf{{[}P{]}} Inside the shell:
+
+{\def\LTcaptype{none} % do not increment counter
+\begingroup\small\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.22}\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.3000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.7000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Module
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Responsibility
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+{\codefont shell-\allowbreak{}app} & eframe application, viewport lifecycle, layout persistence, DPI/monitor handling \\
+{\codefont shell-\allowbreak{}dock} & egui\_dock trees; explicit {\codefont dock \(\rightleftarrows\) detach} transitions that create/destroy a real viewport \\
+{\codefont shell-\allowbreak{}views} & per-view state: camera, filter, detail level, follow/pin mode \\
+{\codefont render-\allowbreak{}core} & wgpu device/queue, immutable geometry upload, bind groups, shared resources \\
+{\codefont render-\allowbreak{}puzzle} & projection, material, transparency, animation, colour pass, integer-ID pass \\
+{\codefont render-\allowbreak{}pick} & pick request/response with snapshot + camera version stamping \\
+{\codefont engine-\allowbreak{}client} & transport, subscription, command submission, cancel, reconnect, revision binding \\
+{\codefont domain-\allowbreak{}view} & typed mirror of engine DTOs; \textbf{no derived mathematics} \\
+\end{longtable}\endgroup
+}
+
+\textbf{{[}P{]} {\codefont domain-\allowbreak{}view} computes nothing mathematical.} It may not recompute an orbit, a protection verdict, a net action, a name, or a score. If the shell needs a derived value, it asks the engine. This is what keeps ``the renderer only presents state'' enforceable rather than aspirational.
+
+\section{V03. Transport and session protocol}\label{v03.-transport-and-session-protocol}
+
+\subsection{V03.1 What exists now}\label{v03.1-what-exists-now}
+
+\textbf{{[}F{]}} Current transport is \textbf{local HTTP on 127.0.0.1} ({\codefont server.\allowbreak{}py}): bearer token in a query/header, {\codefont Host} validation, {\codefont Origin} rejection, size limits, a single {\codefont ThreadPoolExecu\allowbreak{}tor(max\_\allowbreak{}workers=1)}, a job dictionary, and {\codefont GET /\allowbreak{}api/\allowbreak{}job/\allowbreak{}<key>} returning {\codefont \{'done':\allowbreak{}True,\allowbreak{}'result':\allowbreak{}\ldots{}\}} or {\codefont \{'done':\allowbreak{}True,\allowbreak{}'error':\allowbreak{}str(exc)\}}.
+
+\textbf{{[}F{]}} The experiment boundary ({\codefont adapter.\allowbreak{}py}) adds {\codefont POST /\allowbreak{}api/\allowbreak{}experiment/\allowbreak{}command}, {\codefont \ldots{}/\allowbreak{}native-\allowbreak{}command}, {\codefont \ldots{}/\allowbreak{}native-\allowbreak{}input}, {\codefont \ldots{}/\allowbreak{}window-\allowbreak{}layout}, {\codefont \ldots{}/\allowbreak{}session-\allowbreak{}log}, and {\codefont GET /\allowbreak{}api/\allowbreak{}experiment/\allowbreak{}snapshot}, {\codefont \ldots{}/\allowbreak{}native-\allowbreak{}snapshot?since=\allowbreak{}}, {\codefont /\allowbreak{}api/\allowbreak{}structure}. All solving commands serialize under a single {\codefont context['lock']\allowbreak{}}.
+
+\textbf{{[}F{]} The MPUlt-specific coupling is confined to the native profile.} {\codefont native\_\allowbreak{}bridge.\allowbreak{}verify\_\allowbreak{}native} requires a handshake document of {\codefont format='MPUlt-\allowbreak{}native600-\allowbreak{}v1'} exported from the actual MPUlt process, and produces {\codefont C600-\allowbreak{}NATIVE-\allowbreak{}PROFILE-\allowbreak{}v1} containing {\codefont native\_\allowbreak{}to\_\allowbreak{}lab}, {\codefont native\_\allowbreak{}face\_\allowbreak{}to\_\allowbreak{}lab}, {\codefont translations}, {\codefont token\_\allowbreak{}words}, {\codefont native\_\allowbreak{}executable\_\allowbreak{}sha256} and {\codefont profile\_\allowbreak{}sha256}. {\codefont native-\allowbreak{}input} then requires a matching {\codefont profile\_\allowbreak{}sha256} and {\codefont state\_\allowbreak{}hash}, resolves {\codefont native\_\allowbreak{}sticker \(\rightarrow\) nativ\allowbreak{}e\_\allowbreak{}to\_\allowbreak{}lab[slot] \(\rightarrow\) mod\allowbreak{}el.\allowbreak{}sp[lab] \(\rightarrow\) posit\allowbreak{}ion}, and maps input tokens through {\codefont token\_\allowbreak{}words}.
+
+\textbf{{[}P{]} This is the entire MPUlt dependency in the protocol, and it is replaceable without touching the mathematics.} The canonical layer beneath it ({\codefont slot}, {\codefont position}, {\codefont identity}, {\codefont orbit}) is already MPUlt-free. 1.0 does not need a native profile at all: the shell addresses objects by canonical slot/position/identity directly, and twists by explicit generator words --- the same representation {\codefont token\_\allowbreak{}words} expands into. {\codefont native\_\allowbreak{}to\_\allowbreak{}lab} remains only for the 0.4 comparison harness (V10), never as a 1.0 runtime path.
+
+\subsection{V03.2 Proposed 1.0 transport}\label{v03.2-proposed-1.0-transport}
+
+\textbf{{[}P{]} Keep local HTTP/1.1 on 127.0.0.1 for commands and queries; add one Server-Sent Events stream for notifications; use the existing binary endpoints for bulk arrays.} Reasons, stated concretely rather than as preference:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{It already works and is already hardened.} Host/Origin/token/size checks, job submission, cancel and the busy-409 are implemented and exercised. A new IPC mechanism would re-litigate all of it for no mathematical gain.
+\item
+  \textbf{Bulk data is already binary.} {\codefont /\allowbreak{}api/\allowbreak{}labels} ({\codefont <u4}), {\codefont /\allowbreak{}api/\allowbreak{}styles}, {\codefont /\allowbreak{}api/\allowbreak{}cap} return raw {\codefont application/\allowbreak{}octet-\allowbreak{}stream}. 259,800 {\codefont u32} labels is \textasciitilde1.04 MB --- a loopback HTTP body, not a serialization problem. JSON is used only for structured, small payloads.
+\item
+  \textbf{Language-neutral.} A Rust shell needs an HTTP client and an SSE reader, both small. Embedding CPython in the Rust process would put the authoritative state inside the shell's crash domain, which contradicts V02.1.
+\item
+  \textbf{Debuggable.} The protocol stays inspectable with ordinary tools during migration, which matters while two frontends must be compared.
+\end{enumerate}
+
+\textbf{{[}D{]} Decision required: transport choice is a durable commitment.} Local HTTP + SSE is the proposal. The alternative worth naming is a length-prefixed pipe protocol over the existing {\codefont EngineProcess} parent pipe (lower latency, no port, but a new framing layer and new auth story). This is listed in V13 as decision \textbf{D-1}.
+
+\textbf{{[}P{]} Endpoint shape} (all under an unambiguous 1.0 prefix so 0.4 routes keep working during comparison):
+
+{\def\LTcaptype{none} % do not increment counter
+\begingroup\small\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.22}\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3400}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4100}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Kind
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Route
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Contract
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Snapshot & {\codefont GET /\allowbreak{}api/\allowbreak{}v1/\allowbreak{}snapshot} & Complete typed state + {\codefont revision}. Idempotent. \\
+Delta & {\codefont GET /\allowbreak{}api/\allowbreak{}v1/\allowbreak{}snapshot?since=\allowbreak{}<revision>} & Fields changed since {\codefont revision}; full snapshot if the token is unknown or too old. Never a partial that the client must merge blindly. \\
+Bulk & {\codefont GET /\allowbreak{}api/\allowbreak{}v1/\allowbreak{}labels}, {\codefont \ldots{}/\allowbreak{}styles}, {\codefont \ldots{}/\allowbreak{}geometry} & Geometry binds to {\codefont model\_\allowbreak{}id} + content hash; mutable arrays also carry the exact committed snapshot revision. \\
+Query & {\codefont GET /\allowbreak{}api/\allowbreak{}v1/\allowbreak{}name/\allowbreak{}resolve?text=}, {\codefont \ldots{}/\allowbreak{}effect?macro=} & Read-only, cancellable, no state change. \\
+Command & {\codefont POST /\allowbreak{}api/\allowbreak{}v1/\allowbreak{}command} & Accepts a scoped {\codefont command\_\allowbreak{}id} and request digest; returns {\codefont \{job\}} or the existing command receipt. Same ID with different content is rejected. \\
+Job & {\codefont GET /\allowbreak{}api/\allowbreak{}v1/\allowbreak{}job/\allowbreak{}<id>} & {\codefont \{state,\allowbreak{} result?,\allowbreak{} error?\}} --- typed (V06). \\
+Cancel & {\codefont POST /\allowbreak{}api/\allowbreak{}v1/\allowbreak{}job/\allowbreak{}<id>/\allowbreak{}cancel} & Requests cancellation; acceptance is not completion. Report {\codefont cancelled} only before durable commit; after commit return the committed result. \\
+Events & {\codefont GET /\allowbreak{}api/\allowbreak{}v1/\allowbreak{}events} (SSE) & {\codefont revision-\allowbreak{}changed}, {\codefont job-\allowbreak{}state}, {\codefont engine-\allowbreak{}shutdown}. Advisory only --- never carries authoritative state. \\
+\end{longtable}\endgroup
+}
+
+\textbf{{[}P{]} SSE is advisory.} A client that misses an event must still converge by polling {\codefont ?since=}. No correctness may depend on event delivery.
+
+\subsection{V03.3 Revision binding}\label{v03.3-revision-binding}
+
+\textbf{{[}C{]}} Old previews, async computations and delayed picking results must never be applied to a mismatched new state.
+
+\textbf{{[}F{]}} The source engine already carries these base identifiers: {\codefont Session.\allowbreak{}rev}, {\codefont Session.\allowbreak{}head}, {\codefont st.\allowbreak{}hash} (full-state hash), {\codefont model\_\allowbreak{}id}, and per-object revisions ({\codefont cell\_\allowbreak{}status} computes {\codefont revision} over {\codefont model\_\allowbreak{}id} + interaction revision; {\codefont filter\_\allowbreak{}preview} returns {\codefont state\_\allowbreak{}hash}, {\codefont revision} and {\codefont context\_\allowbreak{}hash}).
+
+\textbf{{[}P{]} Define one composite {\codefont StateRevision}; keep schema compatibility separate from workspace mutation:}
+
+\begin{quote}\small\codefont\raggedright\color{ink}
+StateRevision =\allowbreak{} \{ model\_\allowbreak{}id,\allowbreak{} session\_\allowbreak{}id,\allowbreak{} engine\_\allowbreak{}epoch,\allowbreak{} head,\allowbreak{} rev,\allowbreak{} state\_\allowbreak{}hash,\allowbreak{}\par
+               \allowbreak{}   workspace\_\allowbreak{}revision,\allowbreak{} review\_\allowbreak{}context\_\allowbreak{}id \}\par
+WorkspaceSchema\allowbreak{} = \{ schema\_\allowbreak{}version \}\par\end{quote}
+
+Rules:
+
+\begin{itemize}
+\tightlist
+\item
+  Every result identifies the state against which it was computed; state-changing permissions require an exact match to their engine-validated dependencies.
+\item
+  Publish snapshot metadata and mutable label/style arrays as one revision-bound bundle. A client installs the complete matching bundle atomically; missing, mismatched or out-of-order data triggers a validated refresh, never a mixed frame.
+\item
+  A schema version describes the format; {\codefont workspace\_\allowbreak{}revision} tracks edits. {\codefont engine\_\allowbreak{}epoch} distinguishes process lifetimes. Restart invalidates transient permissions but does not erase durable command identity.
+\item
+  Read-only caches and picking use declared dependency revisions. Unrelated layout edits must not invalidate an otherwise valid geometric query. Stale hover/picks are discarded quietly; explicitly requested stale work receives a visible explanation.
+\item
+  Geometry binds only to {\codefont model\_\allowbreak{}id} + content hash because it is immutable. Visibility, interaction and annotation revisions remain distinct where they affect a result.
+\end{itemize}
+
+\subsection{V03.4 Process lifecycle}\label{v03.4-process-lifecycle}
+
+\textbf{{[}F{]}} {\codefont EngineProcess} already owns local engine startup, authenticated health checks, graceful shutdown and parent-pipe recovery, and {\codefont AGENTS.\allowbreak{}md} mandates its use. {\codefont POST /\allowbreak{}api/\allowbreak{}shutdown} requires a matching {\codefont launch\_\allowbreak{}id}.
+
+\textbf{{[}P{]}} The shell owns the engine as a child process: spawn with a fresh token and {\codefont launch\_\allowbreak{}id} on a private port; readiness by polling {\codefont /\allowbreak{}api/\allowbreak{}health}; graceful stop via {\codefont /\allowbreak{}api/\allowbreak{}shutdown} with the {\codefont launch\_\allowbreak{}id}; if the shell dies, the engine exits on parent-pipe EOF. \textbf{{[}P{]}} The shell never starts an engine against a session directory already held --- {\codefont session\_\allowbreak{}lock.\allowbreak{}py} remains the arbiter, and a lock conflict is a first-class typed error, not a crash.
+
+\subsection{V03.5 Reconnect and unknown-outcome recovery}\label{v03.5-reconnect-and-unknown-outcome-recovery}
+
+\textbf{{[}C{]}} Saving a workspace never saves a reusable execution permission. A committed state with no receipt delivered must not be silently re-committed.
+
+\textbf{{[}F{]} Source observation:} {\codefont preview()} returns pre/post full-state hashes and a single-use token; {\codefont commit()} checks {\codefont head}, {\codefont rev} and {\codefont pre\_\allowbreak{}state}. The pending permission is memory-only. These are useful consistency guards, but state equality does not identify a particular transaction: a legal no-op can have equal hashes, and undo or later operations can revisit an earlier state.
+
+\textbf{{[}P{]} Recover from durable command identity, using hashes as consistency checks:}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Before submission the shell retains a {\codefont command\_\allowbreak{}id}, request digest and session/model scope. Retrying delivery uses the same ID. The engine rejects reuse with different content.
+\item
+  The engine durably associates the committed command ID, request digest, journal event and pre/post state hashes in the same recoverable transaction boundary. A transient job table alone is insufficient.
+\item
+  After reconnect the shell obtains the current revision and asks for that command's authoritative receipt. A committed receipt means \textbf{already committed}, even if later undo/redo changed the current state; never replay it automatically.
+\item
+  A durable rejection or cancellation before commit is \textbf{not committed}. Offer a fresh preview where appropriate. A still-running or live-preview response is process-epoch-bound and never resurrects an expired token.
+\item
+  No receipt, broken journal continuity or an incomplete recovery record means \textbf{unknown outcome}, not proof of non-execution. Enter read-only recovery and reconcile the journal. Retry execution only when the engine can authoritatively guarantee it did not commit.
+\item
+  A lost success response, a no-op, restart and undo back to an earlier hash must all preserve this rule: one command ID produces at most one committed operation.
+\end{enumerate}
+
+\textbf{{[}P{]} Cancellation is phase-aware.} Acknowledging a cancellation request does not guarantee cancellation. Before commit, return {\codefont cancelled} with the state unchanged; after durable commit, return the committed receipt. An unresolved crash boundary remains {\codefont unknown\_\allowbreak{}outcome}. Never report committed work as cancelled or rolled back.
+
+\textbf{{[}P{]} Do not persist reusable preview permission.} Persisting command outcomes is different from persisting an execution token. Receipt lookup and restart recovery are new protocol proposals, not claims that the current engine already implements them.
+
+\section{V04. Certificate and permission lifecycle --- N1}\label{v04.-certificate-and-permission-lifecycle-n1}
+
+\subsection{V04.1 What the code actually does}\label{v04.1-what-the-code-actually-does}
+
+\textbf{{[}F{]}} Reference variants are \textbf{independent saved library entries}, not temporary instances. {\codefont adapter.\allowbreak{}create\_\allowbreak{}macro\_\allowbreak{}variant} with {\codefont kind='geometry'\allowbreak{}}:
+
+\begin{itemize}
+\tightlist
+\item
+  calls {\codefont ReferenceVarian\allowbreak{}ts.\allowbreak{}compile(source,\allowbreak{} source\_\allowbreak{}frame,\allowbreak{} destination\_\allowbreak{}frame)};
+\item
+  takes {\codefont reference\_\allowbreak{}proof['recipe']\allowbreak{}} as the new recipe;
+\item
+  sets {\codefont derived\_\allowbreak{}from = \{id,\allowbreak{} version,\allowbreak{} kind:\allowbreak{}'geometry',\allowbreak{} reference,\allowbreak{} proof\}};
+\item
+  mints a fresh identity {\codefont user-\allowbreak{}<12 hex>} at {\codefont version=1};
+\item
+  round-trips the record through {\codefont export\_\allowbreak{}selected} (which re-validates through {\codefont \_\allowbreak{}record} \(\rightarrow\) {\codefont \_\allowbreak{}derived});
+\item
+  inserts into {\codefont w['personal\_\allowbreak{}macros']} and {\codefont self.\allowbreak{}library}, then {\codefont save()}, \textbf{with full rollback} ({\codefont self.\allowbreak{}w,\allowbreak{} self.\allowbreak{}library = previ\allowbreak{}ous\_\allowbreak{}work,\allowbreak{} previous\_\allowbreak{}library}) if saving raises.
+\end{itemize}
+
+\textbf{{[}F{]}} {\codefont macro\_\allowbreak{}library.\allowbreak{}\_\allowbreak{}derived} requires exactly {\codefont \{id,\allowbreak{} version,\allowbreak{} kind,\allowbreak{} reference,\allowbreak{} proof\}} for {\codefont kind='geometry'\allowbreak{}}, verifies {\codefont reference['mode\allowbreak{}l'] == model.\allowbreak{}model\_\allowbreak{}id} and that both frames are proper ordered frames of their cell, and then stores {\codefont proof} as an \textbf{explicitly untrusted record}: the source comment is \emph{``Geometric proof metadata must be a record; it is not trusted on import''}, and for the endgame family \emph{``Provenance is descriptive. Import never grants a frame or action certificate.''}
+
+\textbf{{[}F{]}} {\codefont compile} emits exactly three certificate tiers, increasing in scope:
+
+{\def\LTcaptype{none} % do not increment counter
+\begingroup\small\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.22}\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3400}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4100}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Call
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Returns
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Self-declared scope
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+{\codefont inspect} & {\codefont \_\allowbreak{}summary} only & {\codefont Exact fixed-\allowbreak{}position incide\allowbreak{}nce corresponde\allowbreak{}nce; not a lega\allowbreak{}l puzzle move} \\
+{\codefont map\_\allowbreak{}positions} & {\codefont \_\allowbreak{}summary} + {\codefont objects} (\(\leq\)256 positions, slot-by-slot) & same, plus explicit object correspondence \\
+{\codefont compile} & {\codefont \_\allowbreak{}summary} + {\codefont recipe} + {\codefont primitive\_\allowbreak{}correspondence} + {\codefont proof} & {\codefont All labelled sl\allowbreak{}ots,\allowbreak{} including ever\allowbreak{}y collateral or\allowbreak{}bit} \\
+\end{longtable}\endgroup
+}
+
+\textbf{{[}F{]}} {\codefont \_\allowbreak{}summary} carries {\codefont model}, {\codefont reference\_\allowbreak{}version='exact-\allowbreak{}incidence-\allowbreak{}reference-\allowbreak{}v1'}, {\codefont manifest\_\allowbreak{}sha256}, {\codefont source\_\allowbreak{}frame}, {\codefont destination\_\allowbreak{}frame}, {\codefont slot\_\allowbreak{}map\_\allowbreak{}sha256}, {\codefont labels}, {\codefont positions}, and four booleans ({\codefont cell\_\allowbreak{}bijection}, {\codefont slot\_\allowbreak{}bijection}, {\codefont piece\_\allowbreak{}consistency}, {\codefont orbit\_\allowbreak{}preservation}). {\codefont proof} carries {\codefont complete\_\allowbreak{}action\_\allowbreak{}equal}, {\codefont labels}, {\codefont support\_\allowbreak{}labels}, {\codefont affected\_\allowbreak{}orbits}, {\codefont source\_\allowbreak{}recipe\_\allowbreak{}sha256}, {\codefont emitted\_\allowbreak{}recipe\_\allowbreak{}sha256}, {\codefont scope}.
+
+\textbf{{[}F{]} {\codefont compile} already computes cross-orbit collateral}: {\codefont affected\_\allowbreak{}orbits=sorted(s\allowbreak{}et(map(int,\allowbreak{} model.\allowbreak{}so[actual\_\allowbreak{}source])))}.
+
+\textbf{{[}F{]}} {\codefont compile} sets {\codefont prefix\_\allowbreak{}semantics='Only\allowbreak{} net effects co\allowbreak{}rrespond.\allowbreak{} Review the act\allowbreak{}ual emitted wor\allowbreak{}d for strict pr\allowbreak{}efix protection\allowbreak{}; original appr\allowbreak{}oval and cost a\allowbreak{}re not inherite\allowbreak{}d.\allowbreak{}'}
+
+\textbf{{[}F{]}} {\codefont comparison = No\allowbreak{}ne if kind == '\allowbreak{}geometry' else \allowbreak{}self.\allowbreak{}compare\_\allowbreak{}macros(source,\allowbreak{} record)} --- geometry variants get no {\codefont compare\_\allowbreak{}macros} result, because {\codefont compile} already proved net-action correspondence by a stronger route.
+
+\textbf{{[}F{]}} Execution permission is a separate, non-inheritable object: the {\codefont preview} token bound to {\codefont (head,\allowbreak{} rev,\allowbreak{} pre\_\allowbreak{}state)}, single-slot, memory-only, re-validated at {\codefont commit}, which additionally re-checks {\codefont any(r['orbit'] \allowbreak{}in self.\allowbreak{}prefs['protecte\allowbreak{}d'] for r in p[\allowbreak{}'public']['supp\allowbreak{}ort'])}.
+
+\subsection{V04.2 The four states are already structurally distinct --- with two gaps}\label{v04.2-the-four-states-are-already-structurally-distinct-with-two-gaps}
+
+\textbf{{[}P{]}} Name them explicitly and give each an independent lifetime:
+
+{\def\LTcaptype{none} % do not increment counter
+\begingroup\small\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.22}\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2300}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2900}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1800}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+State
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Produced by
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Invalidated by
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Persisted?
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{A --- reference map verified} & {\codefont \_\allowbreak{}mapping} + {\codefont \_\allowbreak{}summary} & {\codefont model\_\allowbreak{}id}, {\codefont manifest\_\allowbreak{}sha256}, {\codefont reference\_\allowbreak{}version}, either frame & Yes, in {\codefont derived\_\allowbreak{}from.\allowbreak{}reference} \\
+\textbf{B --- emitted net action verified} & {\codefont compile} proof & A, plus {\codefont source\_\allowbreak{}recipe\_\allowbreak{}sha256} / {\codefont emitted\_\allowbreak{}recipe\_\allowbreak{}sha256} & Yes, in {\codefont derived\_\allowbreak{}from.\allowbreak{}proof} --- \textbf{untrusted on load} \\
+\textbf{C --- current target and protection check passed} & {\codefont review}/{\codefont effect} against live {\codefont w} + {\codefont prefs['protecte\allowbreak{}d']} & any state change, orbit switch, role change, protection change, goal change & \textbf{No --- must never be persisted} \\
+\textbf{D --- valid preview/commit permission} & {\codefont Session.\allowbreak{}preview} token & {\codefont head}, {\codefont rev}, {\codefont pre\_\allowbreak{}state} change; commit; cancel; engine restart & \textbf{No --- memory only} \\
+\end{longtable}\endgroup
+}
+
+\textbf{{[}P{]} Gap 1: emitted cost is not persisted.} {\codefont compile} returns {\codefont source\_\allowbreak{}primitives} and {\codefont emitted\_\allowbreak{}primitives}, but {\codefont derived\_\allowbreak{}from} stores neither --- only {\codefont reference} and {\codefont proof}, and {\codefont proof} has no cost field. The brief requires the actual emitted cost to be bound. \textbf{Proposal:} add {\codefont emitted\_\allowbreak{}primitives} and {\codefont source\_\allowbreak{}primitives} to the {\codefont proof} record and to {\codefont \_\allowbreak{}derived}'s accepted key set. This is an additive schema change (V09) and needs the compatibility rule below.
+
+\textbf{{[}P{]} Gap 2: A and B are checked at save time but {\codefont \_\allowbreak{}derived} does not re-verify them at load time}, by design (proof is untrusted). That is correct, but it means a loaded geometry variant is a macro \textbf{with provenance}, not a macro \textbf{with a live certificate}. The UI must therefore show A/B for a loaded variant as \emph{recorded, not re-verified}, until the engine recomputes. \textbf{Proposal:} the engine exposes {\codefont POST /\allowbreak{}api/\allowbreak{}v1/\allowbreak{}macro/\allowbreak{}reverify} which recomputes A and B for a stored variant against the current model and returns a fresh certificate; the record's displayed state is {\codefont recorded} until that returns {\codefont verified}.
+
+\subsection{V04.3 Availability rules}\label{v04.3-availability-rules}
+
+\textbf{{[}C{]}} Buttons, keyboard and API obey one availability rule. A warning sentence is never the mechanism that prevents a mistaken execution.
+
+\textbf{{[}P{]} One engine-computed availability object, consumed identically by every input path:}
+
+\begin{quote}\small\codefont\raggedright\color{ink}
+Availability = \allowbreak{}\{\par
+  save:\allowbreak{}        bool,\allowbreak{}   \# needs:\allowbreak{} valid record,\allowbreak{} library capaci\allowbreak{}ty\par
+  add\_\allowbreak{}to\_\allowbreak{}draft:\allowbreak{}bool,\allowbreak{}   \# recorded p\allowbreak{}rovenance may e\allowbreak{}nter a draft; o\allowbreak{}rbit must match\allowbreak{}\par
+               \allowbreak{}       \# execut\allowbreak{}ion still requi\allowbreak{}res current ver\allowbreak{}ified A/\allowbreak{}B/\allowbreak{}C and live D\par
+  review:\allowbreak{}      bool,\allowbreak{}   \# needs:\allowbreak{} draft non-\allowbreak{}empty,\allowbreak{} model match\par
+  preview:\allowbreak{}     bool,\allowbreak{}   \# needs:\allowbreak{} C computed and\allowbreak{} not conflictin\allowbreak{}g\par
+  commit:\allowbreak{}      bool,\allowbreak{}   \# needs:\allowbreak{} D live and C s\allowbreak{}till valid at t\allowbreak{}his revision\par
+  reasons:\allowbreak{}     [ \{gate,\allowbreak{} code,\allowbreak{} detail\} ]   \# \allowbreak{}typed,\allowbreak{} per V06\par
+\}\par\end{quote}
+
+\textbf{{[}P{]}} The shell renders a control as disabled \textbf{iff} the engine says so. The shell never computes availability locally, and never enables a control optimistically. Keyboard shortcuts and the onscreen keyboard route through the same command layer and therefore inherit the same gate --- this matches the existing 0.4 requirement that every new feature joins the unified command/visible set.
+
+\textbf{{[}P{]} Original approval and cost never transfer.} When a variant is created, the new record starts with no protection approval, no Strict audit, and its own {\codefont emitted\_\allowbreak{}primitives}. {\codefont create\_\allowbreak{}macro\_\allowbreak{}variant} already mints a new identity at {\codefont version=1} and drops the source's metadata except through {\codefont derived\_\allowbreak{}from}; the UI must not display the source's use tags, notes or pins on the variant. \textbf{{[}F{]}} 0.4 already established this rule for the {\codefont R\textasciicircum{}-\allowbreak{}1 /\allowbreak{} Macro /\allowbreak{} R} variant (``new variants must not wrongly inherit the source's forward use labels, notes or pins''); 1.0 extends it to geometry variants.
+
+\section{V05. Compile cost, limits and caches --- N2, N3, N4}\label{v05.-compile-cost-limits-and-caches-n2-n3-n4}
+
+\subsection{V05.1 Limits are two different things}\label{v05.1-limits-are-two-different-things}
+
+\textbf{{[}F{]} {\codefont MAX\_\allowbreak{}PRIMITIVES = 3\_\allowbreak{}000\_\allowbreak{}000} is a total-operation ceiling; {\codefont WORD\_\allowbreak{}LIMIT = 100\_\allowbreak{}000} is a representation chunk size.} The check is {\codefont if len(emitted)\allowbreak{} + len(word) > \allowbreak{}MAX\_\allowbreak{}PRIMITIVES:\allowbreak{} raise}, then {\codefont recipe = [dict(\allowbreak{}kind='word',\allowbreak{} moves=emitted[\allowbreak{}i:\allowbreak{}i+WORD\_\allowbreak{}LIMIT]) \ldots{}]}. Chunking runs after the ceiling test and cannot raise the ceiling. \textbf{{[}F{]} This is already asserted}: {\codefont test\_\allowbreak{}emitted\_\allowbreak{}limit\_\allowbreak{}and\_\allowbreak{}chunking\_\allowbreak{}use\_\allowbreak{}actual\_\allowbreak{}cost\_\allowbreak{}without\_\allowbreak{}truncation} patches {\codefont WORD\_\allowbreak{}LIMIT} to 3 and gets chunk lengths {\codefont [3,\allowbreak{}3,\allowbreak{}2]} with {\codefont emitted\_\allowbreak{}primitives == 8\allowbreak{}} --- total unchanged.
+
+\textbf{{[}P{]}} Never present chunking as a way past the ceiling in UI text, tooltips or errors.
+
+\textbf{{[}F{]} Minor defect:} the ceiling message hardcodes the literal {\codefont 3,\allowbreak{}000,\allowbreak{}000} rather than interpolating {\codefont MAX\_\allowbreak{}PRIMITIVES}, so a patched or future limit reports the wrong number. Visible in the test above, which asserts on {\codefont '3,\allowbreak{}000,\allowbreak{}000'} while the limit is 7. \textbf{{[}P{]}} Interpolate the constant. Low priority, but it is exactly the kind of message a user would act on.
+
+\subsection{V05.2 Cost knowledge by stage}\label{v05.2-cost-knowledge-by-stage}
+
+\textbf{{[}P{]}} Three stages with honest labels --- no pseudo-precise numbers before they are earned:
+
+{\def\LTcaptype{none} % do not increment counter
+\begingroup\small\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.22}\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3400}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4100}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Stage
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Available
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Label
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Frames not fully chosen & source primitive count only & \textbf{Exact} for source; emitted \textbf{Unknown} \\
+Frames chosen, not compiled & exact emitted cost, via the pre-pass below & \textbf{Exact}, marked \emph{predicted, not yet built} \\
+Compiled & {\codefont source\_\allowbreak{}primitives}, {\codefont emitted\_\allowbreak{}primitives} & \textbf{Exact}, built \\
+\end{longtable}\endgroup
+}
+
+\textbf{{[}P{]} An exact pre-pass is available and cheap, and it does not allocate the emitted sequence.} Cost is a sum of per-primitive word lengths:
+
+\begin{quote}\small\codefont\raggedright\color{ink}
+emitted\_\allowbreak{}cost = \(\Sigma\) over e\allowbreak{}xpanded source \allowbreak{}moves m of len(\allowbreak{}word(m))\par\end{quote}
+
+{\codefont word(m)} depends only on the mapping and {\codefont m}. Distinct {\codefont m} is bounded by ±1200 generators, so the pre-pass computes at most 2400 words once per mapping, then accumulates lengths as integers. Memory is O(distinct moves), not O(emitted). {\codefont model.\allowbreak{}expand(normaliz\allowbreak{}ed)} is already streamed in the current loop, and {\codefont model.\allowbreak{}check\_\allowbreak{}cancel()} is already called every 128 iterations, so the pre-pass is cancellable on the existing protocol. \textbf{{[}P{]}} Expose it as {\codefont GET /\allowbreak{}api/\allowbreak{}v1/\allowbreak{}reference/\allowbreak{}cost?macro=\&sou\allowbreak{}rce\_\allowbreak{}frame=\&destinat\allowbreak{}ion\_\allowbreak{}frame=} returning {\codefont \{source\_\allowbreak{}primitives,\allowbreak{} emitted\_\allowbreak{}primitives,\allowbreak{} exceeds\_\allowbreak{}limit,\allowbreak{} distinct\_\allowbreak{}moves\}}.
+
+\textbf{{[}P{]} Over-limit handling preserves everything and changes no mathematics.} On {\codefont exceeds\_\allowbreak{}limit}, the shell keeps the source macro, both frame choices and the draft, shows the exact overrun, and offers only: choose different frames, choose a different source macro, or cancel. It does \textbf{not} offer automatic splitting.
+
+\textbf{{[}F{]} ``split the source operation'' has no tool support.} A search across {\codefont adapter.\allowbreak{}py}, {\codefont macro\_\allowbreak{}use.\allowbreak{}py}, {\codefont macro\_\allowbreak{}library.\allowbreak{}py} and {\codefont work\_\allowbreak{}sheets.\allowbreak{}py} found no split/segment capability. \textbf{{[}P{]}} Therefore the phrase must not appear in user-facing text as a recovery path.
+
+\textbf{{[}P{]} And splitting is not a neutral refactor.} One atomic operation split into several commits changes: the protection check (Strict is a path predicate over the \emph{actual executed} prefixes --- {\codefont 08} and the theory background both require this, and a split creates new committed intermediate states that were never prefix-checked as one operation), the transaction boundary, the journal shape, undo granularity, and the intermediate states another person or a later session can observe. \textbf{{[}P{]}} Splitting is therefore a \textbf{user-initiated mathematical decision}, not a compiler fallback, and is out of 1.0 scope unless explicitly requested --- listed as \textbf{D-4}.
+
+\subsection{V05.3 Cancellation and cache safety --- N3}\label{v05.3-cancellation-and-cache-safety-n3}
+
+\textbf{{[}F{]} Cancellation is {\codefont InterruptedErro\allowbreak{}r}, not {\codefont ValueError}.} {\codefont core.\allowbreak{}Model.\allowbreak{}check\_\allowbreak{}cancel} raises {\codefont InterruptedErro\allowbreak{}r('Analysis can\allowbreak{}celled; puzzle \allowbreak{}state unchanged\allowbreak{}')}. {\codefont cancel\_\allowbreak{}event} is owned by the request handler: {\codefont adapter} sets {\codefont context['model'\allowbreak{}].\allowbreak{}cancel\_\allowbreak{}event = cancel} inside {\codefont work()} under {\codefont context['lock']\allowbreak{}} and clears it in {\codefont finally}. Lifetime is exactly one job.
+
+\textbf{{[}F{]} There is no concurrency inside {\codefont ReferenceVarian\allowbreak{}ts}.} One {\codefont Workbench} service instance ({\codefont adapter.\allowbreak{}py:\allowbreak{}1793}), one {\codefont ReferenceVarian\allowbreak{}ts} constructed once in {\codefont Workbench.\allowbreak{}\_\allowbreak{}\_\allowbreak{}init\_\allowbreak{}\_\allowbreak{}} ({\codefont adapter.\allowbreak{}py:\allowbreak{}101}), one {\codefont context['lock']\allowbreak{}}, and {\codefont pool = ThreadPo\allowbreak{}olExecutor(max\_\allowbreak{}workers=1)} in {\codefont server.\allowbreak{}py}. Solving commands are fully serialized; {\codefont window-\allowbreak{}layout} is the one route that uses {\codefont acquire(blockin\allowbreak{}g=False)} and yields immediately rather than queueing behind a solving job.
+
+\textbf{{[}F{]} Each cache is published only when complete:}
+
+{\def\LTcaptype{none} % do not increment counter
+\begingroup\small\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.22}\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2300}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2900}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1800}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Cache
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Assigned
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Complete at assignment?
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Mutable contents?
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+{\codefont \_\allowbreak{}caps[cap]} & end of {\codefont \_\allowbreak{}cap\_\allowbreak{}words}, after the {\codefont len(words)!=12} check & Yes & \textbf{Yes} --- {\codefont queue} arrays have no {\codefont setflags(write=\allowbreak{}False)} \\
+{\codefont \_\allowbreak{}base} & end of {\codefont \_\allowbreak{}base\_\allowbreak{}regions}, after every rotation validated & Yes & No --- each {\codefont values} array is {\codefont setflags(write=\allowbreak{}False)} \\
+{\codefont \_\allowbreak{}maps[key]} & only via {\codefont \_\allowbreak{}publish}, called after a fully validated mapping & Yes & No --- {\codefont cells}, {\codefont slots}, {\codefont positions} are {\codefont setflags(write=\allowbreak{}False)} \\
+\end{longtable}\endgroup
+}
+
+\textbf{{[}F{]} A partially built mapping can never be observed}, and this is already tested. {\codefont test\_\allowbreak{}cancel\_\allowbreak{}does\_\allowbreak{}not\_\allowbreak{}publish\_\allowbreak{}a\_\allowbreak{}partial\_\allowbreak{}mapping\_\allowbreak{}or\_\allowbreak{}variant} asserts {\codefont \_\allowbreak{}maps} is empty after a cancelled compile; {\codefont test\_\allowbreak{}mid\_\allowbreak{}compile\_\allowbreak{}cancel\_\allowbreak{}retains\_\allowbreak{}only\_\allowbreak{}an\_\allowbreak{}existing\_\allowbreak{}incidence\_\allowbreak{}map} asserts the pre-existing mapping is the \emph{same object} and still has {\codefont primitive\_\allowbreak{}words == \{\}}; {\codefont test\_\allowbreak{}complete\_\allowbreak{}oracle\_\allowbreak{}rejects\_\allowbreak{}a\_\allowbreak{}wrong\_\allowbreak{}emitted\_\allowbreak{}word\_\allowbreak{}without\_\allowbreak{}publication} asserts nothing is published when the emitted word disagrees.
+
+\textbf{{[}F{]} The temporary primitive map does not share a mutable reference with a published mapping.} {\codefont compile} does {\codefont cache = dict(ma\allowbreak{}pping['primitiv\allowbreak{}e\_\allowbreak{}words'])} (a copy), fills {\codefont cache}, and only on success does {\codefont completed = dic\allowbreak{}t(mapping,\allowbreak{} primitive\_\allowbreak{}words=cache); s\allowbreak{}elf.\allowbreak{}\_\allowbreak{}publish(complet\allowbreak{}ed)} --- a new dict. {\codefont \_\allowbreak{}primitive} stores {\codefont cache[move] = l\allowbreak{}ist(word)} (a copy of the cached word), and {\codefont compile} returns {\codefont deepcopy(result\allowbreak{})}.
+
+\textbf{{[}P{]} Contract --- cancel point \(\rightarrow\) retained objects \(\rightarrow\) next call:}
+
+{\def\LTcaptype{none} % do not increment counter
+\begingroup\small\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.22}\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3400}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4100}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Cancel point
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Retained
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Next call behaviour
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+During {\codefont \_\allowbreak{}cap\_\allowbreak{}words} & nothing for that cap & recomputes from scratch \\
+During {\codefont \_\allowbreak{}base\_\allowbreak{}regions} & {\codefont \_\allowbreak{}caps} (complete) & recomputes {\codefont \_\allowbreak{}base} \\
+During {\codefont \_\allowbreak{}mapping} & {\codefont \_\allowbreak{}caps}, {\codefont \_\allowbreak{}base} & recomputes that mapping \\
+During {\codefont compile} primitive loop & {\codefont \_\allowbreak{}caps}, {\codefont \_\allowbreak{}base}, and any previously published mapping with its \textbf{original} {\codefont primitive\_\allowbreak{}words} & recomputes emitted words; no partial reuse \\
+After proof, before {\codefont \_\allowbreak{}publish} & as above & recomputes \\
+\end{longtable}\endgroup
+}
+
+\textbf{{[}P{]} Two hardening items, neither a behaviour change:} mark the {\codefont \_\allowbreak{}cap\_\allowbreak{}words} queue arrays read-only for consistency with the other two caches; and key {\codefont \_\allowbreak{}caps}/{\codefont \_\allowbreak{}base} by {\codefont model\_\allowbreak{}id} so a model swap cannot silently reuse them. \textbf{{[}P{]} Verification plan:} extend {\codefont test\_\allowbreak{}reference\_\allowbreak{}variants.\allowbreak{}py} with a cancel during {\codefont \_\allowbreak{}base\_\allowbreak{}regions}, a post-proof/pre-publish cancel, and an assertion that cached arrays reject writes. \textbf{No implementation this round.}
+
+\subsection{V05.4 The four-entry LRU --- N4}\label{v05.4-the-four-entry-lru-n4}
+
+\textbf{{[}F{]} {\codefont \_\allowbreak{}maps} is capped at 4 by {\codefont \_\allowbreak{}publish} ({\codefont while len(self.\allowbreak{}\_\allowbreak{}maps) > 4:\allowbreak{} popitem(last=F\allowbreak{}alse)}), with {\codefont move\_\allowbreak{}to\_\allowbreak{}end} on hit. Its scope is one {\codefont ReferenceVarian\allowbreak{}ts} instance = one {\codefont Workbench} = one engine process.} Windows do not create service instances; the 0.4 native frontend is multiple windows against one HTTP server. \textbf{Four slots therefore has nothing to do with a window count.}
+
+\textbf{{[}P{]} The cache is a pure performance policy with no correctness role.} Every entry is a deterministic function of {\codefont (model,\allowbreak{} source\_\allowbreak{}frame,\allowbreak{} destination\_\allowbreak{}frame)}; eviction can only cost recomputation. Eviction must never invalidate a user's selection, a saved variant, or a mathematical object --- and it currently cannot, because saved variants carry their own {\codefont derived\_\allowbreak{}from} and do not reference cache entries.
+
+\textbf{{[}P{]} Memory per entry, from the code:} {\codefont cells} 600\(\times\)i4 = 2.4 KB; {\codefont slots} 259,800\(\times\)i4 = 1.04 MB; {\codefont positions} 177,120\(\times\)i4 = 708 KB; plus {\codefont primitive\_\allowbreak{}words} (\(\leq\)2400 words, list-of-int, the variable part). So \(\approx\)1.75 MB plus words --- four entries \(\approx\)7 MB before {\codefont primitive\_\allowbreak{}words}. That is small, which is precisely why \textbf{{[}P{]} the capacity must not be raised without a measurement}: the justification would have to come from an observed multi-window hit-rate, not from headroom. \textbf{{[}P{]} Evidence needed before changing it:} hit/miss counters per mapping key under the V12 slice with Global + Local + abstract + keyboard open, over a real cross-orbit sequence.
+
+\textbf{{[}P{]} 1.0 cache contract:} owner = engine, single instance; key = {\codefont (model\_\allowbreak{}id,\allowbreak{} reference\_\allowbreak{}version,\allowbreak{} source\_\allowbreak{}frame,\allowbreak{} destination\_\allowbreak{}frame)}; source/destination order is preserved, never sorted; concurrency = engine lock, single writer; capacity = 4 until measured; eviction = never user-visible.
+
+\section{V06. Error taxonomy --- N5}\label{v06.-error-taxonomy-n5}
+
+\textbf{{[}F{]} The gap is real and it is at the transport boundary, not in the domain.} Domain-level rejection reasons are already structured --- {\codefont adapter} returns {\codefont dict(reasons=\ldots{},\allowbreak{} roles=role\_\allowbreak{}status,\allowbreak{} direction=dire\allowbreak{}ction,\allowbreak{} frame=frame\_\allowbreak{}status)} and {\codefont invariant\_\allowbreak{}status['reason'\allowbreak{}]}. But exceptions are flattened: both {\codefont server.\allowbreak{}py} and {\codefont adapter.\allowbreak{}py} end with {\codefont except (ValueEr\allowbreak{}ror,\allowbreak{} KeyError,\allowbreak{} TypeError) as \allowbreak{}error:\allowbreak{} return self.\allowbreak{}js(\{'error':\allowbreak{} str(error)\},\allowbreak{} 400)}, and {\codefont GET /\allowbreak{}api/\allowbreak{}job/\allowbreak{}<key>} returns {\codefont \{'done':\allowbreak{}True,\allowbreak{}'error':\allowbreak{}str(exc)\}}. The only machine-readable discriminators today are HTTP status codes: 400 (all input/domain errors), 403 (auth/origin), 404, 409 ({\codefont 'An operation i\allowbreak{}s busy; input w\allowbreak{}as not queued.\allowbreak{}'}), 413, 415, 500, 503.
+
+\textbf{{[}F{]} Consequence: cancellation is indistinguishable from a protection conflict without matching English text.} {\codefont InterruptedErro\allowbreak{}r} escapes the {\codefont ValueError} handler and reaches the job endpoint's {\codefont except Exceptio\allowbreak{}n}, arriving as a string like any other failure.
+
+\textbf{{[}F{]} The 0.4 tests themselves depend on English substrings} --- {\codefont test\_\allowbreak{}wrong\_\allowbreak{}type\_\allowbreak{}model\_\allowbreak{}version\_\allowbreak{}and\_\allowbreak{}cross\_\allowbreak{}orbit\_\allowbreak{}preserve\_\allowbreak{}pending\_\allowbreak{}work} uses {\codefont assertRaisesReg\allowbreak{}ex} against {\codefont 'Piece'}, {\codefont 'model'}, {\codefont 'version'}, {\codefont 'region'}, {\codefont 'versioned'}, {\codefont 'orbit'}. This is direct evidence that the string is currently load-bearing.
+
+\textbf{{[}P{]} Introduce a typed error envelope; keep the message as a human summary only.}
+
+\begin{quote}\small\codefont\raggedright\color{ink}
+\{ "code":\allowbreak{} "<stable machi\allowbreak{}ne token>",\allowbreak{}\par
+  "category":\allowbreak{} "input | unver\allowbreak{}ified\_\allowbreak{}reference | pro\allowbreak{}tection | stale\allowbreak{} | cancelled |\par
+               \allowbreak{}resource\_\allowbreak{}limit | consist\allowbreak{}ency | unknown\_\allowbreak{}outcome | auth \allowbreak{}| busy",\allowbreak{}\par
+  "recoverable"\allowbreak{}:\allowbreak{} true|false,\allowbreak{}\par
+  "retry":\allowbreak{} "never | after\allowbreak{}\_\allowbreak{}refresh | after\allowbreak{}\_\allowbreak{}user\_\allowbreak{}change | after\_\allowbreak{}reconnect",\allowbreak{}\par
+  "context":\allowbreak{} \{ \ldots{} typed fiel\allowbreak{}ds:\allowbreak{} orbit,\allowbreak{} position,\allowbreak{} gate,\allowbreak{} limit,\allowbreak{} actual \ldots{} \},\allowbreak{}\par
+  "summary":\allowbreak{} "<short user-\allowbreak{}facing sentence\allowbreak{}>",\allowbreak{}\par
+  "diagnostic":\allowbreak{} "<expandable i\allowbreak{}nternal detail>\allowbreak{}" \}\par\end{quote}
+
+\textbf{{[}P{]} The envelope has ten categories.} Eight domain categories and their continuations are listed below. {\codefont auth} requires an authenticated reconnect; {\codefont busy} requires waiting for the active job or an explicit user cancellation, never blind command replay.
+
+{\def\LTcaptype{none} % do not increment counter
+\begingroup\small\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.22}\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3400}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4100}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Category
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Example from current source
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Continuation
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+{\codefont input} & {\codefont 'Choose an expl\allowbreak{}icit cell C1.\allowbreak{}.\allowbreak{}C600 and ordere\allowbreak{}d four-\allowbreak{}corner frame'} & fix the field; draft preserved \\
+{\codefont unverified\_\allowbreak{}reference} & {\codefont 'The selected o\allowbreak{}rdered referenc\allowbreak{}es do not deter\allowbreak{}mine one proper\allowbreak{} correspondence\allowbreak{}'} & choose the disambiguating frame; \textbf{not} a mathematical impossibility \\
+{\codefont protection} & {\codefont 'Protected orbi\allowbreak{}t would move\ldots{}'} & change protection explicitly, or choose another macro \\
+{\codefont stale} & {\codefont 'Stale preview.\allowbreak{} Preview the op\allowbreak{}eration again.\allowbreak{}'}, {\codefont 'Native view is\allowbreak{} stale; refresh\allowbreak{} before input'} & refresh and re-review; inputs preserved \\
+{\codefont cancelled} & {\codefont InterruptedErro\allowbreak{}r('Analysis can\allowbreak{}celled; puzzle \allowbreak{}state unchanged\allowbreak{}')} & nothing to fix; resume when ready \\
+{\codefont resource\_\allowbreak{}limit} & {\codefont 'Compiled refer\allowbreak{}ence exceeds th\allowbreak{}e existing 3,\allowbreak{}000,\allowbreak{}000-\allowbreak{}primitive limit\allowbreak{}'} & V05.2 flow \\
+{\codefont consistency} & {\codefont 'Complete emitt\allowbreak{}ed macro differ\allowbreak{}s from the expl\allowbreak{}icitly chosen r\allowbreak{}eference transp\allowbreak{}ort'} & internal failure; stop and report, never retry silently \\
+{\codefont unknown\_\allowbreak{}outcome} & unresolved durable command receipt (V03.5) & read-only recovery; no execution \\
+\end{longtable}\endgroup
+}
+
+\textbf{{[}C{]}/{[}P{]} {\codefont Unknown} is not a synonym for ``an exception happened''.} It means a specific conclusion lacks sufficient evidence --- an orientation with no certified frame, an unverified Pure claim. It is a \textbf{property of a result}, never an error category. Accordingly the shell models three independent things and never merges them: \textbf{evidence state} ({\codefont verified | reco\allowbreak{}rded | unknown \allowbreak{}| unchecked}), \textbf{score} (UseScore / CurrentScore), and \textbf{permission} (V04.3 {\codefont Availability}). A hard constraint failure must never render as a low score, and {\codefont unknown} must never render as zero.
+
+\textbf{{[}P{]} The frontend never string-matches.} {\codefont code} is stable and versioned; {\codefont summary} is free to change and to be translated. \textbf{{[}P{]} The 0.4 tests' {\codefont assertRaisesReg\allowbreak{}ex} calls should migrate to asserting {\codefont code}} once the envelope exists --- that migration is the acceptance evidence that the string is no longer load-bearing.
+
+\textbf{{[}P{]} Internal diagnostic vs.~user-actionable is a boundary, not a formatting choice.} {\codefont diagnostic} may carry hashes, slot indices and internal tokens; {\codefont summary} may not require them to be understood. Draft, frame selection and valid context survive every category above except {\codefont consistency} and {\codefont unknown\_\allowbreak{}outcome}, which freeze execution but still preserve the draft.
+
+\section{V07. Naming round trip and discoverable entry --- N7}\label{v07.-naming-round-trip-and-discoverable-entry-n7}
+
+\textbf{{[}F{]} The parse API exists and is exact.} {\codefont mathematical\_\allowbreak{}names.\allowbreak{}py} provides {\codefont parse\_\allowbreak{}slot}, {\codefont parse\_\allowbreak{}address} and {\codefont parse\_\allowbreak{}identity}, all routing through {\codefont \_\allowbreak{}parse\_\allowbreak{}address(text,\allowbreak{} kind)}. {\codefont copy\_\allowbreak{}text} is produced by {\codefont \_\allowbreak{}copy\_\allowbreak{}address} as four {\codefont |}-separated fields:
+
+\begin{quote}\small\codefont\raggedright\color{ink}
+Magic600.\allowbreak{}<Slot|Position|\allowbreak{}Piece> | <namin\allowbreak{}g\_\allowbreak{}version> | <mod\allowbreak{}el\_\allowbreak{}id> | <cell pol\allowbreak{}e> /\allowbreak{} <structure cla\allowbreak{}ss> /\allowbreak{} <region word>\par\end{quote}
+
+{\codefont NAMING\_\allowbreak{}VERSION = 'inci\allowbreak{}dence-\allowbreak{}address-\allowbreak{}v1'}. Parsing rejects, with distinct messages: non-text; wrong field count; wrong kind (\emph{``object types are not interchangeable''}); version mismatch; model mismatch; unknown cell pole; unknown structure/region word. \textbf{{[}F{]}} Display spelling is normalized on input --- {\codefont T\textsuperscript{-}\textsuperscript{1}} maps to the internal {\codefont T\textasciicircum{}-\allowbreak{}1} token --- so both the new display form and older copied text parse to the same object.
+
+\textbf{{[}F{]} Support matrix, as implemented:}
+
+{\def\LTcaptype{none} % do not increment counter
+\begingroup\small\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.22}\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.3200}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.0800}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1100}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.0900}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.4000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Input form
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Slot
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Position
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Piece
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Note
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Full {\codefont copy\_\allowbreak{}text} (4 fields) & Yes & Yes & Yes & the only reversible text form \\
+Bare math address ({\codefont pole /\allowbreak{} class /\allowbreak{} word}) & No & No & No & {\codefont \_\allowbreak{}parse\_\allowbreak{}address} requires all four fields \\
+Short display name ({\codefont identity\_\allowbreak{}short}) & No & No & No & display only \\
+Legacy integer ID & Yes & Yes & Yes & separate path, still strict \\
+Fuzzy / search & --- & --- & --- & not implemented \\
+\end{longtable}\endgroup
+}
+
+\textbf{{[}P{]} Therefore: never claim any displayed string is reversible.} Only {\codefont copy\_\allowbreak{}text} and the legacy integer are. Short names are for recognition, not for retrieval, and fuzzy search --- if ever added --- is a \emph{locator} that must produce a candidate list the user confirms, never a parser.
+
+\textbf{{[}F{]} The failure contract is state-preserving and tested.} {\codefont test\_\allowbreak{}wrong\_\allowbreak{}type\_\allowbreak{}model\_\allowbreak{}version\_\allowbreak{}and\_\allowbreak{}cross\_\allowbreak{}orbit\_\allowbreak{}preserve\_\allowbreak{}pending\_\allowbreak{}work} establishes a pending preview and a locked Next, then drives ten rejection cases asserting both {\codefont self.\allowbreak{}unchanged() == \allowbreak{}before} and that the caller's input dict was not mutated. {\codefont test\_\allowbreak{}piece\_\allowbreak{}copy\_\allowbreak{}keeps\_\allowbreak{}identity\_\allowbreak{}while\_\allowbreak{}position\_\allowbreak{}copy\_\allowbreak{}stays\_\allowbreak{}fixed\_\allowbreak{}after\_\allowbreak{}turn} commits a real turn and shows Piece copy\_text still resolves to the same identity while Position copy\_text stays fixed. {\codefont test\_\allowbreak{}existing\_\allowbreak{}integer\_\allowbreak{}inputs\_\allowbreak{}remain\_\allowbreak{}compatible\_\allowbreak{}and\_\allowbreak{}strict} covers legacy integers and rejects {\codefont True}, {\codefont -\allowbreak{}1}, {\codefont model.\allowbreak{}np}, {\codefont 1.\allowbreak{}0}, {\codefont None}.
+
+\textbf{{[}F{]} Aliases are handled}: {\codefont test\_\allowbreak{}aliases\_\allowbreak{}of\_\allowbreak{}one\_\allowbreak{}hosted\_\allowbreak{}position\_\allowbreak{}do\_\allowbreak{}not\_\allowbreak{}create\_\allowbreak{}distinct\_\allowbreak{}buffers} asserts that different aliases of one hosted position do not produce distinct buffers.
+
+\textbf{{[}P{]} Remaining coverage gaps, stated precisely} (these are gaps in \emph{evidence}, not known defects):
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Global uniqueness of {\codefont identity\_\allowbreak{}short} is not asserted.} {\codefont test\_\allowbreak{}compact\_\allowbreak{}names\_\allowbreak{}include\_\allowbreak{}home\_\allowbreak{}cell\_\allowbreak{}and\_\allowbreak{}region} checks 433 slot short names, two sampled pieces, and 120 vertex pieces --- not all 177,120.
+\item
+  \textbf{Legal-action invariance is sampled}: {\codefont test\_\allowbreak{}same\_\allowbreak{}signature\_\allowbreak{}survives\_\allowbreak{}legal\_\allowbreak{}actions} uses 6 of 1200 generators, \textasciitilde32 points each.
+\item
+  \textbf{No {\codefont model\_\allowbreak{}id}/manifest assertion in the naming tests.} They construct {\codefont Model()} directly, so ``which model version did this evidence bind to'' is answerable only from the build record (see N6/V09).
+\item
+  \textbf{UI end-to-end is out of scope by the file's own docstring} --- \emph{``these are not native UI or human solving trials.''}
+\end{enumerate}
+
+\textbf{{[}P{]} ``A parse API exists'' and ``a user can find and use it'' are two acceptance levels.} 1.0 must demonstrate the second: every object that displays a name offers copy; every field that accepts an object accepts {\codefont copy\_\allowbreak{}text} and the legacy integer; a resolved object scrolls the real Local/Global view to it and selects it; a failure names the category (V06) without clearing the draft. \textbf{{[}F{]} This is not yet satisfied in 0.4} --- the independent solver review recorded a raw-ID workaround ({\codefont S3}), and the memory explicitly states \emph{``S3 raw {\cjkfont 编号绕行不算可发现性通过}''}; the C3 candidate (mathematical-name orbit-protection entry) is one of three \textbf{unmerged} fixes. \textbf{{[}P{]} The round trip {\codefont name \(\rightarrow\) canonica\allowbreak{}l object \(\rightarrow\) grap\allowbreak{}hic location \(\rightarrow\) \allowbreak{}name} is a 1.0 acceptance item (V12 slice 1), not an inherited pass.}
+
+\section{V08. Selection roles, cameras and async picking}\label{v08.-selection-roles-cameras-and-async-picking}
+
+\textbf{{[}F{]} The workspace already separates the roles; there is no {\codefont selectedId}.} {\codefont Workbench.\allowbreak{}new\_\allowbreak{}workspace} defines {\codefont current}, {\codefont target}, {\codefont next} ({\codefont \{identity,\allowbreak{} target\}}), {\codefont inspected}, {\codefont inspected\_\allowbreak{}position}, {\codefont goal}, {\codefont reference} (legal word), {\codefont roles} ({\codefont [A,\allowbreak{} B]}), {\codefont block} ({\codefont \{name,\allowbreak{} members,\allowbreak{} protected\}}), {\codefont orbit}, {\codefont bank}, {\codefont phase}, {\codefont draft} (per phase), {\codefont filter}, {\codefont saved\_\allowbreak{}filters}, {\codefont keybinds}, {\codefont view} ({\codefont \{tab,\allowbreak{} local,\allowbreak{} global\_\allowbreak{}view,\allowbreak{} local\_\allowbreak{}center\}}), {\codefont contexts}, {\codefont captures}.
+
+\textbf{{[}F{]} Each action writes a specific, disjoint field:}
+
+{\def\LTcaptype{none} % do not increment counter
+\begingroup\small\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.22}\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3400}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4100}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Action
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Writes
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Notes
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+{\codefont inspect} & {\codefont inspected}, clears {\codefont inspected\_\allowbreak{}position} & Piece-typed input \\
+{\codefont inspect-\allowbreak{}position} & {\codefont inspected\_\allowbreak{}position}, clears {\codefont inspected} & Position-typed; mutually exclusive with above \\
+{\codefont focus} & {\codefont current}, {\codefont target}, {\codefont inspected} & \textbf{also calls {\codefont switch\_\allowbreak{}orbit(o,\allowbreak{} restore=True)}} \\
+{\codefont next-\allowbreak{}pin} & {\codefont next} & refuses to overwrite unless {\codefont replace=True} \\
+{\codefont next-\allowbreak{}clear} & {\codefont next} \(\rightarrow\) None & \\
+{\codefont goal} & {\codefont goal} & \\
+{\codefont roles} & {\codefont roles} & two distinct positions, same orbit \\
+{\codefont reference} & {\codefont reference} & explicit legal word, {\codefont []} = canonical \\
+{\codefont block-\allowbreak{}add/\allowbreak{}remove/\allowbreak{}protect} & {\codefont block} & \\
+{\codefont protect} & {\codefont prefs['protecte\allowbreak{}d']} & Session-level, not workspace \\
+\end{longtable}\endgroup
+}
+
+\textbf{{[}F{]} Two couplings worth designing around:} setting Current can change the working orbit and restore that orbit's draft; and {\codefont next-\allowbreak{}pin} already enforces explicit replacement --- the ``locked Next'' is not silently overwritten.
+
+\textbf{{[}P{]} 1.0 selection model --- seven roles, three owners:}
+
+{\def\LTcaptype{none} % do not increment counter
+\begingroup\small\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.22}\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2300}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2900}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1800}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Role
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Owner
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Shared across windows?
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Survives window close?
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+{\codefont hover} & Shell, per view & No & No \\
+{\codefont inspect} ({\codefont inspected} / {\codefont inspected\_\allowbreak{}position}) & Engine & Yes & Yes \\
+{\codefont current} + {\codefont target} & Engine & Yes & Yes \\
+{\codefont next} & Engine & Yes & Yes \\
+{\codefont goal} & Engine & Yes & Yes \\
+{\codefont reference} & Engine & Yes & Yes \\
+{\codefont grip} & Shell (latched input), mirrored to engine on twist & Yes, as display & No (held input cleared) \\
+\end{longtable}\endgroup
+}
+
+\textbf{{[}P{]} {\codefont hover} never leaves the shell and never reaches the engine.} It is the only role that is per-view, and keeping it local is what prevents hover traffic from touching the authoritative state or the job queue.
+
+\textbf{{[}P{]} Cameras are per view and never shared.} Camera changes are display-only and never alter puzzle state --- a confirmed constraint. {\codefont view.\allowbreak{}local\_\allowbreak{}center} stays in the engine workspace because it selects \emph{which mathematical neighbourhood} is shown, not a viewing angle. This distinction is the rule: \textbf{what to show is engine state; how to look at it is shell state.}
+
+\textbf{{[}P{]} Window close retains engine-owned roles and discards shell-owned ones.} Reopening a view restores layout and camera from persisted preferences ({\codefont session.\allowbreak{}prefs['layout']\allowbreak{}}, already used for the workspace) and re-subscribes to current state. Closing the last view of a kind never clears {\codefont current}, {\codefont next} or {\codefont roles}.
+
+\textbf{{[}P{]} Async picking invalidation.} Every pick carries {\codefont \{view\_\allowbreak{}id,\allowbreak{} view\_\allowbreak{}generation,\allowbreak{} StateRevision,\allowbreak{} camera\_\allowbreak{}version,\allowbreak{} viewport\_\allowbreak{}size,\allowbreak{} visibility\_\allowbreak{}revision,\allowbreak{} interaction\_\allowbreak{}revision\}}. Reopening a view changes its generation. Validate the relevant state dependencies from V03.3, the exact view/camera/size and its visibility/interaction revisions before consuming a response; unrelated layout edits do not invalidate it. \textbf{{[}F{]} The source native path already enforces some of these guards} --- {\codefont native-\allowbreak{}input} refuses on {\codefont profile\_\allowbreak{}sha256} mismatch (\emph{``Native profile is missing or stale; reconnect''}) and on {\codefont state\_\allowbreak{}hash} mismatch (\emph{``Native view is stale; refresh before input''}), and hidden stickers are rejected as targets via {\codefont interactive\_\allowbreak{}styles()[lab] =\allowbreak{}= 0}. \textbf{{[}P{]} 1.0 keeps both rules}: the integer-ID pass must share camera, size and clipping with the colour pass, and visibility must remain separate from interactivity --- a ghosted object may be non-interactive while still participating fully in protection checks.
+
+\textbf{{[}D{]} Multi-layer pick disambiguation is still an open product decision} (D-5). The engine can return an ordered candidate list for one ray cheaply; what the user should mean by a click --- front layer, current working object, or an explicit depth choice --- is not decided, and 0.4's exact-pick contract does not answer it.
+
+\section{V09. Versioning and compatibility --- N6}\label{v09.-versioning-and-compatibility-n6}
+
+\textbf{{[}F{]} Version identifiers already in the source:}
+
+{\def\LTcaptype{none} % do not increment counter
+\begingroup\small\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.22}\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3400}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4100}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Identifier
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Value / source
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Governs
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+{\codefont model\_\allowbreak{}id} & {\codefont Model.\allowbreak{}model\_\allowbreak{}id}, from {\codefont assets/\allowbreak{}manifest.\allowbreak{}json} & geometry, cuts, IDs, seeds, frames \\
+{\codefont manifest\_\allowbreak{}sha256} & {\codefont digest(canonica\allowbreak{}l(model.\allowbreak{}manifest))} & asset content \\
+{\codefont REFERENCE\_\allowbreak{}VERSION} & {\codefont 'exact-\allowbreak{}incidence-\allowbreak{}reference-\allowbreak{}v1'} & reference transport proofs \\
+{\codefont NAMING\_\allowbreak{}VERSION} & {\codefont 'incidence-\allowbreak{}address-\allowbreak{}v1'} & address display and parsing \\
+{\codefont FRAME\_\allowbreak{}VERSION} & {\codefont adapter} & frame conventions \\
+macro {\codefont version} & per record, \(\geq\)1 & macro content \\
+workspace {\codefont version} & {\codefont new\_\allowbreak{}workspace(.\allowbreak{}.\allowbreak{}.\allowbreak{} version=1)} & workspace schema \\
+{\codefont Session.\allowbreak{}rev} / {\codefont head} / {\codefont st.\allowbreak{}hash} & runtime & transaction position \\
+certificate {\codefont format} & {\codefont 'C600-\allowbreak{}STUDIO-\allowbreak{}CERTIFICATE-\allowbreak{}v1'} & preview certificates \\
+\end{longtable}\endgroup
+}
+
+\textbf{{[}C{]}} {\codefont assets/\allowbreak{}manifest.\allowbreak{}json} is an immutable model boundary; geometry, cuts, IDs, seeds and frame changes require a \textbf{new model identity and migration} ({\codefont AGENTS.\allowbreak{}md}). Migration must not silently change the model, numbering, frames or the meaning of old data.
+
+\textbf{{[}P{]} Per-data versioning and incompatibility behaviour:}
+
+{\def\LTcaptype{none} % do not increment counter
+\begingroup\small\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.22}\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3400}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4100}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Data
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Binds to
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+On mismatch
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Mechanical state / journal & {\codefont model\_\allowbreak{}id} & refuse to load; never reinterpret \\
+Protection & {\codefont model\_\allowbreak{}id} + orbit numbering & refuse \\
+Draft & workspace {\codefont version} + {\codefont model\_\allowbreak{}id} & migrate additively; otherwise retain the original as an exportable, inactive draft and explain why it cannot execute \\
+Reference certificate & {\codefont model\_\allowbreak{}id} + {\codefont manifest\_\allowbreak{}sha256} + {\codefont REFERENCE\_\allowbreak{}VERSION} & keep the record, mark A/B {\codefont recorded}, require re-verify \\
+Macro recipe & {\codefont model\_\allowbreak{}id} + macro {\codefont version} & refuse if model differs; recipes are legal words, not names \\
+Naming display & {\codefont NAMING\_\allowbreak{}VERSION} + {\codefont model\_\allowbreak{}id} & old {\codefont copy\_\allowbreak{}text} stops parsing --- \textbf{by design}, already enforced \\
+Camera / layout / display prefs & shell schema only & reset to default silently; never blocks loading \\
+Keybinds & shell schema + command IDs & keep, report unknown commands \\
+\end{longtable}\endgroup
+}
+
+\textbf{{[}P{]} Rule: display-only changes never force a canonical renumber.} {\codefont NAMING\_\allowbreak{}VERSION} may advance for spelling or layout with {\codefont model\_\allowbreak{}id} unchanged, and canonical IDs and archives are untouched. \textbf{{[}F{]} This has already happened once}: the {\codefont T\textasciicircum{}-\allowbreak{}1} \(\rightarrow\) {\codefont T\textsuperscript{-}\textsuperscript{1}} display change kept the internal token, shortlex order and old inputs valid.
+
+\textbf{{[}F{]} Test fixtures are model-bound artefacts.} {\codefont test\_\allowbreak{}mathematical\_\allowbreak{}names.\allowbreak{}py} hardcodes {\codefont 48927 \(\rightarrow\) cell 11\allowbreak{}3}, {\codefont 17810}, {\codefont 14056}, {\codefont 35778}, {\codefont 26789}, {\codefont ('\(\varphi\)\textsuperscript{3}',\allowbreak{}'1',\allowbreak{}'1',\allowbreak{}'1')}, {\codefont ('W',\allowbreak{}'X',\allowbreak{}'Y',\allowbreak{}'Z')}, 433, 600, 35, 177,120, and orbit pairs {\codefont (4,\allowbreak{}5) (12,\allowbreak{}13) (18,\allowbreak{}19) (26,\allowbreak{}27)}. \textbf{{[}F{]} None of these tests asserts {\codefont model\_\allowbreak{}id} or {\codefont manifest\_\allowbreak{}sha256}} --- they construct {\codefont Model()} directly.
+
+\textbf{{[}P{]} Therefore the fixtures are correct as drift detectors but incomplete as evidence.} Two changes:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Bind the evidence.} Add a {\codefont model\_\allowbreak{}id} + {\codefont manifest\_\allowbreak{}sha256} assertion to the naming test class setup, so a passing run names the model it proves something about.
+\item
+  \textbf{Never turn a test green by editing the expected constant.} If the model genuinely changes, the procedure is: new {\codefont model\_\allowbreak{}id}; \textbf{new} fixture file; old fixture retained against the old model; and each new constant justified by an independent derivation (incidence recomputation or a legal-witness replay), not by copying the new output.
+\end{enumerate}
+
+\textbf{{[}C{]}/{[}P{]} Any change to model identity, numbering or mechanical semantics is a user decision (D-3).} Routine test maintenance may never be the vehicle that approves a model migration.
+
+\section{V10. Old/new equivalence --- same full-label sample}\label{v10.-oldnew-equivalence-same-full-label-sample}
+
+\textbf{{[}C{]}} The authoritative state is an exact permutation of all 259,800 labelled slots; colour agreement, position agreement and exact-label solving are three different judgements. New and old must be compared at the label level.
+
+\textbf{{[}F{]} The pieces already exist:} {\codefont GET /\allowbreak{}api/\allowbreak{}labels} returns all labels as {\codefont <u4} binary; {\codefont session.\allowbreak{}export()} and {\codefont /\allowbreak{}api/\allowbreak{}export} produce a gzipped canonical session; {\codefont /\allowbreak{}api/\allowbreak{}certificate} emits the certificate; {\codefont state\_\allowbreak{}hash} gives a full-state digest; {\codefont test\_\allowbreak{}full\_\allowbreak{}reference\_\allowbreak{}replay.\allowbreak{}py} and {\codefont tests/\allowbreak{}reference\_\allowbreak{}solve.\allowbreak{}json.\allowbreak{}gz} exist as a replay baseline. \textbf{{[}F{]} What does not yet exist is a single normalized fixture format binding state, model, frames and expected selection together} for two frontends to consume --- this remains an open item (it is a prerequisite, not a release-time task).
+
+\textbf{{[}P{]} Define {\codefont C600-\allowbreak{}COMPARE-\allowbreak{}FIXTURE-\allowbreak{}v1}}, read-only, exported from 0.4, never written back:
+
+\begin{quote}\small\codefont\raggedright\color{ink}
+\{ format,\allowbreak{} model\_\allowbreak{}id,\allowbreak{} manifest\_\allowbreak{}sha256,\allowbreak{} naming\_\allowbreak{}version,\allowbreak{} reference\_\allowbreak{}version,\allowbreak{} frame\_\allowbreak{}version,\allowbreak{}\par
+  state:\allowbreak{} \{ head,\allowbreak{} rev,\allowbreak{} state\_\allowbreak{}hash,\allowbreak{} labels\_\allowbreak{}sha256,\allowbreak{} labels\_\allowbreak{}blob \},\allowbreak{}\par
+  workspace:\allowbreak{} \{ orbit,\allowbreak{} current,\allowbreak{} target,\allowbreak{} next,\allowbreak{} roles,\allowbreak{} reference,\allowbreak{} block,\allowbreak{} protected \},\allowbreak{}\par
+  expected:\allowbreak{} [ \{ probe:\allowbreak{} "pick"|"resolv\allowbreak{}e"|"effect"|"pr\allowbreak{}otection",\allowbreak{}\par
+               \allowbreak{} input:\allowbreak{} \{.\allowbreak{}.\allowbreak{}.\allowbreak{}\},\allowbreak{} output:\allowbreak{} \{.\allowbreak{}.\allowbreak{}.\allowbreak{}\} \} ] \}\par\end{quote}
+
+\textbf{{[}P{]} Comparison protocol --- the two programs never write the same live session.} Keep the exported fixture read-only. Run static probes without mutation, and replay committed steps into separate disposable writable session copies initialized from that fixture. Each frontend receives the same command sequence; compare:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  {\codefont labels\_\allowbreak{}sha256} after each committed step --- exact label equality, not colour;
+\item
+  {\codefont state\_\allowbreak{}hash} after each step;
+\item
+  resolved canonical object for each {\codefont resolve} probe;
+\item
+  picked canonical object for each {\codefont pick} probe, at the fixture's camera and viewport;
+\item
+  protection verdict and {\codefont support}/{\codefont conflicts} sets for each {\codefont effect} probe.
+\end{enumerate}
+
+\textbf{{[}P{]} Divergence in 1 or 2 halts the migration.} Divergence in 4 alone is a renderer defect, not a mathematics defect, and is triaged separately --- this is exactly the distinction the equivalence harness exists to make.
+
+\section{V11. GUI route and switching conditions}\label{v11.-gui-route-and-switching-conditions}
+
+\textbf{{[}C{]}} Rust + eframe/egui + egui\_dock + wgpu is the preferred route to validate. Qt Quick + QQuickRhiItem/QRhi is the main comparison. Avalonia stays a named alternative for a C\# route and is \textbf{not} developed in parallel. Windows first; Linux/macOS later. Intel HD 620 no longer constrains anything. A dedicated D3D11 engine is not required.
+
+\textbf{{[}F{]} Existing evidence is a data-path smoke only.} The offscreen wgpu probe submitted 433 slots \(\rightarrow\) 10,160 triangles, an 8,660-slot 20-cell neighbourhood \(\rightarrow\) 203,200 triangles, and all 259,800 slots \(\rightarrow\) 6,096,000 triangles at 2560\(\times\)1600, verifying manifest hashes, frame conventions, 433-region boundaries, vertex incidence and integer slot read-back ranges, on the \textbf{old HD 620 machine}, explicitly excluded from Legion performance conclusions. Not demonstrated: transparency ordering, 4-D animation, interactive picking, a real GUI, multi-window, IME, sustained frame time, device loss, or the target platforms.
+
+\textbf{{[}F{]} Hyperspeedcube is a useful reference but not a warranty.} Pinned commit {\codefont 63737aa467ed8ec\allowbreak{}cacafaae3eec97c\allowbreak{}f1f980b794} \textbf{declares} eframe/egui 0.34.1, egui\_dock 0.19.1, wgpu 29.0.1, winit 0.30.13 plus its own {\codefont hcegui} and {\codefont hyperdraw}. It shows a combination with dedicated UI/render code, not a result obtainable by adding two dependencies. \textbf{{[}P{]} Its handling of multi-window, IME and heavy text editing must be verified in its source before being counted as solved} --- the previous round's caution stands.
+
+\textbf{{[}P{]} Hard gates --- failing any one eliminates a candidate, regardless of other strengths:}
+
+{\def\LTcaptype{none} % do not increment counter
+\begingroup\small\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.22}\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3400}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4100}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\#
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Gate
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Pass condition
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+H1 & Mathematical correctness & picked/resolved canonical object matches the V10 fixture on every probe \\
+H2 & No accidental execution & during text entry/IME composition, no keystroke triggers a twist or a commit; focus loss clears held input \\
+H3 & Real independent windows & Global, Local and Keyboard are OS windows --- movable to another monitor, independently minimizable, restorable \\
+H4 & Exact picking & integer-ID pass shares camera, size and clipping with the colour pass; stale read-backs discarded; hidden \(\neq\) interactive \\
+H5 & State consistency & no path lets the shell mutate puzzle state locally; every commit goes through preview + token \\
+H6 & Clean launch & starts on a clean Windows machine with no .NET 3.5, no Managed DirectX, no MPUlt install, no dev toolchain, no API key \\
+\end{longtable}\endgroup
+}
+
+\textbf{{[}P{]} Soft gaps --- a known cost, budgeted and scheduled, never silently deferred:} font and math-glyph rendering quality; IME comfort beyond H2's correctness floor; docking polish; per-monitor DPI transitions; packaging size; dependency-update cadence.
+
+\textbf{{[}P{]} New-frontend performance is a screening target, not yet a release promise; R00 governs the current-release B4-12 deferral.} 0.4's existing B4-12 thresholds (instant turn p95 \(\leq\)100 ms; bank/Local navigation p95 \textless50 ms) remain unchanged acceptance obligations tracked in V11.1. The existing 1080p 30 FPS adaptive/full-detail rendering specification is separate; none of these measures is interchangeable. The Legion plan's 2560\(\times\)1600 / 60 Hz / p95 \(\leq\)16.7 ms is \textbf{proposed, unmeasured and unapproved}. \textbf{{[}P{]} For candidate screening only}, use: default working view sustains 60 Hz p95 over three 60-second runs on the Legion with a bound NVIDIA adapter; full-detail 259,800 slots must render correctly at any frame rate; and CPU update, GPU time, present interval and interaction latency are recorded separately, never derived from a wall-clock read-back. VRAM, idle power and full multi-window budgets stay open (D-6).
+
+\textbf{{[}P{]} Switch to Qt when the preferred route fails a required gate and Qt passes the equivalent bounded sample, or when both meet the accepted screening boundary and Qt demonstrably needs less custom work across detached windows, input, math text, DPI and sustained operation. Use the same declared environment and screening criteria for both candidates. The current B4-12 deferral is not a framework pass or a hardware exception and cannot conceal a correctness or input defect. }{[}P{]} Python Session reuse is common to both routes and is not evidence for Rust.** \textbf{{[}P{]} Toolchain friction, unfamiliarity or compile failures are toolchain evidence, not framework performance evidence.}
+
+\subsection{V11.1 B4-12 carryover: performance optimization and closure}\label{v11.1-b4-12-carryover-performance-optimization-and-closure}
+
+\textbf{{[}C{]} Tracking status: not passed / deferred from 0.4 into the 1.0 Architecture workstream.} The user has authorized this scheduling change, not a new implementation choice or a successful performance result. Resume optimization and verification after the planned device change. Preserve the existing 0.4 failure record and the exact source/dependency/environment identity; keep new-device observations in a new record rather than replacing old results.
+
+\subsubsection{Acceptance contract retained}\label{acceptance-contract-retained}
+
+{\def\LTcaptype{none} % do not increment counter
+\begingroup\small\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.22}\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3400}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4100}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+B4-12 category
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Original target
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Final-candidate evidence
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Actual turn & p95 \(\leq\)100 ms & At least 100 formal observations on one frozen candidate \\
+Bank navigation & p95 \textless50 ms & At least 100 formal observations on that candidate \\
+Local-center navigation & p95 \textless50 ms & At least 100 formal observations on that candidate \\
+\end{longtable}\endgroup
+}
+
+\textbf{{[}C{]} Preserve each category's original input/command-entry to correct, version-matched visible-surface boundary and its correctness checks.} Record actual Present CPU-return or actual WM\_PAINT as applicable, using the retained fixture contract. These endpoints do not establish physical-keyboard, GPU-completion or compositor-display latency. Do not move work past the completion boundary, subtract waiting already within it, substitute renderer FPS or a short function timer, or use a fast new-machine result to rewrite an old failed observation. A new frontend must explicitly demonstrate an equivalent end-to-end boundary before comparisons or closure claims.
+
+\subsubsection{Proposed bounded work packages}\label{proposed-bounded-work-packages}
+
+\textbf{{[}P{]} The work packages below are sequential candidates, not authorization to start parallel rewrites or a multi-day investigation during 0.4 release closeout.} Before each candidate, identify the hypothesis, smallest owned scope, complete invalidation dependencies, fixed screening observations, useful-benefit criterion and stop condition. Choose the next package using retained evidence and new-device screening.
+
+{\def\LTcaptype{none} % do not increment counter
+\begingroup\small\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.22}\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.1000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.5500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+ID
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Scope and hypothesis
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Required safety boundary and decision evidence
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+PERF-1 & Avoid proven repeated UI updates and unchanged cycle-selector or keyboard text/layout work & Reconcile fresh selection, focus, command availability, canonical object bindings, font/DPI, scroll and accessibility against a fresh reference. Measure the changed scope and full interaction; local savings alone do not close B4-12. \\
+PERF-2 & Reduce unnecessary repeated response construction, transfer and parsing where complete dependencies permit reuse & Keep coherent model, state, workspace, guard, filter, inspection and macro versions, validated fallback and reconnect behavior. Any protocol change follows V03 and D-1; do not delete authoritative data or implement it as a 0.4 closeout shortcut. \\
+PERF-3 & Reuse deterministic derived work in the review/preview/commit path only when exact inputs and lifetime match & Keep full-label correctness, Net/Strict and position/orbit protection, fresh execution permission, durable commit/acknowledgement and recovery. Do not bypass checks or lower SQLite durability. \\
+PERF-4 & Validate presentation and all real windows on the intended device & Separate CPU, GPU, presentation and end-to-end measurements. Cover focus, real input, DPI, resizing, sustained operation and device recovery where affected. Do not infer a bottleneck or hardware remedy from device names or aggregate utilization. \\
+\end{longtable}\endgroup
+}
+
+\subsubsection{New-device validation sequence}\label{new-device-validation-sequence}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{{[}C{]} Establish identity first.} Record OS, CPU/GPU and actual adapter, driver, memory, power settings, resolution/DPI, visible scene, window configuration and build/source/model/dependency hashes. A device change invalidates reuse of the old environment's performance result; unchanged mathematical evidence may still be reused within its stated scope.
+\item
+  \textbf{{[}P{]} Screen the retained baseline on the new device with small fixed samples.} Keep category order, warmup policy, foreground/correct-surface checks and all attempts. This provides a baseline, not proof that hardware caused the old failure. If a causal hardware claim is needed, design an appropriate controlled comparison; it is not assumed for this workstream.
+\item
+  \textbf{{[}C{]} Validate only the candidate's affected paths plus necessary regressions.} Require exact labels/state/context, protection and permission behavior, undo/checkpoint/recovery, and applicable independent desktop checks. Reject wrong-state or stale-permission candidates regardless of speed. Preserve prior evidence and failure records; do not restart an unrelated full audit.
+\item
+  \textbf{{[}C{]} Screen before long acceptance.} Stop obviously over-budget candidates. Do not rerun unchanged failures to select the best result. Two failures with the same cause require a concrete blocker and alternative before more work on that path.
+\item
+  \textbf{{[}C{]} Freeze a viable candidate and then run the three final 100-observation campaigns.} Preserve all raw attempts, warmups, errors and the declared p95 method. Record counts, median, p95, p99 and maximum without changing thresholds. Recheck artifact/source/environment identity and applicable correctness evidence. The 2560\(\times\)1600/60 Hz proposal above neither replaces nor silently adds an approved B4-12 target.
+\end{enumerate}
+
+\textbf{{[}C{]} Closure rule:} only matching final-candidate evidence satisfying all three original targets and applicable correctness/desktop requirements closes B4-12. Until then keep its status not passed/deferred or explicitly failed for the new candidate. A newer device, merged optimization, published architecture, successful PDF build or released 0.4 package is not closure evidence. Existing undecided architecture items D-1 through D-7 remain undecided.
+
+\section{V12. Migration slices}\label{v12.-migration-slices}
+
+\textbf{{[}C{]}} Migration proceeds in stages, each with a runnable deliverable and a rollback boundary. 0.4 code, model assets and personal sessions are not modified by this plan.
+
+\textbf{{[}P{]} Slice 1 --- the vertical thread.} Not a drawing demo. It must complete, end to end:
+
+\begin{quote}
+real Local \(\rightarrow\) select the same canonical object \(\rightarrow\) state an explicit frame/macro \(\rightarrow\) compile the variant and show the \textbf{actual} cost \(\rightarrow\) full-action and protection review \(\rightarrow\) explicit commit \(\rightarrow\) all views update consistently \(\rightarrow\) undo/recover
+\end{quote}
+
+Scope discipline: one orbit, one Local view plus one detached window, the existing macro library, no endgame, no cross-orbit switching, no scoring. \textbf{Rollback:} restore the pinned compatible engine/shell pair and the untouched session copy. Protocol work stays isolated and additive; deleting the shell alone is insufficient if its engine contract changed.
+
+\textbf{Slice 1 acceptance} --- each item is an observation, not an assertion:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  The object selected in the real Local resolves to the same canonical ID as the V10 fixture expects.
+\item
+  {\codefont copy\_\allowbreak{}text} round-trips: copy from the graphic, paste into a field, the same object is located and highlighted.
+\item
+  Compiled cost displayed equals {\codefont emitted\_\allowbreak{}primitives}, and the over-limit path preserves source, frames and draft.
+\item
+  The four certificate states A/B/C/D are separately visible and never collapsed into one ``certified'' badge.
+\item
+  Commit goes through preview + token; a forced stale preview is refused with a {\codefont stale} code, not a string.
+\item
+  Undo restores the prior {\codefont state\_\allowbreak{}hash}; a killed shell mid-commit resolves through V03.5 to a definite answer.
+\item
+  H2 and H6 hold.
+\end{enumerate}
+
+\textbf{{[}P{]} Slice 2 --- multi-window and selection roles.} Global + Local + abstract + Keyboard as real windows; the seven roles of V08; per-view cameras; async pick invalidation under resize and camera motion; layout persistence across DPI and monitor changes. Collect the N4 cache hit/miss evidence and affected PERF-1/PERF-4 observations from V11.1 here. \textbf{Rollback:} revert to slice 1 layout.
+
+\textbf{{[}P{]} Slice 3 --- protection, Net/Strict and cross-orbit.} Full-operation review including hidden scope and cross-orbit collateral; Net vs Strict presented distinctly before execution; cross-orbit Next with preserved drafts. \textbf{Rollback:} slice 3 is additive; slices 1--2 remain runnable.
+
+\textbf{{[}P{]} Slice 4 --- endgame and worksheets.} Endgame families, residual diagnosis, worksheet reuse with re-verification on state/target/version change.
+
+\textbf{{[}P{]} Slice 5 --- packaging and platform.} Clean-machine Windows install (H6), then real Linux/Vulkan and macOS/Metal verification. \textbf{{[}C{]}} CI compilation is not multi-window, input or GPU evidence; Vulkan-on-Windows is not Linux evidence.
+
+\textbf{{[}P{]} Gate between slices:} the V10 comparison passes on that slice's probes, and the slice runs continuously through a real solving sequence --- not a button tour. Track affected V11.1 work separately at each gate; a runnable migration slice does not automatically close the deferred performance item.
+
+\section{V13. Decisions required from the user}\label{v13.-decisions-required-from-the-user}
+
+These are the only items in this document that should not be implemented without an explicit answer.
+
+{\def\LTcaptype{none} % do not increment counter
+\begingroup\small\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.22}\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.0700}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3100}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3700}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\#
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Decision
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Why it cannot be defaulted
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Consequence
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{D-1} & Transport: local HTTP + SSE (proposed) vs.~framed pipe over {\codefont EngineProcess} & Durable protocol commitment affecting auth, cancel, reconnect and the comparison harness & Everything in V03 \\
+\textbf{D-2} & Persist {\codefont emitted\_\allowbreak{}primitives}/{\codefont source\_\allowbreak{}primitives} into {\codefont derived\_\allowbreak{}from.\allowbreak{}proof} (V04.2 Gap 1) & Changes a saved-record schema; old records would lack the field & Macro library compatibility (V09) \\
+\textbf{D-3} & Any model identity / numbering / mechanical-semantics change & {\codefont AGENTS.\allowbreak{}md} makes this a new model identity plus migration & Fixtures, archives, all certificates \\
+\textbf{D-4} & Whether user-initiated operation splitting is in 1.0 scope at all & Splitting changes Strict checking, transactions, journal and visible intermediate states (V05.2) & Endgame and large-variant workflows \\
+\textbf{D-5} & Multi-layer pick disambiguation semantics (front / working object / explicit depth) & A product judgement about what a click means; determines whether picking returns one ID or a candidate list & Renderer pick pipeline design \\
+\textbf{D-6} & Release performance targets: VRAM ceiling, idle power, multi-window budget; and whether 60 Hz @ 2560\(\times\)1600 becomes a commitment & Currently proposed and unmeasured; must not become a promise by default & V11 screening vs.~release criteria \\
+\textbf{D-7} & Acceptance/sign-off split: engineering acceptance, mathematical review, UX approval, release authorization & Four different judgements with different evidence and different signers & Alpha/Beta/1.0 gating \\
+\end{longtable}\endgroup
+}
+
+\section{V14. Historical source observations and evidence boundary}\label{v14.-historical-source-observations-and-evidence-boundary}
+
+\textbf{{[}F{]} The A1 investigation read source; it ran no application tests.} A2 merges document review and the latest user priority. PDF compilation/layout checks are document checks, not application builds, native acceptance or performance evidence.
+
+\textbf{{[}F{]} Historical A1 status, retained for provenance and not a current release assessment:} Final acceptance is incomplete; the full headless baseline stands at 46 groups passed / 9 failed with overall exit 1; candidate serial run 42/44 with two test-copy assertions open; and three fixes --- C1 (post-commit cancellation reply), C2 (missing-frame diagnosis), C3 (mathematical-name orbit-protection entry) --- remain \textbf{unmerged}. A2 does not revalidate or update those historical counts; consult the active release handoff for current evidence.
+
+\textbf{{[}F{]} Explicitly not established anywhere in this document:} that any candidate GUI passes any gate; that the wgpu route meets any performance target; that transparency, animation, interactive picking, multi-window, IME, sustained frame time or device-loss recovery work; that Hyperspeedcube has solved multi-window/IME/text editing; that the naming round trip is discoverable in the current native UI; that a comparison fixture format exists; that any Linux/macOS behaviour has been observed.
+
+\textbf{{[}P{]} Terminology discipline this document follows and 1.0 should keep:} \emph{verified} (recomputed now, this model, this revision), \emph{recorded} (provenance stored, not re-verified), \emph{unknown} (insufficient evidence for this specific conclusion), \emph{unchecked} (not attempted). These four are never merged, and none of them is a score.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Appendix A. N1--N7 tracking}\label{appendix-a.-n1n7-tracking}
+
+\subsection{N1}
+
+\textbf{Fact established (source read)}\par\nopagebreak[4]
+
+Geometry variants are independent saved entries with {\codefont derived\_\allowbreak{}from=\{id,\allowbreak{}version,\allowbreak{}kind,\allowbreak{}reference,\allowbreak{}proof\}}; {\codefont proof} untrusted on import; new identity at {\codefont version=1}; {\codefont comparison=None\allowbreak{}} for geometry; {\codefont compile} already reports {\codefont affected\_\allowbreak{}orbits}; {\codefont prefix\_\allowbreak{}semantics} forbids inheriting approval/cost; preview token bound to {\codefont (head,\allowbreak{}rev,\allowbreak{}pre\_\allowbreak{}state)}, memory-only
+
+\textbf{Architecture change proposed}\par\nopagebreak[4]
+
+Name A/B/C/D with independent lifetimes (V04.2); persist emitted/source cost (\textbf{D-2}); add {\codefont macro/\allowbreak{}reverify} for {\codefont recorded \(\rightarrow\) veri\allowbreak{}fied}; one engine-computed {\codefont Availability} object driving buttons, keys and API identically (V04.3)
+
+\textbf{How it gets accepted}\par\nopagebreak[4]
+
+Slice 1 acceptance \#4 and \#5; a stored variant displays {\codefont recorded} until re-verified; no path enables a control the engine disabled
+
+\subsection{N2}
+
+\textbf{Fact established (source read)}\par\nopagebreak[4]
+
+{\codefont MAX\_\allowbreak{}PRIMITIVES} is a total ceiling, {\codefont WORD\_\allowbreak{}LIMIT} a chunk size, already asserted by test; message hardcodes {\codefont 3,\allowbreak{}000,\allowbreak{}000}; \textbf{no split tooling exists} anywhere
+
+\textbf{Architecture change proposed}\par\nopagebreak[4]
+
+Three labelled cost stages; exact O(distinct-moves) pre-pass that never allocates the emitted sequence and is cancellable on the existing protocol; over-limit preserves source/frames/draft and offers no auto-split; splitting reframed as a user mathematical decision (\textbf{D-4}); interpolate the constant
+
+\textbf{How it gets accepted}\par\nopagebreak[4]
+
+Slice 1 acceptance \#3; a forced over-limit run shows exact overrun and loses nothing
+
+\subsection{N3}
+
+\textbf{Fact established (source read)}\par\nopagebreak[4]
+
+Cancel is {\codefont InterruptedErro\allowbreak{}r}; {\codefont cancel\_\allowbreak{}event} scoped to one job under one lock with {\codefont max\_\allowbreak{}workers=1}; {\codefont \_\allowbreak{}caps}/{\codefont \_\allowbreak{}base}/{\codefont \_\allowbreak{}maps} all published only when complete; {\codefont \_\allowbreak{}base}/{\codefont \_\allowbreak{}maps} arrays read-only, {\codefont \_\allowbreak{}caps} queue arrays mutable; temp {\codefont primitive\_\allowbreak{}words} never shares a reference with a published mapping; \textbf{three existing tests already assert the cancel-safety properties}
+
+\textbf{Architecture change proposed}\par\nopagebreak[4]
+
+Written cancel-point \(\rightarrow\) retained-object \(\rightarrow\) next-call contract (V05.3); make {\codefont \_\allowbreak{}caps} arrays read-only; key {\codefont \_\allowbreak{}caps}/{\codefont \_\allowbreak{}base} by {\codefont model\_\allowbreak{}id}
+
+\textbf{How it gets accepted}\par\nopagebreak[4]
+
+Extend {\codefont test\_\allowbreak{}reference\_\allowbreak{}variants.\allowbreak{}py} with {\codefont \_\allowbreak{}base\_\allowbreak{}regions} cancel, post-proof/pre-publish cancel, and write-rejection assertions --- \textbf{not implemented this round}
+
+\subsection{N4}
+
+\textbf{Fact established (source read)}\par\nopagebreak[4]
+
+{\codefont \_\allowbreak{}maps} LRU=4 is per engine process, not per window; windows share one service; entries are deterministic and carry no correctness role; \(\approx\)1.75 MB/entry plus words
+
+\textbf{Architecture change proposed}\par\nopagebreak[4]
+
+Cache contract: engine-owned, keyed by model/reference version and an ordered source/destination frame pair, single writer, capacity unchanged until measured, eviction never user-visible
+
+\textbf{How it gets accepted}\par\nopagebreak[4]
+
+Slice 2 collects hit/miss under a real multi-window cross-orbit sequence; capacity changes only on that evidence
+
+\subsection{N5}
+
+\textbf{Fact established (source read)}\par\nopagebreak[4]
+
+Domain reasons are structured, but \textbf{all exceptions flatten to {\codefont \{'error':\allowbreak{} str(e)\}} + HTTP status}; {\codefont InterruptedErro\allowbreak{}r} arrives as a string; 0.4 tests themselves {\codefont assertRaisesReg\allowbreak{}ex} on English words
+
+\textbf{Architecture change proposed}\par\nopagebreak[4]
+
+Typed envelope {\codefont \{code,\allowbreak{} category,\allowbreak{} recoverable,\allowbreak{} retry,\allowbreak{} context,\allowbreak{} summary,\allowbreak{} diagnostic\}} with ten categories (eight domain continuations plus auth/busy); {\codefont Unknown} modelled as a result property, never an error class; evidence state / score / permission modelled separately
+
+\textbf{How it gets accepted}\par\nopagebreak[4]
+
+Frontend contains no string matching; the 0.4 {\codefont assertRaisesReg\allowbreak{}ex} calls migrate to asserting {\codefont code}
+
+\subsection{N6}
+
+\textbf{Fact established (source read)}\par\nopagebreak[4]
+
+Nine version identifiers already exist; {\codefont manifest.\allowbreak{}json} is an immutable boundary; naming tests hardcode model-bound constants and assert \textbf{no} {\codefont model\_\allowbreak{}id}; the {\codefont T\textsuperscript{-}\textsuperscript{1}} change already proved display-only versioning works
+
+\textbf{Architecture change proposed}\par\nopagebreak[4]
+
+Per-data version binding table with explicit mismatch behaviour (V09); bind fixtures to {\codefont model\_\allowbreak{}id}+{\codefont manifest\_\allowbreak{}sha256}; model change \(\Rightarrow\) new identity + new fixture + retained old evidence + independent derivation; never edit an expected constant to go green; model changes are \textbf{D-3}
+
+\textbf{How it gets accepted}\par\nopagebreak[4]
+
+The naming suite names the model it proves; a display-only change leaves canonical IDs and archives untouched
+
+\subsection{N7}
+
+\textbf{Fact established (source read)}\par\nopagebreak[4]
+
+{\codefont parse\_\allowbreak{}slot}/{\codefont parse\_\allowbreak{}address}/{\codefont parse\_\allowbreak{}identity} exist via a strict 4-field {\codefont copy\_\allowbreak{}text}; kinds explicitly non-interchangeable; {\codefont T\textsuperscript{-}\textsuperscript{1}}\(\leftrightarrow\){\codefont T\textasciicircum{}-\allowbreak{}1} normalized; short names and bare addresses are \textbf{not} parseable; failure contract is state-preserving and tested across ten cases incl.~aliases and legacy integers
+
+\textbf{Architecture change proposed}\par\nopagebreak[4]
+
+Published support matrix (V07); never claim arbitrary display strings are reversible; fuzzy search, if added, is a locator producing a confirmable candidate list, never a parser; treat ``API exists'' and ``user can find it'' as two acceptance levels
+
+\textbf{How it gets accepted}\par\nopagebreak[4]
+
+Slice 1 acceptance \#2 (copy from graphic \(\rightarrow\) paste \(\rightarrow\) locate \(\rightarrow\) highlight); close the four named coverage gaps; C3 remains unmerged and is not counted
+
+\section{Appendix B. Related documents}\label{appendix-b.-related-documents}
+
+{\def\LTcaptype{none} % do not increment counter
+\begingroup\small\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.22}\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.3000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.7000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Document
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Role after this revision
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+{\codefont 03\_\allowbreak{}ARCHITECTURE.\allowbreak{}md} & 0.4 contract; still authoritative where 1.0 is silent \\
+{\codefont 07\_\allowbreak{}NAMING\_\allowbreak{}AND\_\allowbreak{}RECOMMENDATION.\allowbreak{}md} & Naming/scoring algorithms; unchanged \\
+{\codefont 08\_\allowbreak{}INTEGRATION\_\allowbreak{}AND\_\allowbreak{}ENDGAME.\allowbreak{}md} & Integration/endgame contract; unchanged \\
+{\codefont magic600-\allowbreak{}v1-\allowbreak{}gui-\allowbreak{}study/\allowbreak{}README.\allowbreak{}md} & Candidate study and audit; V11 supersedes its gate list \\
+{\codefont magic600-\allowbreak{}v1-\allowbreak{}gui-\allowbreak{}study/\allowbreak{}LEGION\_\allowbreak{}SPIKE.\allowbreak{}md} & Executable spike plan; V12 slices bind to it \\
+{\codefont docs/\allowbreak{}V1\_\allowbreak{}0\_\allowbreak{}OUTLOOK.\allowbreak{}md} & Public outlook; summary pointer only, no detailed contracts \\
+\end{longtable}\endgroup
+}
+
+\section{Appendix C. Integration record}\label{appendix-c.-integration-record}
+
+\textbf{A2, 18 September 2026.} This edition merges the separate PDF review into the existing 1.0 architecture, without creating a second normative source. The latest user-confirmed release/performance priority is R00. Proposed technical clarifications remain {[}P{]}; outstanding D-1 through D-7 are not silently approved.
+
+{\def\LTcaptype{none} % do not increment counter
+\begingroup\small\setlength{\tabcolsep}{4pt}\renewcommand{\arraystretch}{1.22}\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.3000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.7000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Review topic
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Integrated location
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Durable receipts, no-op ambiguity and phase-aware cancellation & V03.2 and V03.5 \\
+Schema versus mutation revision; coherent snapshots; scoped picking & V03.3 and V08 \\
+Recorded draft provenance versus executable permission & V04.3 \\
+Directional cache keys and explicit error-category scope & V05.4 and V06 \\
+Preserve incompatible drafts; separate static probes from replay & V09 and V10 \\
+Usable GUI fallback, real rollback boundaries and bounded evidence & R00, V11 and V12 \\
+\end{longtable}\endgroup
+}
+
+The A1 source SHA256 is {\codefont 48e0589dbdacaf5\allowbreak{}8c4aeba2ef3f358\allowbreak{}4a43460672ad82f\allowbreak{}3e67f074b74337d\allowbreak{}4704}. The original supplied download and previous reading-edition PDF are retained. This integration did not modify application code, immutable assets, personal sessions or release artifacts, and did not publish to GitHub.
+
+\subsection{A3 amendment: B4-12 scheduled into 1.0}\label{a3-amendment-b4-12-scheduled-into-1.0}
+
+\textbf{A3, 18 September 2026.} The user explicitly places the deferred B4-12 optimization into this integrated architecture for GitHub publication. R00 now records not-passed/deferred status with unchanged thresholds, replaces A2's hardware-exception and 4.5-hour proposals, and preserves the one-candidate/90-minute closeout cap without restarting it. V11.1 defines the performance backlog, next-device evidence, safety boundaries and final closure rule. V11/V12 cross-references are aligned; D-1 through D-7 are not silently approved.
+
+This is a documentation revision. It does not modify the application, its active validation session or its release package. The A1/A2 sources and prior failures remain preserved. Public application release notes retain R00.4's single performance sentence; private diagnostic data is not part of this publication.
+
+\end{document}

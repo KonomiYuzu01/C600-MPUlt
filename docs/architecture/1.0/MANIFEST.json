@@ -1,0 +1,38 @@
+{
+  "format": "Magic600-architecture-publication-v1",
+  "revision": "1.0-A3",
+  "date": "2026-09-18",
+  "scope": "Integrated architecture documentation; B4-12 not passed/deferred; no application release",
+  "files": [
+    {
+      "path": "10_V1_ARCHITECTURE.md",
+      "bytes": 78935,
+      "sha256": "3b45e11eae772a0a87d9b8b07e093ec3ff4b9e9e2fde571f22f66211cfa4ec56"
+    },
+    {
+      "path": "BUILD_Architecture_Integrated.md",
+      "bytes": 2296,
+      "sha256": "8b4b49c07bd3eb2288a9ad7c14aa3841b259d90d922b1d54b918dc6437f98f7e"
+    },
+    {
+      "path": "Magic_600_Cell_1_0_A3_Source_Package.zip",
+      "bytes": 333715,
+      "sha256": "3509a01b035d19983c257f93771ca8f4d21a07b926c3498f47a73ca096c706f3"
+    },
+    {
+      "path": "Magic_600_Cell_1_0_Architecture_Integrated.pdf",
+      "bytes": 267889,
+      "sha256": "10e6fc821c61c4e423860dfc3aa70edf95e66ea4c4909472ffbb492e25257b47"
+    },
+    {
+      "path": "Magic_600_Cell_1_0_Architecture_Integrated.tex",
+      "bytes": 128085,
+      "sha256": "9da7792d285957ed71d5501dd43e698a3ba55b980419c6e622c00055d1aeaaa3"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1994,
+      "sha256": "1ec9d216983e830a67d6911553c045219591df63c28737e2243af17742b7d974"
+    }
+  ]
+}
