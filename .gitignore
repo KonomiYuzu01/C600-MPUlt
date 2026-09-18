@@ -17,3 +17,10 @@ native/runtime/*.exe
 native/runtime/*.dll
 !licenses/**
 tests/v0*/
+
+# Local engineering-team state
+/team-project.json
+/PROJECT_MEMORY.md
+/agent-control/.env
+/agent-control/.state/
+/agent-control/node_modules/

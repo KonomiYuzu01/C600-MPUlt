@@ -1,0 +1,80 @@
+name: Magic 600 Cell team checks
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  infrastructure:
+    runs-on: windows-latest
+    steps:
+      - name: Preserve content-addressed asset bytes
+        shell: pwsh
+        run: git config --global core.autocrlf false
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: pnpm/action-setup@v4
+        with:
+          version: '10'
+      - name: Configure checked-out source
+        shell: pwsh
+        run: Copy-Item team-project.example.json team-project.json
+      - name: Team infrastructure
+        shell: pwsh
+        run: ./scripts/verify.ps1 -Stage infrastructure -Python python
+      - name: Team tooling regression tests
+        run: python scripts/test_team_tools.py
+      - name: PowerShell syntax
+        shell: pwsh
+        run: |
+          $files = @(Get-ChildItem scripts/*.ps1)
+          foreach ($file in $files) {
+            $tokens = $null
+            $errors = $null
+            [void][System.Management.Automation.Language.Parser]::ParseFile($file.FullName, [ref]$tokens, [ref]$errors)
+            if ($errors.Count) { throw "PowerShell syntax failed: $($file.Name)" }
+          }
+      - name: Bash wrapper syntax
+        shell: bash
+        run: bash -n scripts/verify.sh
+      - name: API controller dependencies
+        working-directory: agent-control
+        run: pnpm install --frozen-lockfile --ignore-scripts
+      - name: Offline API controller checks
+        working-directory: agent-control
+        run: pnpm test
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: team-check-evidence
+          path: work/team-evidence/
+  core:
+    runs-on: windows-latest
+    steps:
+      - name: Preserve content-addressed asset bytes
+        shell: pwsh
+        run: git config --global core.autocrlf false
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install application dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Configure checked-out source
+        shell: pwsh
+        run: Copy-Item team-project.example.json team-project.json
+      - name: Mathematical and persistence tests
+        shell: pwsh
+        run: ./scripts/verify.ps1 -Stage core -AllowSourceTests -Python python
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: core-check-evidence
+          path: work/team-evidence/
