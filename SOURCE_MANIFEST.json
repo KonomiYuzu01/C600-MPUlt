@@ -250,8 +250,8 @@
     },
     {
       "path": "docs/progress/0.4/manifest.json",
-      "bytes": 29470,
-      "sha256": "9096f60d1978a702d2cb9aee2aa3813e3fde67583bed24f17dabb04ab31531d2",
+      "bytes": 28916,
+      "sha256": "bdc768455581454b2d7f7bc8d9b0ad145dea1f38ec173d62dedef7cb9f46c4e3",
       "provenance": "development-documentation"
     },
     {
