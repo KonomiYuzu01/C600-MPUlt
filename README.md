@@ -10,6 +10,8 @@ It adds recoverable reset, exact piece filters, checkpoints, macros, buffer and 
 
 Version **0.3** adds the Structure explorer, independent Global overview and Focused neighborhood views, and responsive tools. Existing 0.2.4 release downloads remain unchanged.
 
+[Magic 600 Cell 1.0 outlook](docs/V1_0_OUTLOOK.md) describes the planned graphical frontend, renderer migration and Windows-first release criteria. This is a roadmap, not a released 1.0 feature set.
+
 ## Run
 
 Download [C600 Studio 0.3](https://github.com/KonomiYuzu01/C600-MPUlt/releases/tag/0.3). Run the Windows setup executable, or extract the portable ZIP and open `C600Studio.exe`. No separate Python or compiler is needed. Install [Microsoft Managed DirectX](DIRECTX.md) if prompted.
