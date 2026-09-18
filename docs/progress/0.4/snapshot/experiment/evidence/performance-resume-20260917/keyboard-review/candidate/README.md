@@ -1,0 +1,13 @@
+> Archived development document, published 2026-09-18. This is a stopped, unreleased 0.4 snapshot, not a new instruction to resume work. Historical status and failed results are retained; the current status is in the [progress index](../../../../../../README.md). Local paths are anonymized; raw evidence and runtime files are not bundled.
+
+# Keyboard candidate — not promoted or executed
+
+Only these captured copies differ from the frozen originals: `ExperimentShell.cs`, `ExperimentKeyboard.cs`, `StopAcknowledgementNativeChecks.cs`. `provenance.json` binds both sides; `candidate.patch` is the minimal review diff. The generator refuses changed Shell/Keyboard input hashes and preserves their encoding/newlines.
+
+The synchronous response-adoption callback brackets full keyboard refresh requests with `BeginKeyboardBatch()` / `EndKeyboardBatch()`. Final availability is computed before the flush, and the returned Task settles afterward. Input context resets, Grip callbacks, input messages and physical/rejected press updates remain immediate. The Shift callback continues its press-bit loop when its full render is deferred. No map/snapshot cache, deferred dispatch, turn or permission change is introduced.
+
+Grip/Twist and operation-command keycaps use `OperationInputBlocked`; the existing allowed-tool exception list is unchanged. The test copy explicitly opens a real 33-A keyboard, witnesses an initially enabled assigned Grip, delays Stop acknowledgement, checks disabled Grip/allowed bank tool and rejected direct Grip input, then restores the original bank/previous bank/window visibility and checks every label plus original workspace/pending. Its temporary test window uses the existing restoration suppression only to avoid sending layout writes to the test-only Stop responder; this is not a layout-persistence test.
+
+`compile-20260917-055451/receipt.json`: exit 0, captured inputs unchanged. The compiler built the complete existing native harness with these three substitutions. Three existing CS0649 input-state warnings remain. No engine, native window, DirectX or timing test ran.
+
+Root owns promotion and native validation: final keyboard properties must equal an explicit full render of the same adopted state; held/Shift key-up visuals must update within the batch; delayed Stop must not show executable Grip keys; batch flags must clear and the Task must settle on errors; durable import receipts must survive presentation failures. The same bounded bank/Local diagnostic decides whether redraw cost decreases. Existing nonempty-preview, focus/IME and session-recovery tests remain required; this compile receipt proves none of those runtime outcomes.

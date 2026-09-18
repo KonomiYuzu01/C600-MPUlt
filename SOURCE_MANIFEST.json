@@ -40,8 +40,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 2532,
-      "sha256": "32a2d9a5cb4c946090760f500741bfe9e330167d591b1882eae947ee77f282e5",
+      "bytes": 2867,
+      "sha256": "10ab872924f122c67c83942a5ec89ea56c8da8eb8551a1511865548342610f9b",
       "provenance": "reviewed-doc-or-license"
     },
     {
@@ -240,6 +240,564 @@
       "path": "docs/STRUCTURE_EXPLORER.md",
       "bytes": 13562,
       "sha256": "5ace886bb71a06182f19904aabf6bbdc4bbf91ba8b8cd7bbe25af6501f1f6dc2",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/README.md",
+      "bytes": 16820,
+      "sha256": "b434bff3f09bf5a432bd7ecc116e9f431168d87597e5fa8fb1ea83fe58b494d8",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/manifest.json",
+      "bytes": 29470,
+      "sha256": "9096f60d1978a702d2cb9aee2aa3813e3fde67583bed24f17dabb04ab31531d2",
+      "provenance": "development-documentation"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/design/00_READ_FIRST_ZH.md",
+      "bytes": 8367,
+      "sha256": "bf7b163633440c565c7f55d9e0722afb9fab1681864be5948bf8fda7a1a0a449",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/design/01_PRODUCT_BRIEF_ZH.md",
+      "bytes": 18641,
+      "sha256": "75a17bb57f8838e3f301bc2452c1518ee479759a09d6c4a476117c33591e98db",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/design/02_ABSTRACT_VIEW_SPEC_ZH.md",
+      "bytes": 48855,
+      "sha256": "3980ab13592291724c11b872f8d82de8c8157b883f7bdd19e9252b0ed58b584a",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/design/03_ARCHITECTURE.md",
+      "bytes": 111591,
+      "sha256": "5a06fc78fe242021f7ac602f1d29452ba689001c4c4ed0810d64c9da56460e9f",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/design/04_ULTRA_PROMPTS.md",
+      "bytes": 23158,
+      "sha256": "4efb4371e741830badf1b748ad034b76f0b50dee1ae356c86fe16f90a60bf9f2",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/design/05_ACCEPTANCE_AND_TEST_GUIDE.md",
+      "bytes": 14404,
+      "sha256": "141f013364f7946ad8c5484f0ff70df704e9a5ebc411d272ef3e6199fd7cc2aa",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/design/06_REFERENCE_AUDIT.md",
+      "bytes": 9559,
+      "sha256": "7a1d6bf8c2ca282ec9ae66d167d07e61c3bb3238718fe248696cf204b2ba895e",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/design/07_NAMING_AND_RECOMMENDATION.md",
+      "bytes": 10434,
+      "sha256": "4fcc560e724166987db28b576e0a7e85133905fdb41d812d578feebdf5934de5",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/design/08_INTEGRATION_AND_ENDGAME.md",
+      "bytes": 14301,
+      "sha256": "7e2587af2f73e1b8cea2082ef897db61c4b02c99cf88e353192e432f7e04e998",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/design/09_STEERING_BACKLOG.md",
+      "bytes": 4153,
+      "sha256": "a8c26f7209491cf2aaa4a752b6e9fb587062fca28793ed228a8f3245db72c5f9",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/design/README.md",
+      "bytes": 2399,
+      "sha256": "50271212bb702f6c8fbe5f9ba59aa9c8b2a161c27349ee8df96daebffa4cefe6",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/DEVELOPMENT_LOG.md",
+      "bytes": 53049,
+      "sha256": "f8b953551766e6a6322427543b2c6f5f4cd5e8811fb2b843736b18a37b52027f",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/HANDOFF.md",
+      "bytes": 45283,
+      "sha256": "801dcf2929d849b83df57cf6e4515bd8a5d6c2f7f9fe740496db50b44febef0d",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/ID_AUDIT.md",
+      "bytes": 13513,
+      "sha256": "165e64b487258596d9f799a58dbd40c1cb44fb2879afbea910727c77c4348dc3",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/NATIVE_REVIEW_GUIDE.md",
+      "bytes": 16388,
+      "sha256": "739c627b999f410ab708a7a5c223bd5f15ee91d97cdd5d99fdeda6a750dd9020",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/docs/CONSOLIDATION.md",
+      "bytes": 4499,
+      "sha256": "8895913d90b42c367d9bfae458729f71a548cc4a6f00c7665eae4a239c57b73c",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/docs/final-package-notes.md",
+      "bytes": 17578,
+      "sha256": "aef557aaa069aa55b7e11a14df32e5757105bbedf2e2e469261b0e0ed22f3a5a",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/docs/plans/current-score-integration-20260916.md",
+      "bytes": 3188,
+      "sha256": "283e94bbbf67c4731d4b4e884a0f7c942a8409b86f098c05c4c48fcf032b05bd",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/docs/plans/endgame-completion-20260916.md",
+      "bytes": 5016,
+      "sha256": "88851cf9a8dd44cc22a55de756dbf1d64d4f67e14f91c43bbe394dfbb3bbe681",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/docs/plans/final-acceptance-20260917.md",
+      "bytes": 3475,
+      "sha256": "740f171173f09fdf3d90e909d05d963e556f1d53fa53dfb65ea4d4b5b0ba805e",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/docs/reviews/MACRO_VARIANTS_REVIEW_20260916.md",
+      "bytes": 8755,
+      "sha256": "e20c648e5cb0112e44c5437a4f239e61415867be3a78f2bd52386e0c1a2b8f3b",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/docs/reviews/TOMORROW_COVERAGE_20260916.md",
+      "bytes": 24219,
+      "sha256": "86015f4340d09bf7242ef07be45e58dc1b7e8ef87cb34ec34bc93b9e31ab8a9e",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/docs/reviews/capture-focus-20260916.md",
+      "bytes": 4305,
+      "sha256": "2f4c41611860d0015d88b42ebb4754bb10a47eebe928814b28b274c9eaab2d10",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/docs/reviews/coherent-frame-plan-20260916.md",
+      "bytes": 14583,
+      "sha256": "a68caffe828a59f7a2f3578ea7a3df2a1334a79c4e82e0f3cf66d8a580e9692e",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/docs/reviews/current-score-integration-20260916.md",
+      "bytes": 4865,
+      "sha256": "5c2a50646bfebd1922ba587fa9cc616d0b146fb4d77678e4bf03456b9268a9fb",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/docs/reviews/endgame-evidence-audit-20260916.md",
+      "bytes": 15345,
+      "sha256": "d7e86c431b76b39d8163f87a3575e296216fb8e23bca0a938a8fb4187fed9150",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/docs/reviews/endgame-integration-20260917.md",
+      "bytes": 8528,
+      "sha256": "b7745cb6c9ba1eabaabd702bf3e26c4a0de2501a882cbad530ae865f19ddae2d",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/docs/reviews/evidence-closeout-20260917.md",
+      "bytes": 8932,
+      "sha256": "1a3827bb10c7134d3aa9b290e70fef405f2742c0a81f7452a35c6fffaae613c8",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/docs/reviews/final-compatibility-20260917.md",
+      "bytes": 3983,
+      "sha256": "fa45d788d0a42976c043e0ee61866a75f1a611448cee6df30bbc95c1f831fadd",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/docs/reviews/final-native-acceptance-map.md",
+      "bytes": 17562,
+      "sha256": "97857843213c53e07ce8e7d30ec722c7f86c301131b6783939dd682179619f4e",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/docs/reviews/final-native-session-20260917.md",
+      "bytes": 3638,
+      "sha256": "3d0bcda8c0449a56a90f23cdc0b85817e3d8b27a75c115e126445387ebd8b677",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/docs/reviews/final-package-checker-review-20260917.md",
+      "bytes": 9799,
+      "sha256": "cdf77ddbf5da01e9234ea8ac912dd7c718ce02c7acd904e17aa18377946752a4",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/docs/reviews/final-solver-acceptance.md",
+      "bytes": 10536,
+      "sha256": "f7b57c6e5c824779e48cdb779b04754348fae6d555655c24809ca026e00140a4",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/docs/reviews/instrument-20260915.md",
+      "bytes": 11998,
+      "sha256": "dc984953511756dcb2edba76709ff95ee3226de2aff271fd6b9bfc012949df00",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/docs/reviews/keyboard-batch-independent-review-20260917.md",
+      "bytes": 6419,
+      "sha256": "e0fa0912cbc089bcef7122954989defbbe8476207de07f8fa545cfdff965ee50",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/docs/reviews/keyboard-dock-20260915.md",
+      "bytes": 10952,
+      "sha256": "07678a69220752199241e5508f870ee93991f45722dd34f1d845db5a432b83b3",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/docs/reviews/mathematical-addresses-20260916.md",
+      "bytes": 4608,
+      "sha256": "ee76534c5fb3d230f353058c833d3ab7a785a349694edc0002296b5cb1ce8502",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/docs/reviews/native-macro-discovery-plan-review-20260917.md",
+      "bytes": 9254,
+      "sha256": "8dd974c7efc40dc18ca3a7fb46220a0fb87946e7f01bf4f5b2d12a0148908b88",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/docs/reviews/native-solver-review-20260917.md",
+      "bytes": 54845,
+      "sha256": "d351c5d98525dd22ee30c39969f49e68f4178e6cad2a9624b00d3a3d9bbd7b66",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/docs/reviews/orbit_signature_feasibility_20260916.md",
+      "bytes": 9577,
+      "sha256": "3cbb4317be4cf2ab3fb489017732e85ad8346be8383cb178a96a0b4a757542bc",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/docs/reviews/reference-alignment-discovery-20260916.md",
+      "bytes": 11325,
+      "sha256": "2def629b1b04ee552307fcde98785ff3463d162a1ecf674c7acdfb1f9a4ecd70",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/docs/reviews/retained-display-controls-20260917.md",
+      "bytes": 5426,
+      "sha256": "c913ca7079533dec2d777f7b7991da19fe797f89917e183026fccc0b733d66ac",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/docs/reviews/use-score-plan-20260916.md",
+      "bytes": 8061,
+      "sha256": "bbdee1604a6a956ae5c0f38305dcd47737cfe7d26e8e5a9df2561a783e284436",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/docs/specs/endgame-intent-stage-20260916.md",
+      "bytes": 14591,
+      "sha256": "a85b6d8f2d92219edea70a59a257307233fbfb305e52670be4d3c3609ef87b50",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/docs/specs/instrument-scene-20260915.md",
+      "bytes": 5682,
+      "sha256": "4410bdf848c9f5a140ef7aa0e97d0e6d2e3d0b7430e2c8ece2f95ea69e0f7f6a",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/docs/specs/keyboard-dock-lucid.mmd",
+      "bytes": 1425,
+      "sha256": "deecb3e087218b81ebaead553567c4e373619004e3507a0fdcf4570c7d965680",
+      "provenance": "development-documentation"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/docs/specs/macro-variants-stage-20260916.md",
+      "bytes": 5672,
+      "sha256": "e8c927037d509b1191bee1449277748709b94e721578d3400976912dfa4e5ab0",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/docs/specs/phase-workspace-20260915.md",
+      "bytes": 5450,
+      "sha256": "5878daecc526328178bbcbb6ead3816ba0dd1af3762e75279763314a0b8c95b1",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/docs/specs/post-approval-workspace-20260916.md",
+      "bytes": 6661,
+      "sha256": "2e1aae357fc8a6f2c73b5f0401afad3937ee590e9ef230aafa6642d7c8823c1f",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/docs/specs/solve-transition-stage-20260916.md",
+      "bytes": 20891,
+      "sha256": "10a79b2ca854268c0ef8640c9bd5c7890d512ff001605f47bd5ac4d00500fff9",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/docs/specs/solve-use-stage-20260916.md",
+      "bytes": 5806,
+      "sha256": "3081405d474a06ce2a1dec927af412b8d515954e17fa1be6f2dddd4762094cb9",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/evidence/browseract-setup-report.md",
+      "bytes": 3602,
+      "sha256": "2f693bd65de5b975f4e6a76e149c557b978c9b929bb45570b7d98faf71dcecfb",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/evidence/clipboard-restore-20260917/DIAGNOSIS.md",
+      "bytes": 3206,
+      "sha256": "4a97a70b3ce3c5aeb4220ebdafd660bc3e51ee39efb32e01acb82fea8a5fe135",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/evidence/compact-keyboard-20260916/REVIEW.md",
+      "bytes": 5447,
+      "sha256": "364abc9ba78ccdaca4fc40dafb2811408142526e248480b8b8c827a8d17020c8",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/evidence/endgame-index-20260917.md",
+      "bytes": 4155,
+      "sha256": "f755d12a12a2ded5ab9b219c2580881817ba3c4da49240264f3f432a39722656",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/evidence/endgame-library-matrix.md",
+      "bytes": 4777,
+      "sha256": "07bff81a730813c2bc8116e8f8a74df3d28485cb4987ad99a05a5ec75359139d",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/evidence/final-headless-resume-20260917/BASELINE_RESULT.md",
+      "bytes": 2963,
+      "sha256": "8a5f42bc8fd138e2e508bfa70ac4d285aa5f1d91e82e515413237cd7c39312be",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/evidence/final-headless-resume-20260917/closeout/HANDOFF-before.md",
+      "bytes": 42196,
+      "sha256": "0e32c4f77759d863479d832a072bfafdc73edf785d42523d1fc6eb8b293cce66",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/evidence/final-headless-resume-20260917/fixture-candidates/STATUS.md",
+      "bytes": 5537,
+      "sha256": "0c7557a8dcdca1157c1478066e551fcaef78106c35e41d23ace9e00d90b0ac62",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/evidence/final-headless-resume-20260917/fixture-review.md",
+      "bytes": 15273,
+      "sha256": "b5519c29053226ffb9a8e5e5fd2d8411695473af9c9f0f45cdfb195a0f7aa267",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/evidence/functions-20260916/FRONTEND.md",
+      "bytes": 3683,
+      "sha256": "2d69787bde2b41de27c0954f39853e9ec39cff97825027096049dfa723249d20",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/evidence/keymap-files-20260917/README.md",
+      "bytes": 3048,
+      "sha256": "1181163d0039dd7e29e978e0942a0a343d5d308f689908d3b839a77dea10d7ed",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/evidence/macro-variants-20260916/REVIEW.md",
+      "bytes": 7165,
+      "sha256": "828bae8f300fd45f993625a5402fd6f67390aa574b5e76aa2ff7b8c1fa1b187a",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/evidence/math-glyph-20260916-210146/REVIEW.md",
+      "bytes": 3737,
+      "sha256": "a37f2733c1c3f9689bd4f1f097689d83df6cb29b1133be9da3204722a19896ea",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/evidence/math-glyph-20260916-211106/REVIEW.md",
+      "bytes": 2097,
+      "sha256": "3100ceba22c51dcb20925971b314c791d55b82888beac1e2a516e9fc751b4b31",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/evidence/native-solver-review-20260917/input-helper-a.md",
+      "bytes": 5359,
+      "sha256": "568a07faa0cf870b4cdef55128910011db853431e395faae2627584d02e560d5",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/evidence/native-solver-review-20260917/wave-b-review-snapshot.md",
+      "bytes": 28523,
+      "sha256": "7d898569587d981cb71b7e4b0ce3c8ea18694640dbcb2584f2731b82775dd36b",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/evidence/native-solver-review-20260917/wave-d/input-helper.md",
+      "bytes": 5711,
+      "sha256": "d6ebc899ff59ee99b586bb473ed374f8fbe000009f16bb9213242401061ba0ef",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/evidence/native-solver-review-20260917/wave-d/report-before-wave-d.md",
+      "bytes": 41879,
+      "sha256": "985622e936546cc31cd8226b503ce2a7bd4e8ae55baee5057505031c6299f20f",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/evidence/native-solver-review-20260917/wave-d/review.md",
+      "bytes": 13246,
+      "sha256": "7ef4c974a0b05c062d7989ad07c345f525a23be69d5371d0f6c90bf15d5750e7",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/evidence/performance-resume-20260917/REVIEW.md",
+      "bytes": 6562,
+      "sha256": "040d4be81631c84f00fdeab099ec3597a899fa981a336974f8fa9db056caf62f",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/evidence/performance-resume-20260917/backend-review/API_DIAGNOSTIC.md",
+      "bytes": 4668,
+      "sha256": "b4795a2050896b4109f35eb3646c302509fd6e4563a34a3a39b98c161cf9b811",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/evidence/performance-resume-20260917/backend-review/FRESH_PROFILE.md",
+      "bytes": 6403,
+      "sha256": "26151555d2a485d07c9e216fac128008ad549edd5629bf0b90621f03082ea913",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/evidence/performance-resume-20260917/backend-review/REVIEW.md",
+      "bytes": 11956,
+      "sha256": "b686b30a2ec9e2561ce8ebb0aaf70e26d734281c001f1cdca2cff500035e6c0c",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/evidence/performance-resume-20260917/hub-review/FINE_TIMING_051917.md",
+      "bytes": 4973,
+      "sha256": "232304bb13f4c111d673c1f8389876f0c148620875219520af62d4a304ceb4fe",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/evidence/performance-resume-20260917/hub-review/REVIEW.md",
+      "bytes": 7397,
+      "sha256": "704e22bd4e498e23141f50974604d8b0847664045e26e1515587ccf0448dee31",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/evidence/performance-resume-20260917/keyboard-review/PATCH_PROPOSAL.md",
+      "bytes": 6390,
+      "sha256": "8e67ce3748c1091410b9e32935540ded85ed9baa9e452b33b720e8007f71ffc7",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/evidence/performance-resume-20260917/keyboard-review/REVIEW.md",
+      "bytes": 8676,
+      "sha256": "820634ae9126fbe991fcc453ac0e5e2de966554caf404c2d85b47cd16e841964",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/evidence/performance-resume-20260917/keyboard-review/candidate/README.md",
+      "bytes": 2680,
+      "sha256": "624ffc3767850ad1d4974511ee04290aff1e2683061826d7d98b05d4aebd292f",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/evidence/reference-variant-integration-20260917/README.md",
+      "bytes": 3749,
+      "sha256": "c7bead9ef729537cc5b33dba27654f7f91b5bbbe1568857775f54a8715416757",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/evidence/role-text-20260916-213632/REVIEW.md",
+      "bytes": 2957,
+      "sha256": "143475e45a32ee7511266877049cc2c2b022a4fb001f157452f280f534467baa",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/evidence/session-log-native-20260917/README.md",
+      "bytes": 1801,
+      "sha256": "2be8bb8a97bc7ba9514d481a416905daa076976c8b18e8a21a1f75e10f2458ce",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/evidence/session-presentation-20260917/README.md",
+      "bytes": 2534,
+      "sha256": "fdb2837d30bec41f28fe9a29d734f786d05c777ecfe18b9395114f44948585d9",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/evidence/solve-window-20260916/IMPLEMENTATION.md",
+      "bytes": 8479,
+      "sha256": "b7502728d2d3c8636907083dea319103ce0df01b818dae6a32dc42d8d823b518",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/evidence/workflow-continuity-20260916/README.md",
+      "bytes": 4368,
+      "sha256": "aa4d45f935f90c9e27b278e3f2de541a07dfbeff321d44b42b8835bbe1c3a3ea",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/experiment/evidence/workflow-ownership-20260916/README.md",
+      "bytes": 2323,
+      "sha256": "a3f300e5ec06562db0642dc9a94a6fcd1cc124ea05a953bb2cd3a5c3daf7b24c",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/next-session/START_HERE.md",
+      "bytes": 7126,
+      "sha256": "b9f688d4be35fefcfbcd2b37d7be7446ce110cc9368a7a3734b9343209fefd7b",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/source/docs/DEVELOPMENT_LOG.md",
+      "bytes": 44948,
+      "sha256": "af8824a9e709af274337533226c3cac6fb38f0338faa15ccef30b94e0bd36f90",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/source/docs/DEVELOPMENT_PERFORMANCE.md",
+      "bytes": 10562,
+      "sha256": "028bd86be05b2d11b6f302b11cfbfc27d655f243d32da35a71d6f209d4501b83",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/source/docs/LIMITATIONS_AND_ROADMAP.md",
+      "bytes": 16004,
+      "sha256": "23f77fba6e5c8346e37b3bb6c7777485a99adf08bc2ee960831e6a8841b68b3b",
+      "provenance": "reviewed-doc-or-license"
+    },
+    {
+      "path": "docs/progress/0.4/snapshot/source/docs/NEXT_UPDATE.md",
+      "bytes": 21627,
+      "sha256": "091246f2f835e98f0f98a3008c1855f044813ffe4ee59a592a6fb2d9a507c058",
       "provenance": "reviewed-doc-or-license"
     },
     {

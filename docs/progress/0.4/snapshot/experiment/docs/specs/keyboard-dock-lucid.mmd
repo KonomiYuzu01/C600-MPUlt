@@ -1,0 +1,27 @@
+> Archived development document, published 2026-09-18. This is a stopped, unreleased 0.4 snapshot, not a new instruction to resume work. Historical status and failed results are retained; the current status is in the [progress index](../../../../README.md). Local paths are anonymized; raw evidence and runtime files are not bundled.
+
+flowchart TD
+    W[Keep Current, locked Next and protection visible] --> K[Open Keyboard in the hub]
+    K --> B[Choose bank and inspect its actual mappings]
+    B --> C{Grip capture required?}
+    C -->|Yes| G[Explicitly choose caps and confirm capture]
+    C -->|No| D[Choose Draft phase or Live input explicitly]
+    G --> D
+    D --> T[Select Grip and enter exact Twist]
+    T --> I[Inspect the finite draft and full operation effect]
+    I --> R{Protection result current and acceptable?}
+    R -->|No or unknown| D
+    R -->|Yes| P[User explicitly previews]
+    P --> E[User explicitly executes]
+    P -->|Cancel| D
+    E --> O[Inspect actual result and preserve achieved work]
+    O --> N[Explicitly activate locked Next or select another piece]
+    N --> K
+    K --> Q[Change command key inline]
+    Q --> L[Freeze work selection and capture the new chord]
+    L --> X{Conflicting or reserved key?}
+    X -->|Yes| L
+    X -->|No or explicit command replacement| A[Apply key to selected scope]
+    L -->|Cancel or Escape| F[Close editor and clear held input]
+    A --> F
+    F --> K

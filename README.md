@@ -1,4 +1,6 @@
-# C600 Studio
+# Magic 600 Cell (formerly C600 Studio)
+
+**0.4 development — stopped, unreleased:** [Latest progress, handoff and complete document archive](docs/progress/0.4/README.md) (published 2026-09-18; evidence through 2026-09-17). G1/G2 samples are approved; final acceptance is incomplete. This is a documentation update, not a 0.4 application release.
 
 A Windows workbench for the full 600-cell puzzle, built around **[Magic Puzzle Ultimate by Andrey Astrelin](https://superliminal.com/andrey/mpu/)**. Primary credit for the original puzzle simulator and renderer belongs to Andrey.
 
@@ -25,3 +27,4 @@ The [structure explorer guide](docs/STRUCTURE_EXPLORER.md) explains canonical co
 ## License
 
 C600 Studio is a derivative work of Magic Puzzle Ultimate, © 2010 Andrey Astrelin. This project is distributed under the same terms as the original project.
+
