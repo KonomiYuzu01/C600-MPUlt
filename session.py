@@ -6,7 +6,7 @@ import numpy as np
 from session_lock import SessionLock
 from core import Model,PuzzleState,Planner,Filters,ORDER,canonical,digest,state_hash,invrecipe
 
-DEFAULT_RULES=[{'expr':'active','style':'solid'}]
+DEFAULT_RULES=[{'expr':'all','style':'solid'}]
 NO_CAMERA=object()
 class Session:
  def __init__(self,model:Model,directory:Path):

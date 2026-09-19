@@ -227,6 +227,8 @@ class Workbench:
         self.library = self.default_library()
         saved = session.prefs.get('layout', {}).get('magic600_experiment')
         self.w = clone(saved) if saved else self.new_workspace()
+        if not saved and session.prefs['rules'] == [dict(expr='all', style='solid')]:
+            self.w['filter'] = 'all'
         if self.w['model'] != self.m.model_id:
             raise ValueError('Experimental workspace belongs to a different model')
         workspace_defaults(self.w)
