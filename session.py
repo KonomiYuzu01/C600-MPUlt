@@ -22,6 +22,7 @@ class Session:
   self.st=PuzzleState(model);self.head=int(self._get('head') or 0);self.pending=None;self.redo_stack=[];self.rev=0
   self.prefs=json.loads(self._get('prefs') or '{}');self.prefs.setdefault('orbit',33);self.prefs.setdefault('rules',DEFAULT_RULES);self.prefs.setdefault('pin_safety',True);self.prefs.setdefault('protected',[]);self.prefs.setdefault('selected',None)
   self.prefs.setdefault('inspection',None)
+  self.prefs.setdefault('view',dict(native_hide_frame=True,native_adaptive_motion=True))
   self.prefs.setdefault('focus_color',None);self._cell_counts_key=None;self._cell_counts=None
   self.planner=Planner(model)
   if not saved:

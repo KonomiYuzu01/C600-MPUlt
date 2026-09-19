@@ -46,7 +46,7 @@
     "native/runtime/MPUlt_settings.txt": "40f2b52ea72bbfe5c56f69e878d6cb2a0e318c7f1875e9ca1270e4d7099e19dc",
     "native_bridge.py": "f01b64de34698f3e6dff2d3587903f3afb759d2a25f3b483ae68f1b95b67709f",
     "server.py": "3f3e48f5cf7888e02d01aaf7a4b4153c5ec2e496bf0b455a8ab1efea8286a8c4",
-    "session.py": "a616edb03c24832616b231502f99eadce841eb31ab7f4cb0adc3491b7231b0cd",
+    "session.py": "1ad8429b5675ba751c8f0ff1e9a5d79845a38f17fe9fdba06484d74c5d14b14a",
     "session_lock.py": "6797bea8e724cbf8dbee2e52b66c9e9fe21d40fc652a72e9bd2ba33d71f61ca8",
     "THIRD_PARTY_NOTICES.md": "01bdf826fb3e6f6b39920cbe493cfdc18e1e350161a4e4be28cc0d4ae9e9a1ca",
     "web/app.js": "7c5d7d60e3255932b9aab6635bef763bda2f7350a3c4be2bccd733128c324a31",
@@ -125,8 +125,8 @@
     "work/experiments/magic600-04/workflow_continuity.py": "f46ab058c5556dcc629d24ece95744e290fc79868995bcadbaab3892eee7edee"
   },
   "native": {
-    "build_identity": "71b4bf62dafd3364271267d83a4e10129f94305667f0ee621882cbdf2619cc08",
-    "executable_sha256": "643d34ad17722f6f7b4fe38fc9aa2adacc7bdff0c36b592962eef8d51502b293",
+    "build_identity": "dc35e1c08ea75edb24022284566174e2b07e3a6118a30a517c307284e4627a15",
+    "executable_sha256": "7e884f64228784bad7dbe568401c92464caab3f0051a6f4cccc4f60296e23cad",
     "sources": {
       "native\\NativeHost.cs": "0d076c52fa2caf49d6d306ef85c1d232a811c26949edec8907c9086512918539",
       "native\\NativeDockLayout.cs": "e284444b6e7dd7a5f2e97b661567bd3b928fb80ccdff096e4604c1582f4d549a",
@@ -169,9 +169,10 @@
     }
   },
   "model_id": "58c83f336e451aa64147fe1b8db2d60d7d43806aa3a35122f8403d5af51253f9",
-  "launcher_sha256": "d9bdce4a42942d0ab4f4ab53512f427730359317006bc7f04600eb363a9253ee",
-  "package_manifest_sha256": "51071b5db47cee86462010d324664531e0110477db01a3164549954da7425208",
-  "zip_sha256": "530a3a6897033bcb9ca38c863049adee8c5d0a62425b948a1471c92724b7b616",
+  "launcher_sha256": "7b355890d7770ac59aa49c9fb89d8f0d1483bedbc13b8e971f4d134c570adc20",
+  "package_manifest_sha256": "4c7799c44221875cb69ed54df1f2bb869fbfbdb6ea64e40960e482c131d445a2",
+  "zip_sha256": "14c305a8d93c6403c2de8ee368db5389f336e3df6a053a6ea881646e099fd60c",
   "reused_evidence": "Unchanged solver, protection, journal, checkpoint and recovery behavior; final host and package-specific checks recorded separately",
-  "raw_recordings": "Private originals retained; edited public footage is not performance evidence"
+  "raw_recordings": "Private originals retained; edited public footage is not performance evidence",
+  "startup_defaults": "Explicit new-session hide framework and adaptive motion; unchanged full static detail; existing preferences retained; targeted checks passed"
 }
