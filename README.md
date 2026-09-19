@@ -10,6 +10,8 @@ It adds recoverable reset, exact piece filters, checkpoints, macros, buffer and 
 
 Version **0.4** adds the native solving workspace, explicit operations, macro composition, protection and recovery workflows, orientation and buffer tools, and physical keyboard input. Previous release downloads remain unchanged.
 
+The English-captioned demonstration covers the workspace, protection and recovery, macro editing and effect inspection, orientation tools, and physical keyboard input. Waiting and repeated navigation are omitted; the video is delivered separately from the GitHub release assets.
+
 ## Run
 
 Download [Magic 600 Cell 0.4](https://github.com/KonomiYuzu01/C600-MPUlt/releases/tag/0.4). Extract the Windows x64 portable ZIP and open `Magic600Cell.exe`. No separate Python or compiler is needed. Install [Microsoft Managed DirectX](DIRECTX.md) if prompted.
