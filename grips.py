@@ -1,10 +1,12 @@
 """All 11 nonidentity rotations of the focused tetrahedral cap, expressed as legal H/T words."""
 import numpy as np
 
-def grips(model,cell):
+def grips(model,cell,rotations=None):
  c=int(cell)
  if not 0<=c<600:raise ValueError('Cell must be 0..599')
- h,t=2*c+1,2*c+2;rot=model.z['rotperms'];generators=[(h,rot[h-1]),(t,rot[t-1]),(-t,np.argsort(rot[t-1]))]
+ rot=model.z['rotperms'] if rotations is None else rotations
+ if rot.shape!=(1200,600) or not np.issubdtype(rot.dtype,np.integer):raise ValueError('Cap rotations require the retained integer normal-permutation table')
+ h,t=2*c+1,2*c+2;generators=[(h,rot[h-1]),(t,rot[t-1]),(-t,np.argsort(rot[t-1]))]
  identity=np.arange(600,dtype=np.int32);table={identity.tobytes():[]};queue=[identity];items=[]
  for perm in queue:
   word=table[perm.tobytes()]

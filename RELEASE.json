@@ -1,12 +1,11 @@
 {
-  "version": "0.3",
-  "release_name": "C600 Studio 0.3",
+  "version": "0.4",
+  "release_name": "Magic 600 Cell 0.4",
   "profile": "600-cell-Full",
-  "native_source_combined_sha256": "f40a18efaa55d9f24fe17e3228c286054cce70e85bd9dfe61c437e89c0e26116",
-  "asset_manifest_sha256": "b5db4469f3da9ba3cdbd93806a703f594153e61b08ce32d4fcce9de9c5cc60bc",
-  "runtime_sha256": "228b3145460a399e2accc17cb5b891568ec8ddd33c011f1f2a32a00c59743327",
+  "native_executable_sha256": "643d34ad17722f6f7b4fe38fc9aa2adacc7bdff0c36b592962eef8d51502b293",
+  "artifact_zip_sha256": "530a3a6897033bcb9ca38c863049adee8c5d0a62425b948a1471c92724b7b616",
   "microsoft_directx_payload_included": false,
-  "distribution": "Source repository; Windows installers are separate release artifacts",
-  "build_validation": "See docs/RELEASE_0_3_VALIDATION.md for matching-source, packaged executable, and performance evidence boundaries. Raw local diagnostics are excluded.",
-  "historical_release": "The 0.2.4 tag, release assets, and tests/VALIDATION.md retain their original evidence."
+  "distribution": "Windows x64 portable ZIP in GitHub Release 0.4; source pinned on main",
+  "build_validation": "docs/RELEASE_0_4.md and docs/RELEASE_0_4_PROVENANCE.json",
+  "historical_release": "Existing 0.3 and 0.2.4 tags, downloads and validation records remain unchanged"
 }

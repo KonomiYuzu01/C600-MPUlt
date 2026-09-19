@@ -1,6 +1,6 @@
 """Branch-preserving SQLite journal and transaction-scoped macro previews."""
 from __future__ import annotations
-import gzip,json,os,secrets,sqlite3,time,zlib
+import gzip,json,math,os,secrets,sqlite3,time,zlib
 from pathlib import Path
 import numpy as np
 from session_lock import SessionLock
@@ -74,15 +74,44 @@ class Session:
   prefs=dict(self.prefs);prefs['camera']=validate_camera(camera)
   if len(canonical(prefs))>500000:raise ValueError('Preferences are too large')
   return prefs
- def reset(self,camera=NO_CAMERA):
+ def reset(self,camera=NO_CAMERA,*,preference_changes=None,workflow_meta=None):
   """Return to solved while retaining a recoverable branch and all view prefs."""
-  prefs=self._prefs_with_camera(camera);old_head=self.head;name=self._recovery_name('reset');solved=PuzzleState(self.m)
+  old_head=self.head;name=self._recovery_name('reset');solved=PuzzleState(self.m)
+  prefs=self._prefs_with_camera(camera)
+  if preference_changes is not None:
+   if not isinstance(preference_changes,dict):raise ValueError('Preferences must be an object')
+   changes=dict(preference_changes)
+   if camera is not NO_CAMERA:changes['camera']=prefs['camera']
+   prefs=self._validated_prefs(changes,state=solved)
+  if workflow_meta is not None:
+   keys={'version','id','model','start_head','start_hash','timer_baseline','created'}
+   try:
+    valid_numbers=isinstance(workflow_meta,dict) and all(type(workflow_meta.get(k)) in (int,float)
+      and math.isfinite(workflow_meta[k]) and workflow_meta[k]>=0 for k in ('timer_baseline','created'))
+   except OverflowError:valid_numbers=False
+   if (not isinstance(workflow_meta,dict) or set(workflow_meta)!=keys
+       or workflow_meta['version']!='manual-session-attempt-v1'
+       or not isinstance(workflow_meta['id'],str) or len(workflow_meta['id'])!=24
+       or any(c not in '0123456789abcdef' for c in workflow_meta['id'])
+       or workflow_meta['model']!=self.m.model_id
+       or type(workflow_meta['start_head']) is not int or workflow_meta['start_head']!=0
+       or workflow_meta['start_hash']!=solved.hash
+       or not valid_numbers):
+    raise ValueError('Invalid new-session attempt metadata')
+   workflow_meta=canonical(workflow_meta)
   self.m.check_cancel()
   with self.db:
-   self._snapshot(name,prefs);self._put('head',0);self._put('prefs',canonical(prefs));self.m.check_cancel()
+   self._snapshot(name,self.prefs if preference_changes is not None else prefs);self._put('head',0);self._put('prefs',canonical(prefs))
+   if workflow_meta is not None:self._put('magic600_session_attempt_v1',workflow_meta)
+   self.m.check_cancel()
   self.head=0;self.st=solved;self.prefs=prefs;self.pending=None;self.redo_stack=[];self.rev+=1
   return dict(self.status(),reset_checkpoint=name,previous_head=old_head,note='Reset to solved. Previous progress is retained in checkpoint '+name)
  def save_prefs(self,changes):
+  p=self._validated_prefs(changes)
+  with self.db:self._put('prefs',canonical(p))
+  self.prefs=p
+  return self.status()
+ def _validated_prefs(self,changes,*,state=None):
   # User preferences can only mutate view/selection/guard data, never puzzle labels.
   if not isinstance(changes,dict):raise ValueError('Preferences must be an object')
   p=dict(self.prefs)
@@ -115,11 +144,9 @@ class Session:
    if not isinstance(item,dict) or 'recipe' not in item:raise ValueError('Each saved macro needs a recipe')
    self.m.normalize(item['recipe'])
   # Validate referenced sets before the expression evaluator reads their members.
-  Filters(self.st,p['orbit'],p['selected'],p['protected'],sets=sets).styles(rules,p['pin_safety'])
+  Filters(self.st if state is None else state,p['orbit'],p['selected'],p['protected'],sets=sets).styles(rules,p['pin_safety'])
   if len(canonical(p))>500000:raise ValueError('Preferences are too large')
-  with self.db:self._put('prefs',canonical(p))
-  self.prefs=p
-  return self.status()
+  return json.loads(canonical(p))
  def preview(self,recipe,note='',assistance='manual'):
   start=time.perf_counter();s,d,length,recipe=self.m.net(recipe);after=self.st.labels.copy();after[d]=after[s]
   public=dict(format='C600-STUDIO-CERTIFICATE-v1',model_id=self.m.model_id,recipe=recipe,source_to_destination_sha256=digest(s.astype('<i4').tobytes()+d.astype('<i4').tobytes()),primitive_count=str(length),star_count=sum(x['kind']=='star' for x in recipe),support=self.m.support(s),pre_state=self.st.hash,post_state=state_hash(after),evidence='Legal seed replay plus exact conjugation/composition over the retained full model',native_windows_equivalence=False)
@@ -130,18 +157,31 @@ class Session:
   self.m.check_cancel()
   self.pending=dict(public=public,src=s,dst=d,after=after,rev=self.rev,head=self.head,token=secrets.token_urlsafe(18),recipe=recipe)
   return dict(public,token=self.pending['token'])
- def commit(self,token):
+ def commit(self,token,*,preference_changes=None,event_context=None):
   p=self.pending
   if not p or not secrets.compare_digest(str(token),p['token']):raise ValueError('Preview token is missing or expired')
   if p['head']!=self.head or p['rev']!=self.rev or p['public']['pre_state']!=self.st.hash:raise ValueError('Stale preview. Preview the operation again.')
   if any(r['orbit'] in self.prefs['protected'] for r in p['public']['support']):raise ValueError('Protected orbit would move. Remove that protection explicitly or choose a different macro.')
   c=p['public'];old=self.event();new_state=PuzzleState(self.m,p['after'],trusted=True);total=int(old['total_primitives'])+int(c['primitive_count']);stars=old['total_stars']+c['star_count'];depth=old['depth']+1
+  prefs=self.prefs if preference_changes is None else self._validated_prefs(preference_changes,state=new_state)
+  context=None
+  if event_context is not None:
+   if (not isinstance(event_context,dict) or event_context.get('version')!='workflow-transition-v1'
+       or event_context.get('model')!=self.m.model_id or event_context.get('pre_state')!=self.st.hash
+       or event_context.get('post_state')!=new_state.hash
+       or type(event_context.get('source_orbit'))!=int or not 0<=event_context['source_orbit']<35):
+    raise ValueError('Workflow context does not match the pending transaction')
+   context=canonical(event_context)
+   if len(context)>32000:raise ValueError('Workflow context is too large')
+  self.m.check_cancel()
   # Write the durable operation before publishing its state to the UI.
   with self.db:
    cur=self.db.execute('INSERT INTO events(parent,recipe,pre,post,certificate,primitive_count,stars,total_primitives,total_stars,depth,created,note,assistance) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',(self.head,canonical(p['recipe']),self.st.hash,new_state.hash,c['certificate_id'],c['primitive_count'],c['star_count'],str(total),stars,depth,time.time(),c['note'],c['assistance']))
-   nh=cur.lastrowid;self._put('head',nh);self._put('prefs',canonical(self.prefs))
-   if depth%50==0:self.db.execute('INSERT OR REPLACE INTO snapshots VALUES (?,?,?,?,?,?)',(f'Auto {nh}',nh,zlib.compress(new_state.labels.astype('<i4').tobytes(),3),new_state.hash,canonical(self.prefs),time.time()))
-  self.head=nh;self.st=new_state;self.pending=None;self.redo_stack=[];self.rev+=1
+   nh=cur.lastrowid;self._put('head',nh);self._put('prefs',canonical(prefs))
+   if context is not None:self._put('event:'+str(nh)+':workflow',context)
+   if depth%50==0:self.db.execute('INSERT OR REPLACE INTO snapshots VALUES (?,?,?,?,?,?)',(f'Auto {nh}',nh,zlib.compress(new_state.labels.astype('<i4').tobytes(),3),new_state.hash,canonical(prefs),time.time()))
+   self.m.check_cancel()
+  self.head=nh;self.st=new_state;self.prefs=prefs;self.pending=None;self.redo_stack=[];self.rev+=1
   return self.status()
  def undo(self):
   ev=self.event()
